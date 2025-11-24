@@ -17,6 +17,9 @@ const Layout = ({ children }) => {
       touchMultiplier: 2,
     });
 
+    // Make Lenis accessible globally for other components (like modals)
+    window.lenis = lenis;
+
     function raf(time) {
       lenis.raf(time);
       requestAnimationFrame(raf);
@@ -26,6 +29,7 @@ const Layout = ({ children }) => {
 
     return () => {
       lenis.destroy();
+      window.lenis = null;
     };
   }, []);
 

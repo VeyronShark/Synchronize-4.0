@@ -123,7 +123,7 @@ const Footer = () => {
                 <div className="w-10 h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center shrink-0 group-hover:border-cyan-400/50 group-hover:bg-cyan-400/10 transition-all duration-300">
                   <MapPin className="w-5 h-5 text-cyan-400" />
                 </div>
-                <span className="text-sm pt-2">XIM UNIVERSITY, Bhubaneswar, India</span>
+                <span className="text-sm pt-2">XIM UNIVERSITY<br/>Nijigada, Kurki, Plot No:12(A<br/>Harirajpur, Kakudia<br/>Odisha 752050, India</span>
               </li>
               <li className="group flex items-center space-x-3 text-gray-400 hover:text-white transition-colors duration-300 cursor-pointer">
                 <div className="w-10 h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center group-hover:border-cyan-400/50 group-hover:bg-cyan-400/10 transition-all duration-300">
@@ -149,7 +149,7 @@ const Footer = () => {
             <div className="relative group">
               <div className="w-full h-40 bg-white/5 rounded-xl overflow-hidden border border-white/10 group-hover:border-cyan-400/30 transition-all duration-500 relative">
                 <iframe 
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3888.0036733909793!2d77.63997831482193!3d12.971598990855768!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae16a77f100f77%3A0x274158d481266114!2sIndiranagar%2C%20Bengaluru%2C%20Karnataka!5e0!3m2!1sen!2sin!4v1645432123456!5m2!1sen!2sin" 
+                  src="https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&q=XIM+University+Nijigada+Kurki+Harirajpur+Kakudia+Odisha+752050&zoom=15" 
                   width="100%" 
                   height="100%" 
                   style={{border:0}} 
@@ -167,10 +167,15 @@ const Footer = () => {
               <div className="absolute inset-0 rounded-xl bg-cyan-400/0 group-hover:bg-cyan-400/5 blur-xl transition-all duration-500 -z-10" />
             </div>
             
-            <button className="mt-4 text-gray-400 text-sm hover:text-cyan-400 transition-all duration-300 flex items-center gap-2 group">
+            <a 
+              href="https://www.google.com/maps/dir/?api=1&destination=XIM+University+Nijigada+Kurki+Plot+No+12A+Harirajpur+Kakudia+Odisha+752050" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="mt-4 text-gray-400 text-sm hover:text-cyan-400 transition-all duration-300 flex items-center gap-2 group"
+            >
               <span>Get Directions</span>
               <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
-            </button>
+            </a>
           </div>
         </div>
         

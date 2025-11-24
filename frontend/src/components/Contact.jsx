@@ -128,13 +128,13 @@ const Contact = () => {
               </div>
 
               <div className="group relative p-6 rounded-2xl bg-linear-to-br from-purple-500/10 to-cyan-500/10 border border-purple-400/20 hover:border-purple-400/50 transition-all duration-300 hover:shadow-[0_0_30px_rgba(138,43,226,0.3)] cursor-pointer transform hover:-translate-y-1">
-                <div className="flex items-center space-x-4">
-                  <div className="w-14 h-14 rounded-xl bg-linear-to-br from-purple-400 to-purple-600 flex items-center justify-center text-white shadow-lg shadow-purple-500/50 group-hover:scale-110 transition-transform">
+                <div className="flex items-start space-x-4">
+                  <div className="w-14 h-14 rounded-xl bg-linear-to-br from-purple-400 to-purple-600 flex items-center justify-center text-white shadow-lg shadow-purple-500/50 group-hover:scale-110 transition-transform shrink-0">
                     <MapPin className="w-7 h-7" />
                   </div>
                   <div>
                     <p className="text-xs text-gray-500 uppercase tracking-wider mb-1">Location</p>
-                    <span className="text-white font-medium">XIM UNIVERSITY, Bhubaneswar</span>
+                    <span className="text-white font-medium">XIM UNIVERSITY<br/>Nijigada, Kurki, Plot No:12(A<br/>Harirajpur, Kakudia<br/>Odisha 752050</span>
                   </div>
                 </div>
                 

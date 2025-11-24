@@ -1,8 +1,30 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 const EventDetailsCard = ({ event, onClose }) => {
+  const scrollContainerRef = useRef(null);
+
   useEffect(() => {
+    // Get the Lenis instance from window (if it exists)
+    const lenis = window.lenis;
+    
+    // Stop Lenis smooth scrolling
+    if (lenis) {
+      lenis.stop();
+    }
+
+    // Disable all ScrollTrigger instances
+    ScrollTrigger.getAll().forEach(trigger => trigger.disable());
+
+    // Lock body scroll when modal is open
+    const originalOverflow = document.body.style.overflow;
+    const originalPosition = document.body.style.position;
+    const originalWidth = document.body.style.width;
+    document.body.style.overflow = 'hidden';
+    document.body.style.position = 'fixed';
+    document.body.style.width = '100%';
+
     gsap.fromTo('.modal-overlay', 
       { opacity: 0 },
       { opacity: 1, duration: 0.3 }
@@ -11,6 +33,52 @@ const EventDetailsCard = ({ event, onClose }) => {
       { scale: 0.8, opacity: 0, y: 50 },
       { scale: 1, opacity: 1, y: 0, duration: 0.4, ease: 'back.out(1.7)' }
     );
+
+    // Prevent scroll propagation to the page
+    const scrollContainer = scrollContainerRef.current;
+    if (!scrollContainer) {
+      // Restore everything if scrollContainer is not available
+      document.body.style.overflow = originalOverflow;
+      document.body.style.position = originalPosition;
+      document.body.style.width = originalWidth;
+      if (lenis) lenis.start();
+      ScrollTrigger.getAll().forEach(trigger => trigger.enable());
+      return;
+    }
+
+    const handleWheel = (e) => {
+      const { scrollTop, scrollHeight, clientHeight } = scrollContainer;
+      const isAtTop = scrollTop === 0;
+      const isAtBottom = scrollTop + clientHeight >= scrollHeight - 1;
+
+      // Prevent page scroll when scrolling within modal bounds
+      if ((e.deltaY < 0 && isAtTop) || (e.deltaY > 0 && isAtBottom)) {
+        // At boundary: prevent default to stop page scroll
+        e.preventDefault();
+      } else if (scrollHeight > clientHeight) {
+        // Content is scrollable: stop propagation to prevent page scroll
+        e.stopPropagation();
+      }
+    };
+
+    scrollContainer.addEventListener('wheel', handleWheel, { passive: false });
+
+    return () => {
+      scrollContainer.removeEventListener('wheel', handleWheel);
+      
+      // Restore body scroll when modal closes
+      document.body.style.overflow = originalOverflow;
+      document.body.style.position = originalPosition;
+      document.body.style.width = originalWidth;
+      
+      // Re-enable Lenis
+      if (lenis) {
+        lenis.start();
+      }
+      
+      // Re-enable all ScrollTrigger instances
+      ScrollTrigger.getAll().forEach(trigger => trigger.enable());
+    };
   }, []);
 
   const handleClose = () => {
@@ -32,6 +100,7 @@ const EventDetailsCard = ({ event, onClose }) => {
     <div 
       className="modal-overlay fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4"
       onClick={handleClose}
+      onTouchMove={(e) => e.preventDefault()}
     >
       <div 
         className="modal-content relative w-full max-w-4xl max-h-[90vh] bg-linear-to-br from-gray-900 via-black to-gray-900 rounded-2xl border border-cyan-400/30 shadow-2xl shadow-cyan-400/20 overflow-hidden flex flex-col"
@@ -66,7 +135,7 @@ const EventDetailsCard = ({ event, onClose }) => {
         </div>
 
         {/* Event Details - Scrollable */}
-        <div className="p-6 md:p-8 overflow-y-auto scrollbar-custom flex-1 min-h-0">
+        <div ref={scrollContainerRef} className="p-6 md:p-8 overflow-y-auto scrollbar-custom flex-1 min-h-0">
           <p className="text-gray-300 text-lg mb-6 leading-relaxed">
             {event.description}
           </p>
