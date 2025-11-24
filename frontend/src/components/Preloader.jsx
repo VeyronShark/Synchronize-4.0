@@ -4,13 +4,12 @@ import gsap from 'gsap';
 const Preloader = ({ onComplete }) => {
   const [counter, setCounter] = useState(0);
   const containerRef = useRef(null);
-  const counterRef = useRef(null);
-  const logoRef = useRef(null);
-  const barsRef = useRef([]);
+  const rocketRef = useRef(null);
+  const trailRef = useRef(null);
 
   useEffect(() => {
-    // Faster counter animation - completes in ~1.5 seconds
-    const duration = 1500; // milliseconds
+    // Smooth counter animation - completes in ~2 seconds
+    const duration = 2000;
     const steps = 100;
     const stepDuration = duration / steps;
     
@@ -26,26 +25,23 @@ const Preloader = ({ onComplete }) => {
       });
     }, stepDuration);
 
-    // Animate loading bars
-    barsRef.current.forEach((bar, i) => {
-      if (bar) {
-        gsap.to(bar, {
-          scaleY: 1,
-          duration: 0.8,
-          delay: i * 0.05,
-          ease: "power2.out",
-          repeat: -1,
-          yoyo: true,
-          repeatDelay: 0.2
-        });
-      }
-    });
+    // Smooth rocket animation along horizontal path
+    if (rocketRef.current) {
+      gsap.to(rocketRef.current, {
+        left: '100%',
+        duration: 2,
+        ease: "power1.inOut"
+      });
+    }
 
-    // Logo entrance animation
-    gsap.fromTo(logoRef.current,
-      { scale: 0.8, opacity: 0 },
-      { scale: 1, opacity: 1, duration: 0.6, ease: "back.out(1.7)" }
-    );
+    // Trail follows rocket
+    if (trailRef.current) {
+      gsap.to(trailRef.current, {
+        width: '100%',
+        duration: 2,
+        ease: "power1.inOut"
+      });
+    }
 
     return () => {
       clearInterval(interval);
@@ -53,35 +49,16 @@ const Preloader = ({ onComplete }) => {
   }, []);
 
   useEffect(() => {
-    // Smooth counter animation
-    if (counterRef.current) {
-      gsap.to(counterRef.current, {
-        textContent: counter,
-        duration: 0.3,
-        ease: "power1.out",
-        snap: { textContent: 1 }
-      });
-    }
-  }, [counter]);
-
-  useEffect(() => {
     if (counter === 100) {
       const tl = gsap.timeline({
         onComplete: onComplete
       });
 
-      // Fast, smooth exit animation
-      tl.to(logoRef.current, {
-        scale: 1.2,
+      tl.to(containerRef.current, {
         opacity: 0,
-        duration: 0.4,
-        ease: "power2.in"
-      })
-      .to(containerRef.current, {
-        opacity: 0,
-        duration: 0.3,
+        duration: 0.5,
         ease: "power2.inOut"
-      }, "-=0.2");
+      });
     }
   }, [counter, onComplete]);
 
@@ -91,78 +68,83 @@ const Preloader = ({ onComplete }) => {
       className="fixed inset-0 flex items-center justify-center overflow-hidden bg-black"
       style={{ zIndex: 99999 }}
     >
-      {/* Minimal animated background */}
-      <div className="absolute inset-0 bg-linear-to-br from-black via-gray-900 to-black" />
-      
-      {/* Subtle grid */}
-      <div className="absolute inset-0 opacity-10" style={{
-        backgroundImage: 'linear-gradient(rgba(0, 242, 255, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 242, 255, 0.1) 1px, transparent 1px)',
-        backgroundSize: '100px 100px'
-      }} />
+      {/* Subtle space background */}
+      <div className="absolute inset-0">
+        {/* Minimal stars - static, no animation */}
+        <div className="absolute top-[10%] left-[15%] w-1 h-1 bg-cyan-400/40 rounded-full" />
+        <div className="absolute top-[25%] right-[20%] w-1 h-1 bg-cyan-400/30 rounded-full" />
+        <div className="absolute top-[60%] left-[25%] w-1 h-1 bg-cyan-400/40 rounded-full" />
+        <div className="absolute bottom-[30%] right-[30%] w-1 h-1 bg-cyan-400/30 rounded-full" />
+        <div className="absolute top-[40%] left-[70%] w-1 h-1 bg-cyan-400/40 rounded-full" />
+        <div className="absolute bottom-[20%] left-[40%] w-1 h-1 bg-cyan-400/30 rounded-full" />
+        <div className="absolute top-[70%] right-[15%] w-1 h-1 bg-cyan-400/40 rounded-full" />
+        <div className="absolute top-[15%] left-[60%] w-1 h-1 bg-cyan-400/30 rounded-full" />
+        
+        {/* Subtle glow */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-cyan-500/5 rounded-full blur-[100px]" />
+      </div>
 
-      {/* Gradient orbs */}
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-cyan-500/20 rounded-full blur-3xl animate-pulse-slow" />
-      <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl animate-pulse-slow" style={{ animationDelay: '1s' }} />
-      
-      <div ref={logoRef} className="relative z-10 flex flex-col items-center">
+      {/* Main content */}
+      <div className="relative z-10 flex flex-col items-center">
         {/* Brand logo */}
-        <div className="mb-8">
-          <h1 className="text-4xl md:text-5xl font-display font-bold text-white tracking-tight">
-            SYNCHRONIZE <span className="text-transparent bg-clip-text bg-linear-to-r from-cyan-400 to-purple-400">4.0</span>
+        <div className="mb-16">
+          <h1 className="text-5xl md:text-6xl font-display font-bold text-white tracking-tight">
+            SYNCHRONIZE <span className="text-cyan-400">4.0</span>
           </h1>
         </div>
 
-        {/* Loading bars */}
-        <div className="flex items-end space-x-2 h-16 mb-8">
-          {[...Array(5)].map((_, i) => (
-            <div
-              key={i}
-              ref={el => barsRef.current[i] = el}
-              className="w-2 bg-linear-to-t from-cyan-400 to-purple-400 rounded-full origin-bottom"
-              style={{
-                height: `${20 + i * 10}%`,
-                transform: 'scaleY(0.3)'
-              }}
+        {/* Rocket track container */}
+        <div className="relative w-[500px] max-w-[90vw] mb-12">
+          {/* Track line */}
+          <div className="relative h-1 bg-white/5 rounded-full overflow-hidden">
+            {/* Progress trail */}
+            <div 
+              ref={trailRef}
+              className="absolute left-0 top-0 h-full bg-cyan-400/30 rounded-full"
+              style={{ width: '0%' }}
             />
-          ))}
+            
+            {/* Rocket */}
+            <div 
+              ref={rocketRef}
+              className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2"
+              style={{ left: '0%' }}
+            >
+              {/* Simple rocket icon */}
+              <svg width="40" height="40" viewBox="0 0 40 40" className="drop-shadow-[0_0_10px_rgba(0,242,255,0.8)]">
+                {/* Rocket body */}
+                <path 
+                  d="M 20 8 L 24 16 L 24 28 L 16 28 L 16 16 Z" 
+                  fill="#00F2FF" 
+                  stroke="#00F2FF" 
+                  strokeWidth="1"
+                />
+                {/* Nose */}
+                <path d="M 20 8 L 16 16 L 24 16 Z" fill="#06b6d4" />
+                {/* Window */}
+                <circle cx="20" cy="20" r="3" fill="#000" opacity="0.3" />
+                {/* Wings */}
+                <path d="M 16 20 L 12 28 L 16 26 Z" fill="#00F2FF" />
+                <path d="M 24 20 L 28 28 L 24 26 Z" fill="#00F2FF" />
+                {/* Flame */}
+                <ellipse cx="20" cy="30" rx="3" ry="4" fill="#00F2FF" opacity="0.6" />
+              </svg>
+            </div>
+          </div>
         </div>
 
         {/* Counter */}
-        <div className="relative mb-4">
-          <div 
-            ref={counterRef}
-            className="text-6xl md:text-7xl font-display font-bold text-transparent bg-clip-text bg-linear-to-r from-cyan-400 to-purple-400"
-          >
-            0
-          </div>
-          <div className="absolute inset-0 text-6xl md:text-7xl font-display font-bold text-cyan-400 opacity-30 blur-lg">
-            {counter}
+        <div className="relative mb-8">
+          <div className="text-7xl md:text-8xl font-display font-bold text-cyan-400">
+            {counter}%
           </div>
         </div>
 
         {/* Loading text */}
-        <div className="text-sm tracking-[0.3em] text-gray-500 uppercase">
-          Loading Experience
-        </div>
-
-        {/* Progress bar */}
-        <div className="mt-8 w-64 h-1 bg-white/10 rounded-full overflow-hidden">
-          <div 
-            className="h-full bg-linear-to-r from-cyan-400 to-purple-400 rounded-full transition-all duration-300 ease-out shadow-[0_0_10px_rgba(0,242,255,0.5)]"
-            style={{ width: `${counter}%` }}
-          />
+        <div className="text-xs tracking-[0.3em] text-cyan-400/50 uppercase">
+          Loading
         </div>
       </div>
-
-      <style jsx>{`
-        @keyframes pulse-slow {
-          0%, 100% { transform: scale(1); opacity: 0.2; }
-          50% { transform: scale(1.1); opacity: 0.3; }
-        }
-        .animate-pulse-slow {
-          animation: pulse-slow 3s ease-in-out infinite;
-        }
-      `}</style>
     </div>
   );
 };

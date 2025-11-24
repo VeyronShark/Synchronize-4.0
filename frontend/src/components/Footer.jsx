@@ -1,16 +1,20 @@
 import { Instagram, Twitter, Linkedin, MapPin, Mail, Phone, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
+// FooterLink component to handle navigation
+const FooterLink = ({ to, children }) => {
+  return (
+    <Link 
+      to={to}
+      className="text-gray-400 hover:text-cyan-400 transition-colors duration-300 cursor-pointer"
+    >
+      {children}
+    </Link>
+  );
+};
+
 const Footer = () => {
-  const handleSmoothScroll = (e, href) => {
-    if (href.startsWith('#')) {
-      e.preventDefault();
-      const element = document.querySelector(href);
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    }
-  };
+  
   return (
     <footer className="bg-black border-t border-white/10 pt-20 pb-10 relative overflow-hidden">
       {/* Enhanced background effects */}
@@ -71,28 +75,18 @@ const Footer = () => {
             </h3>
             <ul className="space-y-3">
               {[
-                { label: 'Home', href: '#home' },
-                { label: 'About Us', href: '#about' },
-                { label: 'Events', href: '#events' },
-                { label: 'Schedule', href: '#schedule' },
-                { label: 'Sponsors', href: '#sponsors' },
+                { label: 'Home', to: '/' },
+                { label: 'About Us', to: '/#about' },
+                { label: 'Events', to: '/#events' },
+                { label: 'Schedule', to: '/#schedule' },
+                { label: 'Sponsors', to: '/#sponsors' },
                 { label: 'Team', to: '/team' }
               ].map((link, i) => (
                 <li key={i} className="group flex items-center">
                   <span className="w-0 h-px bg-cyan-400 group-hover:w-4 transition-all duration-300 mr-0 group-hover:mr-2" />
-                  {link.to ? (
-                    <Link to={link.to} className="text-gray-400 hover:text-cyan-400 transition-colors duration-300">
-                      {link.label}
-                    </Link>
-                  ) : (
-                    <a 
-                      href={link.href} 
-                      onClick={(e) => handleSmoothScroll(e, link.href)}
-                      className="text-gray-400 hover:text-cyan-400 transition-colors duration-300"
-                    >
-                      {link.label}
-                    </a>
-                  )}
+                  <FooterLink to={link.to}>
+                    {link.label}
+                  </FooterLink>
                 </li>
               ))}
             </ul>
@@ -109,7 +103,7 @@ const Footer = () => {
                 <div className="w-10 h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center shrink-0 group-hover:border-cyan-400/50 group-hover:bg-cyan-400/10 transition-all duration-300">
                   <MapPin className="w-5 h-5 text-cyan-400" />
                 </div>
-                <span className="text-sm pt-2">123 Tech Street, Innovation City, Bangalore, India 560001</span>
+                <span className="text-sm pt-2">XIM UNIVERSITY, Bhubaneswar, India</span>
               </li>
               <li className="group flex items-center space-x-3 text-gray-400 hover:text-white transition-colors duration-300 cursor-pointer">
                 <div className="w-10 h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center group-hover:border-cyan-400/50 group-hover:bg-cyan-400/10 transition-all duration-300">

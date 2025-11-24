@@ -118,7 +118,7 @@ const Navbar = () => {
         </div>
         
         <div className="absolute bottom-10 left-0 w-full text-center text-gray-500 font-sans text-sm">
-          &copy; 2024 Synchronize Fest. All rights reserved.
+          &copy; 2025 Synchronize TechFest. All rights reserved.
         </div>
       </div>
     </>
