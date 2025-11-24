@@ -146,22 +146,27 @@ const GalleryPage = () => {
 
         {selectedImage && (
           <div 
-            className="fixed inset-0 z-50 bg-black/95 backdrop-blur-sm flex items-center justify-center p-6"
+            className="fixed inset-0 z-100 bg-black/95 backdrop-blur-sm flex items-center justify-center p-6"
             onClick={closeLightbox}
           >
-            <button 
-              className="absolute top-6 right-6 w-12 h-12 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-all z-50"
-              onClick={closeLightbox}
-            >
-              <X className="w-6 h-6 text-white" />
-            </button>
+
 
             <div className="max-w-6xl w-full" onClick={(e) => e.stopPropagation()}>
-              <img 
-                src={selectedImage.url} 
-                alt={selectedImage.title}
-                className="w-full h-auto rounded-2xl shadow-2xl"
-              />
+              <div className="relative w-fit mx-auto">
+                <img 
+                  src={selectedImage.url} 
+                  alt={selectedImage.title}
+                  className="max-h-[85vh] w-auto rounded-2xl shadow-2xl object-contain"
+                />
+                <button
+                  onClick={closeLightbox}
+                  className="cursor-pointer absolute top-4 right-4 z-101 w-10 h-10 flex items-center justify-center rounded-full bg-white/10 hover:bg-red-500/20 border border-white hover:border-red-500 transition-all duration-300 group"
+                >
+                  <svg className="w-5 h-5 text-white group-hover:text-red-500 group-hover:rotate-90 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
               <div className="mt-6 text-center">
                 <span className="text-sm uppercase tracking-wider text-purple-400 font-semibold">{selectedImage.category}</span>
                 <h3 className="text-3xl font-display font-bold text-white mt-2">{selectedImage.title}</h3>

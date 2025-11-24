@@ -57,31 +57,31 @@ const Navbar = () => {
   };
 
   const navLinks = [
+    { name: "Home", path: "/" },
     { name: "Events", path: "/events" },
     { name: "Schedule", path: "/#schedule" },
     { name: "Sponsors", path: "/#sponsors" },
     { name: "Team", path: "/team" },
     { name: "Gallery", path: "/gallery" },
-    { name: "Contact", path: "/#contact" }
   ];
 
   return (
     <>
       {/* Floating Header */}
-      <nav className="fixed top-0 left-0 w-full z-50 px-6 py-6 flex justify-between items-center mix-blend-difference text-white">
+      <nav className="fixed top-0 left-0 w-full z-50 px-6 py-6 flex justify-between items-center mix-blend-difference text-white backdrop-blur-sm bg-black/10 border-b border-white/5 transition-all duration-300">
         <Link 
           to="/" 
           onClick={() => setIsOpen(false)} 
-          className="text-2xl font-display font-bold tracking-tighter hover:opacity-80 transition-opacity cursor-pointer"
+          className="text-2xl font-display font-bold tracking-tighter hover:opacity-80 transition-opacity cursor-pointer group"
         >
-          SYNCHRONIZE <span className="text-cyan-400">4.0</span>
+          SYNCHRONIZE <span className="text-cyan-400 group-hover:text-purple-400 transition-colors duration-300">4.0</span>
         </Link>
         
         <button 
           onClick={toggleMenu}
-          className="relative z-50 w-12 h-12 flex items-center justify-center rounded-full hover:bg-white/10 transition-all duration-300 cursor-pointer"
+          className="relative z-50 w-12 h-12 flex items-center justify-center rounded-full hover:bg-white/10 transition-all duration-300 cursor-pointer group hover:scale-110 hover:rotate-180 active:scale-95"
         >
-          {isOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
+          {isOpen ? <FaTimes size={24} className="group-hover:text-red-500 transition-colors duration-300" /> : <FaBars size={24} className="group-hover:text-cyan-400 transition-colors duration-300" />}
         </button>
       </nav>
 
