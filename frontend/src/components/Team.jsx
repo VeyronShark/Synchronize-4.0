@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { Linkedin, Twitter, Github, ArrowLeft } from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -104,9 +105,7 @@ const Team = () => {
             className="group px-8 py-4 border-2 border-cyan-400/30 rounded-full text-white hover:border-cyan-400 hover:bg-cyan-400/10 transition-all backdrop-blur-sm relative overflow-hidden"
           >
             <span className="relative z-10 flex items-center gap-2">
-              <svg className="w-5 h-5 transform group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-              </svg>
+              <ArrowLeft className="w-5 h-5 transform group-hover:-translate-x-1 transition-transform" />
               Back to Home
             </span>
             <div className="absolute inset-0 bg-linear-to-r from-transparent via-cyan-400/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
@@ -154,19 +153,28 @@ const Team = () => {
                   {member.role}
                 </div>
 
-                {/* Social icons (placeholder) */}
+                {/* Social icons */}
                 <div className="flex space-x-3 mt-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                  {['linkedin', 'twitter', 'github'].map((social, i) => (
-                    <div 
-                      key={social}
-                      className={`w-8 h-8 rounded-lg ${member.color === 'cyan' ? 'bg-cyan-400/10 hover:bg-cyan-400/20 border-cyan-400/30' : 'bg-purple-400/10 hover:bg-purple-400/20 border-purple-400/30'} border flex items-center justify-center cursor-pointer transform hover:scale-110 transition-all`}
-                      style={{ transitionDelay: `${i * 50}ms` }}
-                    >
-                      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                        <circle cx="12" cy="12" r="8" />
-                      </svg>
-                    </div>
-                  ))}
+                  <a 
+                    href="#"
+                    className={`w-8 h-8 rounded-lg ${member.color === 'cyan' ? 'bg-cyan-400/10 hover:bg-cyan-400/20 border-cyan-400/30' : 'bg-purple-400/10 hover:bg-purple-400/20 border-purple-400/30'} border flex items-center justify-center cursor-pointer transform hover:scale-110 transition-all`}
+                  >
+                    <Linkedin className="w-4 h-4" />
+                  </a>
+                  <a 
+                    href="#"
+                    className={`w-8 h-8 rounded-lg ${member.color === 'cyan' ? 'bg-cyan-400/10 hover:bg-cyan-400/20 border-cyan-400/30' : 'bg-purple-400/10 hover:bg-purple-400/20 border-purple-400/30'} border flex items-center justify-center cursor-pointer transform hover:scale-110 transition-all`}
+                    style={{ transitionDelay: '50ms' }}
+                  >
+                    <Twitter className="w-4 h-4" />
+                  </a>
+                  <a 
+                    href="#"
+                    className={`w-8 h-8 rounded-lg ${member.color === 'cyan' ? 'bg-cyan-400/10 hover:bg-cyan-400/20 border-cyan-400/30' : 'bg-purple-400/10 hover:bg-purple-400/20 border-purple-400/30'} border flex items-center justify-center cursor-pointer transform hover:scale-110 transition-all`}
+                    style={{ transitionDelay: '100ms' }}
+                  >
+                    <Github className="w-4 h-4" />
+                  </a>
                 </div>
               </div>
 

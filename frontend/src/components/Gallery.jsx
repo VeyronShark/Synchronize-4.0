@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import gsap from 'gsap';
+import { ArrowLeft, ZoomIn, X } from 'lucide-react';
 
 const Gallery = () => {
   const [loading, setLoading] = useState(true);
@@ -9,17 +10,18 @@ const Gallery = () => {
   const imagesRef = useRef([]);
   const loaderRef = useRef(null);
 
-  // Sample gallery images - replace with actual event photos
+  // Bento grid layout with varying sizes
   const galleryImages = [
-    { id: 1, url: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800", title: "Opening Ceremony", category: "Events" },
-    { id: 2, url: "https://images.unsplash.com/photo-1511578314322-379afb476865?w=800", title: "Tech Workshop", category: "Workshops" },
-    { id: 3, url: "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=800", title: "Hackathon", category: "Competition" },
-    { id: 4, url: "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=800", title: "Team Building", category: "Activities" },
-    { id: 5, url: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=800", title: "Keynote Speech", category: "Events" },
-    { id: 6, url: "https://images.unsplash.com/photo-1515187029135-18ee286d815b?w=800", title: "Networking", category: "Social" },
-    { id: 7, url: "https://images.unsplash.com/photo-1523580494863-6f3031224c94?w=800", title: "Awards Night", category: "Events" },
-    { id: 8, url: "https://images.unsplash.com/photo-1464047736614-af63643285bf?w=800", title: "Cultural Show", category: "Entertainment" },
-    { id: 9, url: "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=800", title: "Code Sprint", category: "Competition" },
+    { id: 1, url: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800", title: "Opening Ceremony", category: "Events", size: "large" },
+    { id: 2, url: "https://images.unsplash.com/photo-1511578314322-379afb476865?w=800", title: "Tech Workshop", category: "Workshops", size: "medium" },
+    { id: 3, url: "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=800", title: "Hackathon", category: "Competition", size: "medium" },
+    { id: 4, url: "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=800", title: "Team Building", category: "Activities", size: "small" },
+    { id: 5, url: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=800", title: "Keynote Speech", category: "Events", size: "small" },
+    { id: 6, url: "https://images.unsplash.com/photo-1515187029135-18ee286d815b?w=800", title: "Networking", category: "Social", size: "wide" },
+    { id: 7, url: "https://images.unsplash.com/photo-1523580494863-6f3031224c94?w=800", title: "Awards Night", category: "Events", size: "tall" },
+    { id: 8, url: "https://images.unsplash.com/photo-1464047736614-af63643285bf?w=800", title: "Cultural Show", category: "Entertainment", size: "medium" },
+    { id: 9, url: "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=800", title: "Code Sprint", category: "Competition", size: "small" },
+    { id: 10, url: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=800", title: "Collaboration", category: "Activities", size: "small" },
   ];
 
   useEffect(() => {
@@ -107,46 +109,52 @@ const Gallery = () => {
               className="group px-8 py-4 border-2 border-purple-400/30 rounded-full text-white hover:border-purple-400 hover:bg-purple-400/10 transition-all backdrop-blur-sm relative overflow-hidden"
             >
               <span className="relative z-10 flex items-center gap-2">
-                <svg className="w-5 h-5 transform group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                </svg>
+                <ArrowLeft className="w-5 h-5 transform group-hover:-translate-x-1 transition-transform" />
                 Back to Home
               </span>
               <div className="absolute inset-0 bg-linear-to-r from-transparent via-purple-400/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
             </Link>
           </div>
 
-          {/* Masonry Grid */}
-          <div className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
-            {galleryImages.map((image, index) => (
-              <div 
-                key={image.id}
-                ref={el => imagesRef.current[index] = el}
-                className="group relative break-inside-avoid cursor-pointer overflow-hidden rounded-2xl glass-card border-2 border-white/5 hover:border-purple-400/50 transition-all duration-500"
-                onClick={() => openLightbox(image)}
-              >
-                <div className="relative overflow-hidden">
-                  <img 
-                    src={image.url} 
-                    alt={image.title}
-                    className="w-full h-auto object-cover transform group-hover:scale-110 transition-transform duration-700"
-                  />
-                  
-                  {/* Overlay */}
-                  <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-6">
-                    <span className="text-xs uppercase tracking-wider text-purple-400 font-semibold mb-2">{image.category}</span>
-                    <h3 className="text-xl font-display font-bold text-white">{image.title}</h3>
-                  </div>
+          {/* Bento Grid Moodboard */}
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 auto-rows-[200px]">
+            {galleryImages.map((image, index) => {
+              const sizeClasses = {
+                small: 'col-span-1 row-span-1',
+                medium: 'col-span-2 row-span-1',
+                large: 'col-span-2 md:col-span-3 row-span-2',
+                wide: 'col-span-2 md:col-span-4 row-span-1',
+                tall: 'col-span-1 md:col-span-2 row-span-2'
+              };
 
-                  {/* Zoom Icon */}
-                  <div className="absolute top-4 right-4 w-10 h-10 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                    <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7" />
-                    </svg>
+              return (
+                <div 
+                  key={image.id}
+                  ref={el => imagesRef.current[index] = el}
+                  className={`group relative cursor-pointer overflow-hidden rounded-2xl glass-card border-2 border-white/5 hover:border-purple-400/50 transition-all duration-500 ${sizeClasses[image.size]}`}
+                  onClick={() => openLightbox(image)}
+                >
+                  <div className="relative w-full h-full overflow-hidden">
+                    <img 
+                      src={image.url} 
+                      alt={image.title}
+                      className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
+                    />
+                    
+                    {/* Overlay */}
+                    <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-4 md:p-6">
+                      <span className="text-xs uppercase tracking-wider text-purple-400 font-semibold mb-1">{image.category}</span>
+                      <h3 className="text-base md:text-xl font-display font-bold text-white">{image.title}</h3>
+                    </div>
+
+                    {/* Zoom Icon */}
+                    <div className="absolute top-3 right-3 w-10 h-10 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                      <ZoomIn className="w-5 h-5 text-white" />
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
 
@@ -160,9 +168,7 @@ const Gallery = () => {
               className="absolute top-6 right-6 w-12 h-12 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-all z-50"
               onClick={closeLightbox}
             >
-              <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
+              <X className="w-6 h-6 text-white" />
             </button>
 
             <div className="max-w-6xl w-full" onClick={(e) => e.stopPropagation()}>

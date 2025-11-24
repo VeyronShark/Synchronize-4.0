@@ -26,16 +26,7 @@ const Home = ({ loading, setLoading }) => (
 );
 
 function App() {
-  const [loading, setLoading] = useState(false);
-
-  // Show preloader only on first visit
-  useEffect(() => {
-    const hasVisited = sessionStorage.getItem('hasVisited');
-    if (!hasVisited) {
-      setLoading(true);
-      sessionStorage.setItem('hasVisited', 'true');
-    }
-  }, []);
+  const [loading, setLoading] = useState(true);
 
   return (
     <Router>
