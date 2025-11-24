@@ -140,29 +140,29 @@ const Events = () => {
   return (
     <>
     <section id="events" ref={sectionRef} className="h-screen overflow-hidden relative flex flex-col justify-center z-20">
-      <div className="container mx-auto px-6 mb-10 flex justify-between items-end">
+      <div className="container mx-auto px-4 sm:px-6 mb-6 sm:mb-10 flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4">
         <div>
-          <h2 className="text-4xl md:text-6xl font-display font-bold text-white mb-4">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display font-bold text-white mb-3 sm:mb-4">
             Featured <span className="text-cyan-400">Events</span>
           </h2>
           <button 
             onClick={() => window.location.href = '/events'}
-            className="px-6 py-2 bg-cyan-400/10 hover:bg-cyan-400/20 border border-cyan-400 text-cyan-400 rounded-full text-sm font-semibold transition-all duration-300 hover:scale-105"
+            className="px-4 sm:px-6 py-2 bg-cyan-400/10 hover:bg-cyan-400/20 border border-cyan-400 text-cyan-400 rounded-full text-xs sm:text-sm font-semibold transition-all duration-300 hover:scale-105"
           >
             View All Events →
           </button>
         </div>
         {/* Progress Bar */}
-        <div className="w-48 h-1 bg-white/10 rounded-full overflow-hidden hidden md:block">
+        <div className="w-32 sm:w-48 h-1 bg-white/10 rounded-full overflow-hidden hidden md:block">
           <div ref={progressRef} className="h-full bg-cyan-400 w-0 shadow-[0_0_15px_rgba(0,242,255,0.6)]"></div>
         </div>
       </div>
 
-      <div ref={containerRef} className="flex gap-10 px-6 w-fit">
+      <div ref={containerRef} className="flex gap-6 sm:gap-8 md:gap-10 px-4 sm:px-6 w-fit">
         {eventsData.map((event, index) => (
           <div 
             key={index} 
-            className="w-[80vw] md:w-[40vw] lg:w-[30vw] h-[60vh] relative group overflow-hidden rounded-2xl border border-white/10 cursor-pointer"
+            className="w-[85vw] sm:w-[70vw] md:w-[45vw] lg:w-[35vw] xl:w-[30vw] h-[55vh] sm:h-[60vh] relative group overflow-hidden rounded-xl sm:rounded-2xl border border-white/10 cursor-pointer shrink-0"
             style={{ transformStyle: 'preserve-3d' }}
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
@@ -181,12 +181,12 @@ const Events = () => {
               <div className="absolute inset-0 shadow-[inset_0_0_60px_rgba(0,242,255,0.15)]"></div>
             </div>
             
-            <div className="absolute bottom-0 left-0 p-8 w-full transform translate-y-2 group-hover:translate-y-0 transition-all duration-500 ease-out">
-              <span className="text-cyan-400/70 text-sm uppercase tracking-widest mb-2 block transition-all duration-300 group-hover:text-cyan-400 group-hover:tracking-[0.2em]">{event.category}</span>
-              <h3 className="text-3xl font-display font-bold text-white mb-4 transition-all duration-300 group-hover:text-cyan-50 group-hover:scale-105 origin-left">{event.title}</h3>
+            <div className="absolute bottom-0 left-0 p-4 sm:p-6 md:p-8 w-full transform translate-y-2 group-hover:translate-y-0 transition-all duration-500 ease-out">
+              <span className="text-cyan-400/70 text-xs sm:text-sm uppercase tracking-widest mb-1 sm:mb-2 block transition-all duration-300 group-hover:text-cyan-400 group-hover:tracking-[0.2em]">{event.category}</span>
+              <h3 className="text-xl sm:text-2xl md:text-3xl font-display font-bold text-white mb-2 sm:mb-4 transition-all duration-300 group-hover:text-cyan-50 group-hover:scale-105 origin-left">{event.title}</h3>
               <div className="flex items-center gap-2 text-cyan-400 transition-all duration-300 group-hover:gap-4">
-                <span className="text-sm font-medium">View Details</span>
-                <svg className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <span className="text-xs sm:text-sm font-medium">View Details</span>
+                <svg className="w-4 h-4 sm:w-5 sm:h-5 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                 </svg>
               </div>

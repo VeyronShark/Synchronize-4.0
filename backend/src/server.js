@@ -11,7 +11,8 @@ const CLIENT_URL = process.env.CLIENT_URL || "http://localhost:5173";
 const app = express();
 
 const origins = [
-    CLIENT_URL
+    CLIENT_URL,
+    "https://synchronize-4.vercel.app"
 ]
 
 app.use(cors(

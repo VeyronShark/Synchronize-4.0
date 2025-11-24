@@ -14,10 +14,10 @@ const Sponsors = () => {
   const duplicatedSponsors = [...sponsors, ...sponsors];
 
   return (
-    <section id="sponsors" className="py-20 relative overflow-hidden">
-      <div className="container mx-auto px-6 relative z-10">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-6xl font-display font-bold text-white">
+    <section id="sponsors" className="py-16 sm:py-20 relative overflow-hidden">
+      <div className="container mx-auto px-4 sm:px-6 relative z-10">
+        <div className="text-center mb-12 sm:mb-16">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display font-bold text-white">
             Our <span className="text-cyan-400">Sponsors</span>
           </h2>
         </div>
@@ -28,12 +28,12 @@ const Sponsors = () => {
             {duplicatedSponsors.map((sponsor, index) => (
               <div 
                 key={index} 
-                className="shrink-0 mx-8 glass-card p-6 rounded-xl flex items-center justify-center h-32 w-48 hover:bg-white/10 transition-all duration-300 sponsor-card group"
+                className="shrink-0 mx-4 sm:mx-6 md:mx-8 glass-card p-4 sm:p-6 rounded-lg sm:rounded-xl flex items-center justify-center h-24 w-36 sm:h-28 sm:w-40 md:h-32 md:w-48 hover:bg-white/10 transition-all duration-300 sponsor-card group"
               >
                 <img 
                   src={sponsor.logo} 
                   alt={sponsor.name} 
-                  className="max-h-12 w-auto grayscale group-hover:grayscale-0 transition-all duration-300 opacity-70 group-hover:opacity-100"
+                  className="max-h-8 sm:max-h-10 md:max-h-12 w-auto grayscale group-hover:grayscale-0 transition-all duration-300 opacity-70 group-hover:opacity-100"
                 />
               </div>
             ))}

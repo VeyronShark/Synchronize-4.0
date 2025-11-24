@@ -272,23 +272,23 @@ const EventsPage = () => {
     <>
       {loading && <LoadingAnimation loaderRef={loaderRef} loadingText="Preparing Events..." />}
 
-      <div className="min-h-screen bg-black text-white pt-32 pb-20">
-      <div className="container mx-auto px-6">
-        <div className="text-center mb-16">
-          <h1 className="text-5xl md:text-7xl font-display font-bold mb-6">
+      <div className="min-h-screen bg-black text-white pt-24 sm:pt-28 md:pt-32 pb-12 sm:pb-16 md:pb-20">
+      <div className="container mx-auto px-4 sm:px-6">
+        <div className="text-center mb-12 sm:mb-16">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-display font-bold mb-4 sm:mb-6">
             Our <span className="text-cyan-400">Events</span>
           </h1>
-          <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+          <p className="text-gray-400 text-sm sm:text-base md:text-lg max-w-2xl mx-auto px-4">
             Explore our diverse range of technical and creative events. Find your passion and register now!
           </p>
         </div>
 
-        <div className="flex flex-wrap justify-center gap-4 mb-12">
+        <div className="flex flex-wrap justify-center gap-2 sm:gap-3 md:gap-4 mb-8 sm:mb-12 px-4">
           {categories.map((category) => (
             <button
               key={category.id}
               onClick={() => setSelectedCategory(category.id)}
-              className={`px-6 py-3 rounded-full font-semibold transition-all duration-300 ${
+              className={`px-4 sm:px-5 md:px-6 py-2 sm:py-2.5 md:py-3 rounded-full font-semibold text-sm sm:text-base transition-all duration-300 ${
                 selectedCategory === category.id
                   ? 'bg-cyan-400 text-black shadow-lg shadow-cyan-400/50'
                   : 'bg-white/5 text-white hover:bg-white/10 border border-white/10'
@@ -299,7 +299,7 @@ const EventsPage = () => {
           ))}
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           {getFilteredEvents().map((event) => (
             <div key={event.id} className="event-card">
               <EventCard event={event} onClick={() => setSelectedEvent(event)} />

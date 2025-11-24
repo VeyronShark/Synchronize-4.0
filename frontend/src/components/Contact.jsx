@@ -114,90 +114,90 @@ const Contact = () => {
   };
 
   return (
-    <section id="contact" className="min-h-screen flex items-center justify-center py-20 relative overflow-hidden">
+    <section id="contact" className="min-h-screen flex items-center justify-center py-16 sm:py-20 relative overflow-hidden">
       {/* Animated background canvas */}
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full opacity-30" />
       
       {/* Gradient orbs */}
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-cyan-500/20 rounded-full blur-3xl animate-pulse-slow" />
-      <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl animate-pulse-slow" style={{ animationDelay: '1s' }} />
+      <div className="absolute top-1/4 left-1/4 w-64 h-64 sm:w-96 sm:h-96 bg-cyan-500/20 rounded-full blur-3xl animate-pulse-slow" />
+      <div className="absolute bottom-1/4 right-1/4 w-64 h-64 sm:w-96 sm:h-96 bg-purple-500/20 rounded-full blur-3xl animate-pulse-slow" style={{ animationDelay: '1s' }} />
       
-      <div className="container mx-auto px-6 relative z-10">
+      <div className="container mx-auto px-4 sm:px-6 relative z-10">
         <div className="max-w-5xl mx-auto">
           
           {/* Enhanced Title Section */}
-          <div ref={titleRef} className="text-center mb-16">
+          <div ref={titleRef} className="text-center mb-12 sm:mb-16">
             <div className="inline-block relative">
-              <h2 className="text-5xl md:text-7xl font-display font-bold mb-4 text-white relative">
+              <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-display font-bold mb-4 text-white relative px-4">
                 Get in <span className="text-transparent bg-clip-text bg-linear-to-r from-cyan-400 via-purple-400 to-cyan-400 animate-gradient-text">Touch</span>
                 
                 {/* Decorative elements */}
-                <div className="absolute -top-8 -left-8 w-16 h-16 border-2 border-cyan-400/30 rounded-full animate-ping-slow" />
-                <div className="absolute -bottom-8 -right-8 w-20 h-20 border-2 border-purple-400/30 rounded-full animate-ping-slow" style={{ animationDelay: '0.5s' }} />
+                <div className="absolute -top-6 -left-4 sm:-top-8 sm:-left-8 w-12 h-12 sm:w-16 sm:h-16 border-2 border-cyan-400/30 rounded-full animate-ping-slow hidden sm:block" />
+                <div className="absolute -bottom-6 -right-4 sm:-bottom-8 sm:-right-8 w-14 h-14 sm:w-20 sm:h-20 border-2 border-purple-400/30 rounded-full animate-ping-slow hidden sm:block" style={{ animationDelay: '0.5s' }} />
               </h2>
               
               {/* Animated underline */}
-              <div className="h-1 bg-linear-to-r from-transparent via-cyan-400 to-transparent animate-gradient-flow" />
+              <div className="h-0.5 sm:h-1 bg-linear-to-r from-transparent via-cyan-400 to-transparent animate-gradient-flow" />
             </div>
             
-            <p className="text-gray-400 text-lg mt-6 max-w-2xl mx-auto">
+            <p className="text-gray-400 text-sm sm:text-base md:text-lg mt-4 sm:mt-6 max-w-2xl mx-auto px-4">
               Have questions? Want to sponsor? Or just want to say hi? We'd love to hear from you.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-12 items-start">
             
             {/* Enhanced Contact Info */}
-            <div className="flex flex-col justify-center space-y-8">
+            <div className="flex flex-col justify-center space-y-6 sm:space-y-8">
               
               {/* Contact cards with hover effects */}
               <div 
-                className="group relative p-6 rounded-2xl bg-linear-to-br from-cyan-500/10 to-purple-500/10 border border-cyan-400/20 hover:border-cyan-400/50 transition-all duration-300 hover:shadow-[0_0_30px_rgba(0,242,255,0.3)] cursor-pointer transform hover:-translate-y-1"
+                className="group relative p-4 sm:p-6 rounded-xl sm:rounded-2xl bg-linear-to-br from-cyan-500/10 to-purple-500/10 border border-cyan-400/20 hover:border-cyan-400/50 transition-all duration-300 hover:shadow-[0_0_30px_rgba(0,242,255,0.3)] cursor-pointer transform hover:-translate-y-1"
               >
-                <div className="flex items-center space-x-4">
-                  <div className="w-14 h-14 rounded-xl bg-linear-to-br from-cyan-400 to-cyan-600 flex items-center justify-center text-white shadow-lg shadow-cyan-500/50 group-hover:scale-110 transition-transform">
-                    <Mail className="w-7 h-7" />
+                <div className="flex items-center space-x-3 sm:space-x-4">
+                  <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-lg sm:rounded-xl bg-linear-to-br from-cyan-400 to-cyan-600 flex items-center justify-center text-white shadow-lg shadow-cyan-500/50 group-hover:scale-110 transition-transform shrink-0">
+                    <Mail className="w-5 h-5 sm:w-7 sm:h-7" />
                   </div>
-                  <div>
-                    <p className="text-xs text-gray-500 uppercase tracking-wider mb-1">Email</p>
-                    <span className="text-white font-medium">techfest-scse@xim.edu.in</span>
+                  <div className="min-w-0">
+                    <p className="text-[10px] sm:text-xs text-gray-500 uppercase tracking-wider mb-1">Email</p>
+                    <span className="text-white font-medium text-sm sm:text-base break-all">techfest-scse@xim.edu.in</span>
                   </div>
                 </div>
                 
                 {/* Hover glow effect */}
-                <div className="absolute inset-0 rounded-2xl bg-linear-to-r from-cyan-400/0 via-cyan-400/10 to-cyan-400/0 opacity-0 group-hover:opacity-100 transition-opacity blur-xl" />
+                <div className="absolute inset-0 rounded-xl sm:rounded-2xl bg-linear-to-r from-cyan-400/0 via-cyan-400/10 to-cyan-400/0 opacity-0 group-hover:opacity-100 transition-opacity blur-xl" />
               </div>
 
-              <div className="group relative p-6 rounded-2xl bg-linear-to-br from-purple-500/10 to-cyan-500/10 border border-purple-400/20 hover:border-purple-400/50 transition-all duration-300 hover:shadow-[0_0_30px_rgba(138,43,226,0.3)] cursor-pointer transform hover:-translate-y-1">
-                <div className="flex items-start space-x-4">
-                  <div className="w-14 h-14 rounded-xl bg-linear-to-br from-purple-400 to-purple-600 flex items-center justify-center text-white shadow-lg shadow-purple-500/50 group-hover:scale-110 transition-transform shrink-0">
-                    <MapPin className="w-7 h-7" />
+              <div className="group relative p-4 sm:p-6 rounded-xl sm:rounded-2xl bg-linear-to-br from-purple-500/10 to-cyan-500/10 border border-purple-400/20 hover:border-purple-400/50 transition-all duration-300 hover:shadow-[0_0_30px_rgba(138,43,226,0.3)] cursor-pointer transform hover:-translate-y-1">
+                <div className="flex items-start space-x-3 sm:space-x-4">
+                  <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-lg sm:rounded-xl bg-linear-to-br from-purple-400 to-purple-600 flex items-center justify-center text-white shadow-lg shadow-purple-500/50 group-hover:scale-110 transition-transform shrink-0">
+                    <MapPin className="w-5 h-5 sm:w-7 sm:h-7" />
                   </div>
                   <div>
-                    <p className="text-xs text-gray-500 uppercase tracking-wider mb-1">Location</p>
-                    <span className="text-white font-medium">XIM UNIVERSITY<br/>Nijigada, Kurki, Plot No:12(A<br/>Harirajpur, Kakudia<br/>Odisha 752050</span>
+                    <p className="text-[10px] sm:text-xs text-gray-500 uppercase tracking-wider mb-1">Location</p>
+                    <span className="text-white font-medium text-sm sm:text-base">XIM UNIVERSITY<br/>Nijigada, Kurki, Plot No:12(A<br/>Harirajpur, Kakudia<br/>Odisha 752050</span>
                   </div>
                 </div>
                 
-                <div className="absolute inset-0 rounded-2xl bg-linear-to-r from-purple-400/0 via-purple-400/10 to-purple-400/0 opacity-0 group-hover:opacity-100 transition-opacity blur-xl" />
+                <div className="absolute inset-0 rounded-xl sm:rounded-2xl bg-linear-to-r from-purple-400/0 via-purple-400/10 to-purple-400/0 opacity-0 group-hover:opacity-100 transition-opacity blur-xl" />
               </div>
 
               {/* Social links */}
-              <div className="flex space-x-4 pt-4">
+              <div className="flex space-x-3 sm:space-x-4 pt-2 sm:pt-4">
                 <div 
-                  className="w-12 h-12 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-cyan-400 hover:border-cyan-400/50 hover:shadow-[0_0_20px_rgba(0,242,255,0.3)] transition-all cursor-pointer transform hover:scale-110"
+                  className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-cyan-400 hover:border-cyan-400/50 hover:shadow-[0_0_20px_rgba(0,242,255,0.3)] transition-all cursor-pointer transform hover:scale-110"
                 >
-                  <Twitter className="w-5 h-5" />
+                  <Twitter className="w-4 h-4 sm:w-5 sm:h-5" />
                 </div>
                 <div 
-                  className="w-12 h-12 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-cyan-400 hover:border-cyan-400/50 hover:shadow-[0_0_20px_rgba(0,242,255,0.3)] transition-all cursor-pointer transform hover:scale-110"
+                  className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-cyan-400 hover:border-cyan-400/50 hover:shadow-[0_0_20px_rgba(0,242,255,0.3)] transition-all cursor-pointer transform hover:scale-110"
                 >
-                  <Instagram className="w-5 h-5" />
+                  <Instagram className="w-4 h-4 sm:w-5 sm:h-5" />
                 </div>
                 <div 
-                  className="w-12 h-12 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-cyan-400 hover:border-cyan-400/50 hover:shadow-[0_0_20px_rgba(0,242,255,0.3)] transition-all cursor-pointer transform hover:scale-110"
+                  className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-cyan-400 hover:border-cyan-400/50 hover:shadow-[0_0_20px_rgba(0,242,255,0.3)] transition-all cursor-pointer transform hover:scale-110"
                 >
-                  <Linkedin className="w-5 h-5" />
+                  <Linkedin className="w-4 h-4 sm:w-5 sm:h-5" />
                 </div>
               </div>
             </div>
@@ -206,13 +206,13 @@ const Contact = () => {
             <form 
               ref={formRef} 
               onSubmit={handleSubmit}
-              className="relative p-8 rounded-2xl space-y-6 border border-cyan-400/20 bg-black/40 backdrop-blur-xl shadow-2xl"
+              className="relative p-6 sm:p-8 rounded-xl sm:rounded-2xl space-y-4 sm:space-y-6 border border-cyan-400/20 bg-black/40 backdrop-blur-xl shadow-2xl"
             >
 
               
-              <div className="relative z-10 space-y-6">
+              <div className="relative z-10 space-y-4 sm:space-y-6">
                 <div className="group/input">
-                  <label className="block text-sm font-medium text-gray-400 mb-2 group-focus-within/input:text-cyan-400 transition-colors">Name</label>
+                  <label className="block text-xs sm:text-sm font-medium text-gray-400 mb-1.5 sm:mb-2 group-focus-within/input:text-cyan-400 transition-colors">Name</label>
                   <input 
                     type="text"
                     name="name"
@@ -220,13 +220,13 @@ const Contact = () => {
                     onChange={handleChange}
                     required
                     disabled={isSubmitting}
-                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-cyan-400/60 focus:shadow-[0_0_20px_rgba(0,242,255,0.3)] focus:bg-white/10 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed" 
+                    className="w-full bg-white/5 border border-white/10 rounded-lg sm:rounded-xl px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base text-white placeholder-gray-600 focus:outline-none focus:border-cyan-400/60 focus:shadow-[0_0_20px_rgba(0,242,255,0.3)] focus:bg-white/10 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed" 
                     placeholder="John Doe" 
                   />
                 </div>
                 
                 <div className="group/input">
-                  <label className="block text-sm font-medium text-gray-400 mb-2 group-focus-within/input:text-cyan-400 transition-colors">Email</label>
+                  <label className="block text-xs sm:text-sm font-medium text-gray-400 mb-1.5 sm:mb-2 group-focus-within/input:text-cyan-400 transition-colors">Email</label>
                   <input 
                     type="email"
                     name="email"
@@ -234,13 +234,13 @@ const Contact = () => {
                     onChange={handleChange}
                     required
                     disabled={isSubmitting}
-                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-cyan-400/60 focus:shadow-[0_0_20px_rgba(0,242,255,0.3)] focus:bg-white/10 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed" 
+                    className="w-full bg-white/5 border border-white/10 rounded-lg sm:rounded-xl px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base text-white placeholder-gray-600 focus:outline-none focus:border-cyan-400/60 focus:shadow-[0_0_20px_rgba(0,242,255,0.3)] focus:bg-white/10 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed" 
                     placeholder="john@example.com" 
                   />
                 </div>
                 
                 <div className="group/input">
-                  <label className="block text-sm font-medium text-gray-400 mb-2 group-focus-within/input:text-cyan-400 transition-colors">Message</label>
+                  <label className="block text-xs sm:text-sm font-medium text-gray-400 mb-1.5 sm:mb-2 group-focus-within/input:text-cyan-400 transition-colors">Message</label>
                   <textarea 
                     rows="4"
                     name="message"
@@ -248,7 +248,7 @@ const Contact = () => {
                     onChange={handleChange}
                     required
                     disabled={isSubmitting}
-                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-cyan-400/60 focus:shadow-[0_0_20px_rgba(0,242,255,0.3)] focus:bg-white/10 transition-all duration-300 resize-none disabled:opacity-50 disabled:cursor-not-allowed" 
+                    className="w-full bg-white/5 border border-white/10 rounded-lg sm:rounded-xl px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base text-white placeholder-gray-600 focus:outline-none focus:border-cyan-400/60 focus:shadow-[0_0_20px_rgba(0,242,255,0.3)] focus:bg-white/10 transition-all duration-300 resize-none disabled:opacity-50 disabled:cursor-not-allowed" 
                     placeholder="Your message..."
                   ></textarea>
                 </div>
@@ -267,12 +267,12 @@ const Contact = () => {
                 <button 
                   type="submit"
                   disabled={isSubmitting}
-                  className="cursor-pointer relative w-full py-4 bg-linear-to-r from-cyan-400 to-cyan-500 text-black font-bold rounded-xl overflow-hidden group/button transition-all duration-300 transform hover:scale-[1.02] hover:shadow-[0_0_40px_rgba(0,242,255,0.6)] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+                  className="cursor-pointer relative w-full py-3 sm:py-4 bg-linear-to-r from-cyan-400 to-cyan-500 text-black font-bold rounded-lg sm:rounded-xl overflow-hidden group/button transition-all duration-300 transform hover:scale-[1.02] hover:shadow-[0_0_40px_rgba(0,242,255,0.6)] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 text-sm sm:text-base"
                 >
                   <span className="relative z-10 flex items-center justify-center space-x-2">
                     {isSubmitting ? (
                       <>
-                        <svg className="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <svg className="animate-spin h-4 w-4 sm:h-5 sm:w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                           <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                           <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                         </svg>
@@ -281,7 +281,7 @@ const Contact = () => {
                     ) : (
                       <>
                         <span>Send Message</span>
-                        <Mail className="w-5 h-5 transform group-hover/button:translate-x-1 transition-transform" />
+                        <Mail className="w-4 h-4 sm:w-5 sm:h-5 transform group-hover/button:translate-x-1 transition-transform" />
                       </>
                     )}
                   </span>

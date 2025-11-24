@@ -83,33 +83,33 @@ const GalleryPage = () => {
     <>
       {loading && <LoadingAnimation loaderRef={loaderRef} loadingText="Preparing Gallery..." />}
 
-      <div className="min-h-screen pt-24 pb-12 px-6 relative z-10 overflow-hidden">
-        <div className="absolute top-20 right-10 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse-slow" />
-        <div className="absolute bottom-20 left-10 w-72 h-72 bg-cyan-500/10 rounded-full blur-3xl animate-pulse-slow" style={{ animationDelay: '1.5s' }} />
+      <div className="min-h-screen pt-20 sm:pt-24 pb-8 sm:pb-12 px-4 sm:px-6 relative z-10 overflow-hidden">
+        <div className="absolute top-20 right-4 sm:right-10 w-64 h-64 sm:w-96 sm:h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse-slow" />
+        <div className="absolute bottom-20 left-4 sm:left-10 w-48 h-48 sm:w-72 sm:h-72 bg-cyan-500/10 rounded-full blur-3xl animate-pulse-slow" style={{ animationDelay: '1.5s' }} />
         
         <div className="container mx-auto relative z-10">
-          <div className="flex flex-col md:flex-row justify-between items-center mb-16 gap-6">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 sm:mb-16 gap-4 sm:gap-6">
             <div ref={titleRef}>
-              <h1 className="text-5xl md:text-7xl font-display font-bold text-white relative">
+              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-display font-bold text-white relative">
                 Event <span className="text-transparent bg-clip-text bg-linear-to-r from-purple-400 via-cyan-400 to-purple-400 animate-gradient-text">Gallery</span>
-                <div className="absolute -bottom-4 left-0 w-32 h-1 bg-linear-to-r from-purple-400 to-cyan-400 rounded-full" />
+                <div className="absolute -bottom-3 sm:-bottom-4 left-0 w-24 sm:w-32 h-0.5 sm:h-1 bg-linear-to-r from-purple-400 to-cyan-400 rounded-full" />
               </h1>
-              <p className="text-gray-400 mt-8 text-lg">Capturing moments from Synchronize 4.0</p>
+              <p className="text-gray-400 mt-6 sm:mt-8 text-base sm:text-lg">Capturing moments from Synchronize 4.0</p>
             </div>
             
             <Link 
               to="/" 
-              className="group px-8 py-4 border-2 border-purple-400/30 rounded-full text-white hover:border-purple-400 hover:bg-purple-400/10 transition-all backdrop-blur-sm relative overflow-hidden"
+              className="group px-6 sm:px-8 py-3 sm:py-4 border-2 border-purple-400/30 rounded-full text-white hover:border-purple-400 hover:bg-purple-400/10 transition-all backdrop-blur-sm relative overflow-hidden text-sm sm:text-base"
             >
               <span className="relative z-10 flex items-center gap-2">
-                <ArrowLeft className="w-5 h-5 transform group-hover:-translate-x-1 transition-transform" />
+                <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5 transform group-hover:-translate-x-1 transition-transform" />
                 Back to Home
               </span>
               <div className="absolute inset-0 bg-linear-to-r from-transparent via-purple-400/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
             </Link>
           </div>
 
-          <div className="columns-2 md:columns-3 lg:columns-4 gap-3 md:gap-4 space-y-3 md:space-y-4">
+          <div className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-3 sm:gap-4 space-y-3 sm:space-y-4">
             {galleryImages.map((image, index) => (
               <div 
                 key={image.id}
@@ -146,7 +146,7 @@ const GalleryPage = () => {
 
         {selectedImage && (
           <div 
-            className="fixed inset-0 z-100 bg-black/95 backdrop-blur-sm flex items-center justify-center p-6"
+            className="fixed inset-0 z-100 bg-black/95 backdrop-blur-sm flex items-center justify-center p-4 sm:p-6"
             onClick={closeLightbox}
           >
 
@@ -156,20 +156,20 @@ const GalleryPage = () => {
                 <img 
                   src={selectedImage.url} 
                   alt={selectedImage.title}
-                  className="max-h-[85vh] w-auto rounded-2xl shadow-2xl object-contain"
+                  className="max-h-[70vh] sm:max-h-[85vh] w-auto rounded-xl sm:rounded-2xl shadow-2xl object-contain"
                 />
                 <button
                   onClick={closeLightbox}
-                  className="cursor-pointer absolute top-4 right-4 z-101 w-10 h-10 flex items-center justify-center rounded-full bg-white/10 hover:bg-red-500/20 border border-white hover:border-red-500 transition-all duration-300 group"
+                  className="cursor-pointer absolute top-2 right-2 sm:top-4 sm:right-4 z-101 w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-white/10 hover:bg-red-500/20 border border-white hover:border-red-500 transition-all duration-300 group"
                 >
-                  <svg className="w-5 h-5 text-white group-hover:text-red-500 group-hover:rotate-90 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-4 h-4 sm:w-5 sm:h-5 text-white group-hover:text-red-500 group-hover:rotate-90 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                   </svg>
                 </button>
               </div>
-              <div className="mt-6 text-center">
-                <span className="text-sm uppercase tracking-wider text-purple-400 font-semibold">{selectedImage.category}</span>
-                <h3 className="text-3xl font-display font-bold text-white mt-2">{selectedImage.title}</h3>
+              <div className="mt-4 sm:mt-6 text-center px-4">
+                <span className="text-xs sm:text-sm uppercase tracking-wider text-purple-400 font-semibold">{selectedImage.category}</span>
+                <h3 className="text-2xl sm:text-3xl font-display font-bold text-white mt-2">{selectedImage.title}</h3>
               </div>
             </div>
           </div>

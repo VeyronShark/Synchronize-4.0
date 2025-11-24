@@ -68,23 +68,23 @@ const Navbar = () => {
   return (
     <>
       {/* Floating Header */}
-      <nav className="fixed top-0 left-0 w-full z-50 px-6 py-6 flex justify-between items-center mix-blend-difference text-white backdrop-blur-sm bg-black/10 transition-all duration-300">
+      <nav className="fixed top-0 left-0 w-full z-50 px-4 sm:px-6 py-4 sm:py-6 flex justify-between items-center mix-blend-difference text-white transition-all duration-300">
         <Link 
           to="/" 
           onClick={() => setIsOpen(false)} 
-          className="text-2xl font-display font-bold tracking-tighter hover:opacity-80 transition-opacity cursor-pointer group"
+          className="text-xl sm:text-2xl font-display font-bold tracking-tighter hover:opacity-80 transition-opacity cursor-pointer group"
         >
           SYNCHRONIZE <span className="text-cyan-400 group-hover:text-purple-400 transition-colors duration-300">4.0</span>
         </Link>
         
         <button 
           onClick={toggleMenu}
-          className="relative z-50 w-12 h-12 flex items-center justify-center rounded-full hover:bg-white/10 transition-all duration-300 cursor-pointer group active:scale-95"
+          className="relative z-50 w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center rounded-full hover:bg-white/10 transition-all duration-300 cursor-pointer group active:scale-95"
         >
           {isOpen ? (
-            <FaTimes size={24} className="group-hover:text-red-500 group-hover:rotate-90 transition-all duration-300" />
+            <FaTimes size={20} className="sm:w-6 sm:h-6 group-hover:text-red-500 group-hover:rotate-90 transition-all duration-300" />
           ) : (
-            <div className="flex flex-col justify-center items-end gap-1.5 w-6">
+            <div className="flex flex-col justify-center items-end gap-1.5 w-5 sm:w-6">
               <span className="block w-full h-0.5 bg-white group-hover:bg-cyan-400 transition-all duration-300 group-hover:w-full"></span>
               <span className="block w-3/4 h-0.5 bg-white group-hover:bg-cyan-400 transition-all duration-300 delay-75 group-hover:w-full"></span>
               <span className="block w-1/2 h-0.5 bg-white group-hover:bg-cyan-400 transition-all duration-300 delay-150 group-hover:w-full"></span>
@@ -98,23 +98,23 @@ const Navbar = () => {
         ref={bgRef} 
         className="fixed inset-0 bg-black z-40 transform -translate-y-full flex flex-col justify-center items-center"
       >
-        <div className="flex flex-col gap-8 text-center">
+        <div className="flex flex-col gap-6 sm:gap-8 text-center px-4">
           {navLinks.map((link, index) => (
             <button
               key={index}
               ref={el => linksRef.current[index] = el}
               onClick={() => handleNavigation(link.path)}
-              className="group text-5xl md:text-7xl font-display font-bold text-white transition-all duration-300 opacity-0 relative cursor-pointer"
+              className="group text-4xl sm:text-5xl md:text-7xl font-display font-bold text-white transition-all duration-300 opacity-0 relative cursor-pointer"
             >
               <span className="relative z-10 inline-block transition-all duration-300 group-hover:text-cyan-400">
                 {link.name}
               </span>
-              <span className="absolute bottom-0 left-0 w-full h-1 bg-cyan-400 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left shadow-[0_0_15px_rgba(0,242,255,0.8)]"></span>
+              <span className="absolute bottom-0 left-0 w-full h-0.5 sm:h-1 bg-cyan-400 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left shadow-[0_0_15px_rgba(0,242,255,0.8)]"></span>
             </button>
           ))}
         </div>
         
-        <div className="absolute bottom-10 left-0 w-full text-center text-gray-500 font-sans text-sm">
+        <div className="absolute bottom-6 sm:bottom-10 left-0 w-full text-center text-gray-500 font-sans text-xs sm:text-sm px-4">
           &copy; 2025 Synchronize TechFest. All rights reserved.
         </div>
       </div>

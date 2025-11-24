@@ -105,19 +105,19 @@ const Timeline = () => {
   const currentSchedule = scheduleData[activeDay];
 
   return (
-    <section id="schedule" ref={sectionRef} className="py-20 relative min-h-screen z-10">
-      <div className="container mx-auto px-6">
-        <h2 className="text-4xl md:text-6xl font-display font-bold text-center mb-12 text-white">
+    <section id="schedule" ref={sectionRef} className="py-16 sm:py-20 relative min-h-screen z-10">
+      <div className="container mx-auto px-4 sm:px-6">
+        <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display font-bold text-center mb-8 sm:mb-12 text-white">
           Event <span className="text-cyan-400">Schedule</span>
         </h2>
 
         {/* Day Selector */}
-        <div className="flex justify-center gap-4 mb-16 flex-wrap">
+        <div className="flex justify-center gap-3 sm:gap-4 mb-12 sm:mb-16 flex-wrap px-4">
           {['day1', 'day2', 'day3'].map((day, idx) => (
             <button
               key={day}
               onClick={() => handleDayChange(day)}
-              className={`cursor-pointer relative px-8 py-3 rounded-full font-semibold text-lg transition-all duration-300 overflow-hidden group ${
+              className={`cursor-pointer relative px-6 sm:px-8 py-2 sm:py-3 rounded-full font-semibold text-base sm:text-lg transition-all duration-300 overflow-hidden group ${
                 activeDay === day
                   ? 'text-black'
                   : 'text-white hover:text-cyan-400 border border-white/20 hover:border-cyan-400/50'
@@ -136,10 +136,10 @@ const Timeline = () => {
                 <div className="absolute inset-0 bg-linear-to-r from-cyan-400/0 to-cyan-500/0 group-hover:from-cyan-400/10 group-hover:to-cyan-500/10 transition-all duration-300"></div>
               )}
               
-              <span className="relative z-10 flex items-center gap-2">
-                <span className="hidden sm:inline">Day</span> {idx + 1}
+              <span className="relative z-10 flex items-center gap-1 sm:gap-2">
+                <span className="hidden xs:inline">Day</span> {idx + 1}
                 {activeDay === day && (
-                  <span className="w-2 h-2 bg-black rounded-full animate-bounce"></span>
+                  <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-black rounded-full animate-bounce"></span>
                 )}
               </span>
             </button>
@@ -148,20 +148,20 @@ const Timeline = () => {
 
         <div id="timeline-container" ref={timelineContainerRef} className="relative max-w-3xl mx-auto">
           {/* Central Line */}
-          <div className="absolute left-[19px] md:left-1/2 top-0 bottom-0 w-1 bg-white/10 -translate-x-1/2"></div>
-          <div ref={lineRef} className="absolute left-[19px] md:left-1/2 top-0 w-1 bg-linear-to-b from-cyan-400/80 to-cyan-500/40 -translate-x-1/2 origin-top shadow-[0_0_15px_rgba(0,242,255,0.5)]"></div>
+          <div className="absolute left-[15px] sm:left-[19px] md:left-1/2 top-0 bottom-0 w-0.5 sm:w-1 bg-white/10 -translate-x-1/2"></div>
+          <div ref={lineRef} className="absolute left-[15px] sm:left-[19px] md:left-1/2 top-0 w-0.5 sm:w-1 bg-linear-to-b from-cyan-400/80 to-cyan-500/40 -translate-x-1/2 origin-top shadow-[0_0_15px_rgba(0,242,255,0.5)]"></div>
 
           {currentSchedule.map((item, index) => (
-            <div key={`${activeDay}-${index}`} className={`relative flex items-center mb-16 ${index % 2 === 0 ? 'md:flex-row-reverse' : ''}`}>
+            <div key={`${activeDay}-${index}`} className={`relative flex items-center mb-12 sm:mb-16 ${index % 2 === 0 ? 'md:flex-row-reverse' : ''}`}>
               {/* Dot */}
-              <div className="absolute left-[19px] md:left-1/2 w-4 h-4 bg-black border-2 border-cyan-400 rounded-full -translate-x-1/2 z-10 shadow-[0_0_15px_rgba(0,242,255,0.8)] hover:scale-150 transition-transform duration-300"></div>
+              <div className="absolute left-[15px] sm:left-[19px] md:left-1/2 w-3 h-3 sm:w-4 sm:h-4 bg-black border-2 border-cyan-400 rounded-full -translate-x-1/2 z-10 shadow-[0_0_15px_rgba(0,242,255,0.8)] hover:scale-150 transition-transform duration-300"></div>
               
               {/* Content */}
-              <div className="ml-12 md:ml-0 md:w-1/2 md:px-12">
-                <div className={`glass-card p-6 rounded-xl hover:border-cyan-400/30 hover:shadow-[0_0_20px_rgba(0,242,255,0.15)] transition-all duration-300 hover:scale-105 ${index % 2 === 0 ? 'md:text-left' : 'md:text-right'}`}>
-                  <span className="text-cyan-400/80 font-mono text-sm">{item.time}</span>
-                  <h3 className="text-xl font-bold text-white mt-1 mb-2">{item.title}</h3>
-                  <p className="text-gray-400 text-sm">{item.description}</p>
+              <div className="ml-8 sm:ml-12 md:ml-0 md:w-1/2 md:px-8 lg:px-12">
+                <div className={`glass-card p-4 sm:p-6 rounded-lg sm:rounded-xl hover:border-cyan-400/30 hover:shadow-[0_0_20px_rgba(0,242,255,0.15)] transition-all duration-300 hover:scale-105 ${index % 2 === 0 ? 'md:text-left' : 'md:text-right'}`}>
+                  <span className="text-cyan-400/80 font-mono text-xs sm:text-sm">{item.time}</span>
+                  <h3 className="text-lg sm:text-xl font-bold text-white mt-1 mb-1 sm:mb-2">{item.title}</h3>
+                  <p className="text-gray-400 text-xs sm:text-sm">{item.description}</p>
                 </div>
               </div>
             </div>
