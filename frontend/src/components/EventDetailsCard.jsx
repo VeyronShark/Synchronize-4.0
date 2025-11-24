@@ -5,7 +5,6 @@ const EventDetailsCard = ({ event, onClose }) => {
   const scrollContainerRef = useRef(null);
 
   useEffect(() => {
-    // Get the Lenis instance from window (if it exists)
     const lenis = window.lenis;
     
     // Save current scroll position

@@ -124,7 +124,7 @@ const TeamPage = () => {
                   {member.role}
                 </div>
 
-                <div className="flex space-x-2 sm:space-x-3 mt-4 sm:mt-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                <div className="flex space-x-2 sm:space-x-3 mt-4 sm:mt-6 opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity duration-500">
                   <a 
                     href="#"
                     className={`w-7 h-7 sm:w-8 sm:h-8 rounded-lg ${member.color === 'cyan' ? 'bg-cyan-400/10 hover:bg-cyan-400/20 border-cyan-400/30' : 'bg-purple-400/10 hover:bg-purple-400/20 border-purple-400/30'} border flex items-center justify-center cursor-pointer transform hover:scale-110 transition-all`}

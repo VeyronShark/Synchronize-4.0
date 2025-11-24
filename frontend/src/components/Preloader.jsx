@@ -88,7 +88,7 @@ const Preloader = ({ onComplete }) => {
       <div className="relative z-10 flex flex-col items-center">
         {/* Brand logo */}
         <div className="mb-16">
-          <h1 className="text-5xl md:text-6xl font-display font-bold text-white tracking-tight">
+          <h1 className="text-4xl md:text-6xl font-display font-bold text-white tracking-tight">
             SYNCHRONIZE <span className="text-cyan-400">4.0</span>
           </h1>
         </div>
