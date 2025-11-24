@@ -42,7 +42,7 @@ const GalleryPage = () => {
     loaderTimeline.to(loaderRef.current, {
       opacity: 0,
       duration: 0.5,
-      delay: 0.8,
+      delay: 2.2,
       ease: "power2.inOut"
     });
   }, []);
@@ -81,7 +81,7 @@ const GalleryPage = () => {
 
   return (
     <>
-      {loading && <LoadingAnimation loaderRef={loaderRef} />}
+      {loading && <LoadingAnimation loaderRef={loaderRef} loadingText="Preparing Gallery..." />}
 
       <div className="min-h-screen pt-24 pb-12 px-6 relative z-10 overflow-hidden">
         <div className="absolute top-20 right-10 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse-slow" />

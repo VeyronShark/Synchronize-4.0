@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 
-const LoadingAnimation = ({ loaderRef }) => {
+const LoadingAnimation = ({ loaderRef, loadingText = "Preparing Launch..." }) => {
   const [percentage, setPercentage] = useState(0);
   const rocketRef = useRef(null);
   const starsRef = useRef([]);
@@ -11,7 +11,7 @@ const LoadingAnimation = ({ loaderRef }) => {
     // Animate percentage from 0 to 100
     gsap.to({ value: 0 }, {
       value: 100,
-      duration: 3,
+      duration: 2,
       ease: "power2.inOut",
       onUpdate: function() {
         setPercentage(Math.floor(this.targets()[0].value));
@@ -243,7 +243,7 @@ const LoadingAnimation = ({ loaderRef }) => {
 
         {/* Loading Text */}
         <p className="text-blue-200 text-sm mt-6 tracking-[0.3em] uppercase animate-pulse">
-          Preparing Launch...
+          {loadingText}
         </p>
       </div>
 

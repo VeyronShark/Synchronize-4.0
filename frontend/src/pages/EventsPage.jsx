@@ -254,7 +254,7 @@ const EventsPage = () => {
     loaderTimeline.to(loaderRef.current, {
       opacity: 0,
       duration: 0.5,
-      delay: 1,
+      delay: 2.2,
       ease: "power2.inOut"
     });
   }, []);
@@ -270,7 +270,7 @@ const EventsPage = () => {
 
   return (
     <>
-      {loading && <LoadingAnimation loaderRef={loaderRef} />}
+      {loading && <LoadingAnimation loaderRef={loaderRef} loadingText="Preparing Events..." />}
 
       <div className="min-h-screen bg-black text-white pt-32 pb-20">
       <div className="container mx-auto px-6">

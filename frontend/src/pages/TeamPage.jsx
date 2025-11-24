@@ -33,7 +33,7 @@ const TeamPage = () => {
       .to(loaderRef.current, {
         opacity: 0,
         duration: 0.5,
-        delay: 1,
+        delay: 2.2,
         ease: "power2.inOut"
       });
 
@@ -63,7 +63,7 @@ const TeamPage = () => {
 
   return (
     <>
-      {loading && <LoadingAnimation loaderRef={loaderRef} />}
+      {loading && <LoadingAnimation loaderRef={loaderRef} loadingText="Preparing Team..." />}
 
       <div className="min-h-screen pt-24 pb-12 px-6 relative z-10 overflow-hidden">
         <div className="absolute top-20 left-10 w-72 h-72 bg-cyan-500/10 rounded-full blur-3xl animate-pulse-slow" />

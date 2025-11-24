@@ -56,6 +56,32 @@ const Footer = () => {
                 );
               })}
             </div>
+
+            {/* Previous Editions */}
+            <div className="pt-4 border-t border-white/10">
+              <p className="text-xs text-gray-500 mb-3">Previous Editions</p>
+              <div className="flex flex-col space-y-2">
+                {[
+                  { name: 'Synchronize 3.0', url: '#' },
+                  { name: 'Synchronize 2.0', url: '#' },
+                  { name: 'Synchronize 1.0', url: '#' }
+                ].map((edition, i) => (
+                  <a
+                    key={i}
+                    href={edition.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group text-sm text-gray-400 hover:text-cyan-400 transition-all duration-300 flex items-center gap-2"
+                  >
+                    <div className="w-1.5 h-1.5 rounded-full bg-gray-600 group-hover:bg-cyan-400 transition-colors duration-300" />
+                    <span className="relative">
+                      {edition.name}
+                      <span className="absolute -bottom-0.5 left-0 w-0 h-px bg-cyan-400 group-hover:w-full transition-all duration-300" />
+                    </span>
+                  </a>
+                ))}
+              </div>
+            </div>
           </div>
 
           {/* Column 2: Quick Links */}

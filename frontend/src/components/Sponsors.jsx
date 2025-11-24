@@ -10,8 +10,8 @@ const sponsors = [
 ];
 
 const Sponsors = () => {
-  // Duplicate sponsors array for seamless loop
-  const duplicatedSponsors = [...sponsors, ...sponsors, ...sponsors];
+  // Duplicate sponsors array for seamless infinite loop
+  const duplicatedSponsors = [...sponsors, ...sponsors];
 
   return (
     <section id="sponsors" className="py-20 relative overflow-hidden">
@@ -22,9 +22,9 @@ const Sponsors = () => {
           </h2>
         </div>
         
-        {/* Marquee Container */}
+        {/* Infinite Scroll Marquee Container */}
         <div className="relative w-full overflow-hidden">
-          <div className="flex animate-marquee-sponsors group">
+          <div className="flex animate-infinite-scroll">
             {duplicatedSponsors.map((sponsor, index) => (
               <div 
                 key={index} 
@@ -43,6 +43,25 @@ const Sponsors = () => {
       
       {/* Subtle Background Glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-cyan-500/10 blur-[120px] rounded-full pointer-events-none"></div>
+
+      <style>{`
+        @keyframes infinite-scroll {
+          from {
+            transform: translateX(0);
+          }
+          to {
+            transform: translateX(-50%);
+          }
+        }
+        
+        .animate-infinite-scroll {
+          animation: infinite-scroll 30s linear infinite;
+        }
+        
+        .animate-infinite-scroll:hover {
+          animation-play-state: paused;
+        }
+      `}</style>
     </section>
   );
 };
