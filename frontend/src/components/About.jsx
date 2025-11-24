@@ -12,17 +12,6 @@ const AnimatedNumber = ({ finalValue, label, delay = 0 }) => {
   useEffect(() => {
     const element = numberRef.current;
     
-    const scrollTrigger = ScrollTrigger.create({
-      trigger: element,
-      start: "top 80%",
-      onEnter: () => {
-        if (!hasAnimated.current) {
-          hasAnimated.current = true;
-          animateNumber();
-        }
-      }
-    });
-
     const animateNumber = () => {
       // Extract numeric value and suffix
       const numericValue = parseInt(finalValue.replace(/[^0-9]/g, ''));
@@ -51,6 +40,17 @@ const AnimatedNumber = ({ finalValue, label, delay = 0 }) => {
         }
       }, iteration < slowDownPoint ? 50 : 100);
     };
+    
+    const scrollTrigger = ScrollTrigger.create({
+      trigger: element,
+      start: "top 80%",
+      onEnter: () => {
+        if (!hasAnimated.current) {
+          hasAnimated.current = true;
+          animateNumber();
+        }
+      }
+    });
 
     return () => {
       scrollTrigger.kill();

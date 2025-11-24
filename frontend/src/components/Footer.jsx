@@ -1,20 +1,11 @@
 import { Instagram, Twitter, Linkedin, MapPin, Mail, Phone, ArrowRight } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 
-// FooterLink component to handle navigation
-const FooterLink = ({ to, children }) => {
-  return (
-    <Link 
-      to={to}
-      className="text-gray-400 hover:text-cyan-400 transition-colors duration-300 cursor-pointer"
-    >
-      {children}
-    </Link>
-  );
-};
 
 const Footer = () => {
   
+  const navigate = useNavigate();
+
   return (
     <footer className="bg-black border-t border-white/10 pt-20 pb-10 relative overflow-hidden">
       {/* Enhanced background effects */}
@@ -75,18 +66,47 @@ const Footer = () => {
             </h3>
             <ul className="space-y-3">
               {[
-                { label: 'Home', to: '/' },
-                { label: 'About Us', to: '/#about' },
-                { label: 'Events', to: '/#events' },
-                { label: 'Schedule', to: '/#schedule' },
-                { label: 'Sponsors', to: '/#sponsors' },
-                { label: 'Team', to: '/team' }
+                { name: 'Home', path: '/' },
+                { name: 'About Us', path: '/#about'},
+                { name: 'Events', path: '/#events' },
+                { name: 'Schedule', path: '/#schedule' },
+                { name: 'Sponsors', path: '/#sponsors' },
+                { name: 'Team', path: '/team' },
+                { name: 'Gallery', path: '/gallery' },
+                { name: 'Contact', path: '/#contact' }
               ].map((link, i) => (
-                <li key={i} className="group flex items-center">
-                  <span className="w-0 h-px bg-cyan-400 group-hover:w-4 transition-all duration-300 mr-0 group-hover:mr-2" />
-                  <FooterLink to={link.to}>
-                    {link.label}
-                  </FooterLink>
+                <li 
+                  key={i}
+                  className="group flex items-center gap-3 cursor-pointer relative overflow-hidden" 
+                  onClick={() => {
+                    if (link.path.includes('#')) {
+                      const [path, hash] = link.path.split('#');
+                      navigate(path || '/');
+                      setTimeout(() => {
+                        const element = document.getElementById(hash);
+                        if (element) {
+                          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }
+                      }, 100);
+                    } else {
+                      navigate(link.path);
+                    }
+                  }}
+                >
+                  {/* Animated dash */}
+                  <div className="relative flex items-center">
+                    <div className="w-8 h-px bg-linear-to-r from-cyan-400/50 to-cyan-400 group-hover:w-12 transition-all duration-500 ease-out" />
+                    <div className="absolute right-0 w-1.5 h-1.5 bg-cyan-400 rounded-full group-hover:scale-150 group-hover:shadow-[0_0_10px_rgba(0,242,255,0.8)] transition-all duration-300" />
+                  </div>
+                  
+                  {/* Link text */}
+                  <span className="text-sm text-gray-400 group-hover:text-white group-hover:translate-x-2 transition-all duration-300 relative">
+                    {link.name}
+                    <span className="absolute -bottom-0.5 left-0 w-0 h-px bg-linear-to-r from-cyan-400 to-purple-400 group-hover:w-full transition-all duration-500" />
+                  </span>
+                  
+                  {/* Glow effect on hover */}
+                  <div className="absolute inset-0 bg-linear-to-r from-cyan-400/0 via-cyan-400/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10" />
                 </li>
               ))}
             </ul>
@@ -186,7 +206,7 @@ const Footer = () => {
         </div>
       </div>
 
-      <style jsx>{`
+      <style>{`
         @keyframes pulse-glow {
           0%, 100% { opacity: 0.3; transform: scale(1); }
           50% { opacity: 0.5; transform: scale(1.05); }
