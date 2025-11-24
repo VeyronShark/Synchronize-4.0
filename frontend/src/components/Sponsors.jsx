@@ -14,7 +14,7 @@ const Sponsors = () => {
   const duplicatedSponsors = [...sponsors, ...sponsors, ...sponsors];
 
   return (
-    <section id="sponsors" className="py-20 bg-black relative overflow-hidden">
+    <section id="sponsors" className="py-20 relative overflow-hidden">
       <div className="container mx-auto px-6 relative z-10">
         <h2 className="text-4xl md:text-6xl font-display font-bold text-center mb-16 text-white">
           Our <span className="text-cyan-400">Sponsors</span>

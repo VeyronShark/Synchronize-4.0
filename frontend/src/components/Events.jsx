@@ -70,7 +70,7 @@ const Events = () => {
   };
 
   return (
-    <section id="events" ref={sectionRef} className="h-screen overflow-hidden bg-black relative flex flex-col justify-center z-20">
+    <section id="events" ref={sectionRef} className="h-screen overflow-hidden relative flex flex-col justify-center z-20">
       <div className="container mx-auto px-6 mb-10 flex justify-between items-end">
         <h2 className="text-4xl md:text-6xl font-display font-bold text-white">
           Featured <span className="text-cyan-400">Events</span>

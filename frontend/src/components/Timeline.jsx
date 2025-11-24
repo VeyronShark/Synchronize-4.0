@@ -50,7 +50,7 @@ const Timeline = () => {
   }, []);
 
   return (
-    <section id="schedule" ref={sectionRef} className="py-20 relative min-h-screen bg-dark-bg z-10">
+    <section id="schedule" ref={sectionRef} className="py-20 relative min-h-screen z-10">
       <div className="container mx-auto px-6">
         <h2 className="text-4xl md:text-6xl font-display font-bold text-center mb-20 text-white">
           Event <span className="text-cyan-400">Schedule</span>

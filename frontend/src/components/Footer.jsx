@@ -2,7 +2,7 @@ import { FaInstagram, FaTwitter, FaLinkedin, FaMapMarkerAlt, FaEnvelope, FaPhone
 
 const Footer = () => {
   return (
-    <footer className="bg-black border-t border-white/10 pt-20 pb-10 relative overflow-hidden">
+    <footer className="border-t border-white/10 pt-20 pb-10 relative overflow-hidden">
       <div className="container mx-auto px-6 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
           

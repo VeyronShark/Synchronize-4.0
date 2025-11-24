@@ -75,9 +75,13 @@ const Navbar = () => {
                 to={link.href}
                 ref={el => linksRef.current[index] = el}
                 onClick={() => setIsOpen(false)}
-                className="text-5xl md:text-7xl font-display font-bold text-white hover:text-white/60 transition-all duration-300 opacity-0"
+                className="group text-5xl md:text-7xl font-display font-bold text-white transition-all duration-300 opacity-0 relative overflow-hidden"
               >
-                {link.name}
+                <span className="relative z-10 inline-block transition-all duration-300 group-hover:text-cyan-400 group-hover:scale-110">
+                  {link.name}
+                </span>
+                <span className="absolute inset-0 bg-cyan-400/10 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left blur-xl"></span>
+                <span className="absolute bottom-0 left-0 w-full h-1 bg-cyan-400 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left shadow-[0_0_15px_rgba(0,242,255,0.8)]"></span>
               </Link>
             ) : (
               <a 
@@ -85,9 +89,13 @@ const Navbar = () => {
                 href={link.href}
                 ref={el => linksRef.current[index] = el}
                 onClick={() => setIsOpen(false)}
-                className="text-5xl md:text-7xl font-display font-bold text-white hover:text-white/60 transition-all duration-300 opacity-0"
+                className="group text-5xl md:text-7xl font-display font-bold text-white transition-all duration-300 opacity-0 relative overflow-hidden"
               >
-                {link.name}
+                <span className="relative z-10 inline-block transition-all duration-300 group-hover:text-cyan-400 group-hover:scale-110">
+                  {link.name}
+                </span>
+                <span className="absolute inset-0 bg-cyan-400/10 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left blur-xl"></span>
+                <span className="absolute bottom-0 left-0 w-full h-1 bg-cyan-400 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left shadow-[0_0_15px_rgba(0,242,255,0.8)]"></span>
               </a>
             )
           ))}
