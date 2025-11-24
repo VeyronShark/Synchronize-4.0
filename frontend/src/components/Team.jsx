@@ -1,45 +1,202 @@
-import React from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const Team = () => {
+  const [loading, setLoading] = useState(true);
+  const titleRef = useRef(null);
+  const cardsRef = useRef([]);
+  const loaderRef = useRef(null);
+
   const teamMembers = [
-    { name: "Alex Johnson", role: "Lead Organizer", image: "https://randomuser.me/api/portraits/men/32.jpg" },
-    { name: "Sarah Williams", role: "Tech Lead", image: "https://randomuser.me/api/portraits/women/44.jpg" },
-    { name: "Michael Chen", role: "Design Head", image: "https://randomuser.me/api/portraits/men/22.jpg" },
-    { name: "Emily Davis", role: "Marketing Lead", image: "https://randomuser.me/api/portraits/women/28.jpg" },
-    { name: "David Miller", role: "Logistics", image: "https://randomuser.me/api/portraits/men/54.jpg" },
-    { name: "Jessica Taylor", role: "Sponsorships", image: "https://randomuser.me/api/portraits/women/65.jpg" }
+    { name: "Alex Johnson", role: "Lead Organizer", image: "https://randomuser.me/api/portraits/men/32.jpg", color: "cyan" },
+    { name: "Sarah Williams", role: "Tech Lead", image: "https://randomuser.me/api/portraits/women/44.jpg", color: "purple" },
+    { name: "Michael Chen", role: "Design Head", image: "https://randomuser.me/api/portraits/men/22.jpg", color: "cyan" },
+    { name: "Emily Davis", role: "Marketing Lead", image: "https://randomuser.me/api/portraits/women/28.jpg", color: "purple" },
+    { name: "David Miller", role: "Logistics", image: "https://randomuser.me/api/portraits/men/54.jpg", color: "cyan" },
+    { name: "Jessica Taylor", role: "Sponsorships", image: "https://randomuser.me/api/portraits/women/65.jpg", color: "purple" }
   ];
 
+  useEffect(() => {
+    // Scroll to top on mount
+    window.scrollTo(0, 0);
+
+    // Loader animation
+    const loaderTimeline = gsap.timeline({
+      onComplete: () => setLoading(false)
+    });
+
+    loaderTimeline
+      .to(loaderRef.current, {
+        opacity: 0,
+        duration: 0.5,
+        delay: 1,
+        ease: "power2.inOut"
+      });
+
+  }, []);
+
+  useEffect(() => {
+    if (!loading) {
+      // Title animation
+      gsap.fromTo(titleRef.current,
+        { opacity: 0, y: -30 },
+        { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" }
+      );
+
+      // Stagger cards animation
+      gsap.fromTo(cardsRef.current,
+        { opacity: 0, y: 30, scale: 0.9 },
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 0.6,
+          stagger: 0.08,
+          ease: "back.out(1.2)",
+          delay: 0.2
+        }
+      );
+    }
+  }, [loading]);
+
   return (
-    <div className="min-h-screen pt-24 pb-12 px-6 relative z-10">
-      <div className="container mx-auto">
-        <div className="flex justify-between items-center mb-16">
-          <h1 className="text-5xl md:text-7xl font-display font-bold text-white">
-            Meet the <span className="text-cyan-400">Team</span>
-          </h1>
-          <Link to="/" className="px-6 py-3 border border-white/30 rounded-full text-white hover:bg-white/10 transition-all backdrop-blur-sm">
-            Back to Home
+    <>
+      {/* Loading Screen */}
+      {loading && (
+        <div 
+          ref={loaderRef}
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black"
+        >
+          <div className="text-center">
+            <div className="flex items-center justify-center space-x-2 mb-4">
+              <div className="w-4 h-4 bg-cyan-400 rounded-full animate-bounce" style={{ animationDelay: '0s' }} />
+              <div className="w-4 h-4 bg-purple-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }} />
+              <div className="w-4 h-4 bg-cyan-400 rounded-full animate-bounce" style={{ animationDelay: '0.4s' }} />
+            </div>
+            <p className="text-white text-lg font-display">Loading Team...</p>
+          </div>
+        </div>
+      )}
+
+      <div className="min-h-screen pt-24 pb-12 px-6 relative z-10 overflow-hidden">
+        {/* Animated background elements */}
+        <div className="absolute top-20 left-10 w-72 h-72 bg-cyan-500/10 rounded-full blur-3xl animate-pulse-slow" />
+        <div className="absolute bottom-20 right-10 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse-slow" style={{ animationDelay: '1s' }} />
+      
+      <div className="container mx-auto relative z-10">
+        <div className="flex flex-col md:flex-row justify-between items-center mb-16 gap-6">
+          <div ref={titleRef}>
+            <h1 className="text-5xl md:text-7xl font-display font-bold text-white relative">
+              Meet the <span className="text-transparent bg-clip-text bg-linear-to-r from-cyan-400 via-purple-400 to-cyan-400 animate-gradient-text">Team</span>
+              
+              {/* Decorative line */}
+              <div className="absolute -bottom-4 left-0 w-32 h-1 bg-linear-to-r from-cyan-400 to-purple-400 rounded-full" />
+            </h1>
+            <p className="text-gray-400 mt-8 text-lg">The brilliant minds behind Synchronize 4.0</p>
+          </div>
+          
+          <Link 
+            to="/" 
+            className="group px-8 py-4 border-2 border-cyan-400/30 rounded-full text-white hover:border-cyan-400 hover:bg-cyan-400/10 transition-all backdrop-blur-sm relative overflow-hidden"
+          >
+            <span className="relative z-10 flex items-center gap-2">
+              <svg className="w-5 h-5 transform group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+              </svg>
+              Back to Home
+            </span>
+            <div className="absolute inset-0 bg-linear-to-r from-transparent via-cyan-400/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
           </Link>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {teamMembers.map((member, index) => (
-            <div key={index} className="cursor-pointer glass-card p-6 rounded-2xl flex flex-col items-center text-center group hover:border-cyan-400/50 transition-all duration-300">
-              <div className="cursor-pointer w-32 h-32 rounded-full overflow-hidden mb-6 border-2 border-white/20 group-hover:border-cyan-400 transition-all duration-300 shadow-[0_0_20px_rgba(0,0,0,0.3)]">
-                <img 
-                  src={member.image} 
-                  alt={member.name} 
-                  className="cursor-pointer w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
-                />
+            <div 
+              key={index} 
+              ref={el => cardsRef.current[index] = el}
+              className="group relative cursor-pointer glass-card p-8 rounded-2xl flex flex-col items-center text-center hover:border-cyan-400/50 transition-all duration-500 overflow-hidden"
+            >
+              {/* Animated background gradient */}
+              <div className={`absolute inset-0 bg-linear-to-br ${member.color === 'cyan' ? 'from-cyan-500/0 to-cyan-500/10' : 'from-purple-500/0 to-purple-500/10'} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
+              
+
+
+              <div className="relative z-10 flex flex-col items-center">
+                {/* Image with enhanced effects */}
+                <div className="relative mb-6">
+                  <div className={`absolute inset-0 rounded-full ${member.color === 'cyan' ? 'bg-cyan-400' : 'bg-purple-400'} blur-xl opacity-0 group-hover:opacity-50 transition-opacity duration-500`} />
+                  
+                  <div className={`relative w-36 h-36 rounded-full overflow-hidden border-4 ${member.color === 'cyan' ? 'border-cyan-400/30 group-hover:border-cyan-400' : 'border-purple-400/30 group-hover:border-purple-400'} transition-all duration-500 shadow-2xl`}>
+                    <img 
+                      src={member.image} 
+                      alt={member.name} 
+                      className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700"
+                    />
+                    
+                    {/* Overlay gradient on hover */}
+                    <div className={`absolute inset-0 bg-linear-to-t ${member.color === 'cyan' ? 'from-cyan-400/20' : 'from-purple-400/20'} to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
+                  </div>
+
+
+                </div>
+
+                {/* Name with gradient effect */}
+                <h3 className="text-2xl md:text-3xl font-bold text-white mb-2 group-hover:scale-105 transition-transform duration-300">
+                  {member.name}
+                </h3>
+                
+                {/* Role badge */}
+                <div className={`px-4 py-2 rounded-full ${member.color === 'cyan' ? 'bg-cyan-400/10 border border-cyan-400/30 text-cyan-400' : 'bg-purple-400/10 border border-purple-400/30 text-purple-400'} font-sans tracking-wider uppercase text-xs font-semibold group-hover:shadow-lg transition-all duration-300`}>
+                  {member.role}
+                </div>
+
+                {/* Social icons (placeholder) */}
+                <div className="flex space-x-3 mt-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                  {['linkedin', 'twitter', 'github'].map((social, i) => (
+                    <div 
+                      key={social}
+                      className={`w-8 h-8 rounded-lg ${member.color === 'cyan' ? 'bg-cyan-400/10 hover:bg-cyan-400/20 border-cyan-400/30' : 'bg-purple-400/10 hover:bg-purple-400/20 border-purple-400/30'} border flex items-center justify-center cursor-pointer transform hover:scale-110 transition-all`}
+                      style={{ transitionDelay: `${i * 50}ms` }}
+                    >
+                      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="8" />
+                      </svg>
+                    </div>
+                  ))}
+                </div>
               </div>
-              <h3 className="cursor-pointer text-2xl font-bold text-white mb-2">{member.name}</h3>
-              <p className="cursor-pointer text-cyan-400 font-sans tracking-wider uppercase text-sm">{member.role}</p>
+
+              {/* Corner accents */}
+              <div className={`absolute top-4 right-4 w-8 h-8 border-t-2 border-r-2 ${member.color === 'cyan' ? 'border-cyan-400/20' : 'border-purple-400/20'} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
+              <div className={`absolute bottom-4 left-4 w-8 h-8 border-b-2 border-l-2 ${member.color === 'cyan' ? 'border-cyan-400/20' : 'border-purple-400/20'} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
             </div>
           ))}
         </div>
       </div>
-    </div>
+
+        <style jsx>{`
+          @keyframes pulse-slow {
+            0%, 100% { transform: scale(1); opacity: 0.3; }
+            50% { transform: scale(1.05); opacity: 0.5; }
+          }
+          @keyframes gradient-text {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+          }
+          .animate-pulse-slow {
+            animation: pulse-slow 4s ease-in-out infinite;
+          }
+          .animate-gradient-text {
+            background-size: 200% 200%;
+            animation: gradient-text 3s ease infinite;
+          }
+        `}</style>
+      </div>
+    </>
   );
 };
 

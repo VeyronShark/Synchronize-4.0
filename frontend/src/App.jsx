@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout';
 import Hero from './components/Hero';
@@ -9,6 +9,7 @@ import Contact from './components/Contact';
 import Sponsors from './components/Sponsors';
 import Preloader from './components/Preloader';
 import Team from './components/Team';
+import Gallery from './components/Gallery';
 
 const Home = ({ loading, setLoading }) => (
   <>
@@ -25,7 +26,16 @@ const Home = ({ loading, setLoading }) => (
 );
 
 function App() {
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+
+  // Show preloader only on first visit
+  useEffect(() => {
+    const hasVisited = sessionStorage.getItem('hasVisited');
+    if (!hasVisited) {
+      setLoading(true);
+      sessionStorage.setItem('hasVisited', 'true');
+    }
+  }, []);
 
   return (
     <Router>
@@ -34,6 +44,11 @@ function App() {
         <Route path="/team" element={
           <Layout>
             <Team />
+          </Layout>
+        } />
+        <Route path="/gallery" element={
+          <Layout>
+            <Gallery />
           </Layout>
         } />
       </Routes>

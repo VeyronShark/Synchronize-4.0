@@ -26,6 +26,26 @@
     font-family: var(--font-display);
     font-weight: 700;
   }
+
+  /* Performance optimizations */
+  * {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Hardware acceleration for animations */
+  .will-change-transform {
+    will-change: transform;
+  }
+
+  .will-change-opacity {
+    will-change: opacity;
+  }
+
+  /* Smooth scrolling with offset for fixed navbar */
+  section {
+    scroll-margin-top: 80px;
+  }
 }
 
 @layer utilities {
@@ -132,6 +152,15 @@
   }
 
   .pause-marquee:hover {
+    animation-play-state: paused;
+  }
+
+  /* Sponsors Marquee with Pause on Hover */
+  .animate-marquee-sponsors {
+    animation: marquee 30s linear infinite;
+  }
+
+  .animate-marquee-sponsors:has(.sponsor-card:hover) {
     animation-play-state: paused;
   }
 }

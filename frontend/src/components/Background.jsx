@@ -24,10 +24,10 @@ const Background = () => {
     window.addEventListener('mousemove', handleMouseMove);
     resizeCanvas();
 
-    // Create realistic starfield with depth layers
+    // Optimized starfield with fewer stars for better performance
     const starLayers = [
       // Distant stars (small, dim)
-      Array.from({ length: 200 }).map(() => ({
+      Array.from({ length: 150 }).map(() => ({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
         size: Math.random() * 0.8 + 0.2,
@@ -39,7 +39,7 @@ const Background = () => {
         layer: 1
       })),
       // Mid-distance stars
-      Array.from({ length: 150 }).map(() => ({
+      Array.from({ length: 100 }).map(() => ({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
         size: Math.random() * 1.2 + 0.5,
@@ -51,7 +51,7 @@ const Background = () => {
         layer: 2
       })),
       // Close stars (bright, larger)
-      Array.from({ length: 80 }).map(() => ({
+      Array.from({ length: 50 }).map(() => ({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
         size: Math.random() * 2 + 0.8,
