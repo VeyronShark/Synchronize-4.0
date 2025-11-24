@@ -10,18 +10,26 @@ const Gallery = () => {
   const imagesRef = useRef([]);
   const loaderRef = useRef(null);
 
-  // Bento grid layout with varying sizes
+  // Pinterest-style masonry with varied heights
   const galleryImages = [
-    { id: 1, url: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800", title: "Opening Ceremony", category: "Events", size: "large" },
-    { id: 2, url: "https://images.unsplash.com/photo-1511578314322-379afb476865?w=800", title: "Tech Workshop", category: "Workshops", size: "medium" },
-    { id: 3, url: "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=800", title: "Hackathon", category: "Competition", size: "medium" },
-    { id: 4, url: "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=800", title: "Team Building", category: "Activities", size: "small" },
-    { id: 5, url: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=800", title: "Keynote Speech", category: "Events", size: "small" },
-    { id: 6, url: "https://images.unsplash.com/photo-1515187029135-18ee286d815b?w=800", title: "Networking", category: "Social", size: "wide" },
-    { id: 7, url: "https://images.unsplash.com/photo-1523580494863-6f3031224c94?w=800", title: "Awards Night", category: "Events", size: "tall" },
-    { id: 8, url: "https://images.unsplash.com/photo-1464047736614-af63643285bf?w=800", title: "Cultural Show", category: "Entertainment", size: "medium" },
-    { id: 9, url: "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=800", title: "Code Sprint", category: "Competition", size: "small" },
-    { id: 10, url: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=800", title: "Collaboration", category: "Activities", size: "small" },
+    { id: 1, url: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&h=600", title: "Opening Ceremony", category: "Events", height: "h-64" },
+    { id: 2, url: "https://images.unsplash.com/photo-1511578314322-379afb476865?w=800&h=1000", title: "Tech Workshop", category: "Workshops", height: "h-80" },
+    { id: 3, url: "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=800&h=1200", title: "Hackathon", category: "Competition", height: "h-96" },
+    { id: 4, url: "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=800&h=700", title: "Team Building", category: "Activities", height: "h-72" },
+    { id: 5, url: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=800&h=600", title: "Keynote Speech", category: "Events", height: "h-64" },
+    { id: 6, url: "https://images.unsplash.com/photo-1515187029135-18ee286d815b?w=800&h=900", title: "Networking", category: "Social", height: "h-80" },
+    { id: 7, url: "https://images.unsplash.com/photo-1523580494863-6f3031224c94?w=800&h=1100", title: "Awards Night", category: "Events", height: "h-96" },
+    { id: 8, url: "https://images.unsplash.com/photo-1464047736614-af63643285bf?w=800&h=650", title: "Cultural Show", category: "Entertainment", height: "h-72" },
+    { id: 9, url: "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=800&h=800", title: "Code Sprint", category: "Competition", height: "h-80" },
+    { id: 10, url: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=800&h=600", title: "Collaboration", category: "Activities", height: "h-64" },
+    { id: 11, url: "https://images.unsplash.com/photo-1591115765373-5207764f72e7?w=800&h=1000", title: "Innovation Hub", category: "Workshops", height: "h-96" },
+    { id: 12, url: "https://images.unsplash.com/photo-1528605248644-14dd04022da1?w=800&h=700", title: "Team Spirit", category: "Activities", height: "h-72" },
+    { id: 13, url: "https://images.unsplash.com/photo-1559223607-a43c990c2e3a?w=800&h=650", title: "Tech Talks", category: "Events", height: "h-64" },
+    { id: 14, url: "https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04?w=800&h=1100", title: "Coding Marathon", category: "Competition", height: "h-96" },
+    { id: 15, url: "https://images.unsplash.com/photo-1556761175-b413da4baf72?w=800&h=750", title: "Brainstorming", category: "Workshops", height: "h-80" },
+    { id: 16, url: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=800&h=600", title: "Presentations", category: "Events", height: "h-64" },
+    { id: 17, url: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&h=900", title: "Team Huddle", category: "Activities", height: "h-80" },
+    { id: 18, url: "https://images.unsplash.com/photo-1531482615713-2afd69097998?w=800&h=1000", title: "Innovation", category: "Workshops", height: "h-96" },
   ];
 
   useEffect(() => {
@@ -116,45 +124,43 @@ const Gallery = () => {
             </Link>
           </div>
 
-          {/* Bento Grid Moodboard */}
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 auto-rows-[200px]">
-            {galleryImages.map((image, index) => {
-              const sizeClasses = {
-                small: 'col-span-1 row-span-1',
-                medium: 'col-span-2 row-span-1',
-                large: 'col-span-2 md:col-span-3 row-span-2',
-                wide: 'col-span-2 md:col-span-4 row-span-1',
-                tall: 'col-span-1 md:col-span-2 row-span-2'
-              };
+          {/* Pinterest-style Masonry Grid - No Blank Spaces */}
+          <div className="columns-2 md:columns-3 lg:columns-4 gap-3 md:gap-4 space-y-3 md:space-y-4">
+            {galleryImages.map((image, index) => (
+              <div 
+                key={image.id}
+                ref={el => imagesRef.current[index] = el}
+                className="group relative cursor-pointer overflow-hidden rounded-xl md:rounded-2xl glass-card border border-white/5 hover:border-purple-400/50 hover:shadow-[0_0_30px_rgba(168,85,247,0.3)] transition-all duration-500 break-inside-avoid mb-3 md:mb-4"
+                onClick={() => openLightbox(image)}
+              >
+                <div className={`relative w-full overflow-hidden ${image.height}`}>
+                  <img 
+                    src={image.url} 
+                    alt={image.title}
+                    className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
+                  />
+                  
+                  {/* Gradient overlay always visible */}
+                  <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent" />
+                  
+                  {/* Info overlay on hover */}
+                  <div className="absolute inset-0 bg-linear-to-t from-black/95 via-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-3 md:p-5">
+                    <span className="text-[10px] md:text-xs uppercase tracking-wider text-purple-400 font-semibold mb-1">{image.category}</span>
+                    <h3 className="text-sm md:text-lg lg:text-xl font-display font-bold text-white leading-tight">{image.title}</h3>
+                  </div>
 
-              return (
-                <div 
-                  key={image.id}
-                  ref={el => imagesRef.current[index] = el}
-                  className={`group relative cursor-pointer overflow-hidden rounded-2xl glass-card border-2 border-white/5 hover:border-purple-400/50 transition-all duration-500 ${sizeClasses[image.size]}`}
-                  onClick={() => openLightbox(image)}
-                >
-                  <div className="relative w-full h-full overflow-hidden">
-                    <img 
-                      src={image.url} 
-                      alt={image.title}
-                      className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
-                    />
-                    
-                    {/* Overlay */}
-                    <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-4 md:p-6">
-                      <span className="text-xs uppercase tracking-wider text-purple-400 font-semibold mb-1">{image.category}</span>
-                      <h3 className="text-base md:text-xl font-display font-bold text-white">{image.title}</h3>
-                    </div>
+                  {/* Zoom Icon */}
+                  <div className="absolute top-2 right-2 md:top-3 md:right-3 w-8 h-8 md:w-10 md:h-10 bg-black/30 backdrop-blur-md rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 group-hover:bg-purple-500/80">
+                    <ZoomIn className="w-4 h-4 md:w-5 md:h-5 text-white" />
+                  </div>
 
-                    {/* Zoom Icon */}
-                    <div className="absolute top-3 right-3 w-10 h-10 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                      <ZoomIn className="w-5 h-5 text-white" />
-                    </div>
+                  {/* Category badge */}
+                  <div className="absolute top-2 left-2 md:top-3 md:left-3 px-2 py-1 md:px-3 md:py-1.5 bg-black/50 backdrop-blur-md rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                    <span className="text-[10px] md:text-xs text-white font-semibold">{image.category}</span>
                   </div>
                 </div>
-              );
-            })}
+              </div>
+            ))}
           </div>
         </div>
 

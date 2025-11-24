@@ -64,9 +64,13 @@ const Navbar = () => {
     <>
       {/* Floating Header */}
       <nav className="fixed top-0 left-0 w-full z-50 px-6 py-6 flex justify-between items-center mix-blend-difference text-white">
-        <a href="#home" onClick={() => setIsOpen(false)} className="text-2xl font-display font-bold tracking-tighter">
+        <Link 
+          to="/" 
+          onClick={() => setIsOpen(false)} 
+          className="text-2xl font-display font-bold tracking-tighter hover:opacity-80 transition-opacity cursor-pointer"
+        >
           SYNCHRONIZE <span className="text-cyan-400">4.0</span>
-        </a>
+        </Link>
         
         <button 
           onClick={toggleMenu}

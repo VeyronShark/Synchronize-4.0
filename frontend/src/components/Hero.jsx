@@ -1,6 +1,8 @@
 import { useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import gsap from 'gsap';
 import MagneticButton from './MagneticButton';
+import { Images } from 'lucide-react';
 
 const Hero = ({ startAnimation }) => {
   const containerRef = useRef(null);
@@ -42,13 +44,19 @@ const Hero = ({ startAnimation }) => {
           Beyond the Horizon
         </p>
 
-        <div className="mt-16 flex flex-col md:flex-row gap-8 pointer-events-auto">
+        <div className="mt-16 flex flex-col md:flex-row gap-6 pointer-events-auto">
           <MagneticButton className="cursor-pointer px-10 py-4 bg-cyan-400 text-black font-bold rounded-full hover:bg-cyan-50 transition-all shadow-[0_0_20px_rgba(255,255,255,0.4)]">
             REGISTER NOW
           </MagneticButton>
           <MagneticButton className="cursor-pointer px-10 py-4 border-2 border-cyan-400 text-cyan-400 font-bold rounded-full hover:bg-cyan-400/10 transition-all backdrop-blur-sm shadow-[0_0_15px_rgba(0,242,255,0.3)]">
             EXPLORE EVENTS
           </MagneticButton>
+          <Link to="/gallery">
+            <MagneticButton className="cursor-pointer px-10 py-4 border-2 border-purple-400 text-purple-400 font-bold rounded-full hover:bg-purple-400/10 transition-all backdrop-blur-sm shadow-[0_0_15px_rgba(168,85,247,0.3)] flex items-center gap-2">
+              <Images className="w-5 h-5" />
+              VIEW GALLERY
+            </MagneticButton>
+          </Link>
         </div>
       </div>
 
