@@ -1,4 +1,8 @@
-import { Link } from 'react-router-dom';
+import { useRef, useEffect } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const sponsors = [
   { name: "Google", logo: "https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg" },
@@ -10,10 +14,34 @@ const sponsors = [
 ];
 
 const Sponsors = () => {
+  const sectionRef = useRef(null);
   const duplicatedSponsors = [...sponsors, ...sponsors];
 
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.fromTo(sectionRef.current.children,
+        { y: 50, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 1,
+          stagger: 0.2,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 80%",
+            end: "top 50%",
+            scrub: 1,
+          }
+        }
+      );
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <section id="sponsors" className="py-16 sm:py-20 relative overflow-hidden">
+    <section id="sponsors" ref={sectionRef} className="py-16 sm:py-20 relative overflow-hidden">
       <div className="container mx-auto px-4 sm:px-6 relative z-10">
         <div className="text-center mb-12 sm:mb-16">
           <h2 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-display font-bold text-white">

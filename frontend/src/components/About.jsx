@@ -1,177 +1,212 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { Code, Cpu, Globe, Zap, Trophy, Users } from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const AnimatedNumber = ({ finalValue, label, delay = 0 }) => {
-  const [displayValue, setDisplayValue] = useState('0');
-  const numberRef = useRef(null);
-  const hasAnimated = useRef(false);
-  const animationRef = useRef(null);
+const TiltCard = ({ children, className = "" }) => {
+  const cardRef = useRef(null);
+  const glowRef = useRef(null);
 
-  useEffect(() => {
-    const element = numberRef.current;
+  const handleMouseMove = (e) => {
+    if (!cardRef.current) return;
     
-    const animateNumber = () => {
-      // Extract numeric value and suffix/prefix
-      const numericValue = parseInt(finalValue.replace(/[^0-9]/g, ''));
-      const prefix = finalValue.match(/^[^0-9]+/) ? finalValue.match(/^[^0-9]+/)[0] : '';
-      const suffix = finalValue.match(/[^0-9]+$/) ? finalValue.match(/[^0-9]+$/)[0] : '';
-      
-      // Create an object to animate
-      const counter = { value: 0 };
-      
-      // Kill any existing animation
-      if (animationRef.current) {
-        animationRef.current.kill();
-      }
-      
-      // Animate using GSAP for smooth easing
-      animationRef.current = gsap.to(counter, {
-        value: numericValue,
-        duration: 2.5,
-        delay: delay,
-        ease: "power2.out",
-        onUpdate: function() {
-          // Format the number with smooth interpolation
-          const currentValue = Math.floor(counter.value);
-          setDisplayValue(prefix + currentValue + suffix);
-        },
-        onComplete: function() {
-          // Ensure final value is exact
-          setDisplayValue(finalValue);
-        }
-      });
-    };
+    const rect = cardRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
     
-    const scrollTrigger = ScrollTrigger.create({
-      trigger: element,
-      start: "top 80%",
-      onEnter: () => {
-        if (!hasAnimated.current) {
-          hasAnimated.current = true;
-          setTimeout(() => animateNumber(), delay * 1000);
-        }
-      }
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    
+    const rotateX = ((y - centerY) / centerY) * -10; // Max 10deg rotation
+    const rotateY = ((x - centerX) / centerX) * 10;
+
+    gsap.to(cardRef.current, {
+      rotateX: rotateX,
+      rotateY: rotateY,
+      duration: 0.5,
+      ease: "power2.out",
+      transformPerspective: 1000
     });
 
-    return () => {
-      scrollTrigger.kill();
-      if (animationRef.current) {
-        animationRef.current.kill();
-      }
-    };
-  }, [finalValue, delay]);
+    if (glowRef.current) {
+      gsap.to(glowRef.current, {
+        x: x,
+        y: y,
+        duration: 0.1,
+        ease: "none"
+      });
+    }
+  };
+
+  const handleMouseLeave = () => {
+    gsap.to(cardRef.current, {
+      rotateX: 0,
+      rotateY: 0,
+      duration: 0.5,
+      ease: "power2.out"
+    });
+  };
 
   return (
-    <div ref={numberRef} className="relative group">
-      <div className="glass-card p-6 sm:p-8 rounded-xl sm:rounded-2xl relative overflow-hidden border border-white/10 transition-all duration-500 group-hover:border-cyan-400/40 group-hover:shadow-[0_0_30px_rgba(0,242,255,0.2)]">
-        {/* Subtle hover effect */}
-        <div className="absolute inset-0 bg-cyan-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
-        
-        {/* Top line */}
-        <div className="absolute top-0 left-0 w-full h-[2px] bg-linear-to-r from-transparent via-cyan-400/30 to-transparent"></div>
-        
-        <h3 className="text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-2 sm:mb-3 font-display group-hover:text-cyan-400 transition-colors duration-500">
-          {displayValue}
-        </h3>
-        <p className="text-gray-400 uppercase tracking-widest text-xs sm:text-sm font-semibold">
-          {label}
-        </p>
-        
-        {/* Bottom line */}
-        <div className="absolute bottom-0 left-0 w-full h-[2px] bg-linear-to-r from-transparent via-cyan-400/30 to-transparent"></div>
+    <div 
+      ref={cardRef}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      className={`relative overflow-hidden glass-card rounded-3xl border border-white/10 group hover:border-cyan-400/30 transition-colors duration-300 ${className}`}
+      style={{ transformStyle: 'preserve-3d' }}
+    >
+      <div 
+        ref={glowRef}
+        className="absolute w-[300px] h-[300px] bg-cyan-400/20 blur-[100px] rounded-full pointer-events-none -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+      />
+      <div className="relative z-10 h-full">
+        {children}
       </div>
     </div>
   );
 };
 
+const StatCard = ({ icon: Icon, value, label, delay }) => (
+  <div className="flex flex-col items-center justify-center p-6 text-center space-y-2">
+    <div className="w-12 h-12 rounded-full bg-cyan-500/10 flex items-center justify-center mb-2 group-hover:scale-110 transition-transform duration-300">
+      <Icon className="w-6 h-6 text-cyan-400" />
+    </div>
+    <h4 className="text-3xl font-bold text-white font-display">{value}</h4>
+    <p className="text-sm text-gray-400 uppercase tracking-wider">{label}</p>
+  </div>
+);
+
 const About = () => {
-  const sectionRef = useRef(null);
-  const contentRef = useRef(null);
+  const containerRef = useRef(null);
   const titleRef = useRef(null);
-  const descriptionRef = useRef(null);
 
   useEffect(() => {
-    // Animate title
-    gsap.fromTo(titleRef.current, 
-      { y: 50, opacity: 0 },
-      {
-        y: 0,
-        opacity: 1,
-        duration: 1,
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 80%",
-          toggleActions: "play none none reverse"
+    const ctx = gsap.context(() => {
+      // Title Animation
+      gsap.fromTo(titleRef.current,
+        { y: 50, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 1,
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: "top 80%",
+            end: "top 50%",
+            scrub: 1
+          }
         }
-      }
-    );
+      );
 
-    // Animate description card
-    gsap.fromTo(descriptionRef.current, 
-      { y: 50, opacity: 0, scale: 0.95 },
-      {
-        y: 0,
-        opacity: 1,
-        scale: 1,
+      // Cards Stagger Animation
+      gsap.from(".bento-card", {
+        y: 100,
+        opacity: 0,
         duration: 1,
-        delay: 0.2,
+        stagger: 0.1,
+        ease: "power3.out",
         scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 80%",
-          toggleActions: "play none none reverse"
+          trigger: ".bento-grid",
+          start: "top 85%",
+          end: "bottom 80%",
+          scrub: 1
         }
-      }
-    );
+      });
+
+    }, containerRef);
+
+    return () => ctx.revert();
   }, []);
 
   return (
-    <section id="about" ref={sectionRef} className="min-h-screen flex items-center justify-center py-20 sm:py-24 md:py-32 relative">
-      {/* Subtle decorative elements */}
-      <div className="absolute top-20 left-4 sm:left-10 w-24 h-24 sm:w-32 sm:h-32 bg-cyan-500/10 rounded-full blur-3xl"></div>
-      <div className="absolute bottom-20 right-4 sm:right-10 w-32 h-32 sm:w-40 sm:h-40 bg-cyan-400/10 rounded-full blur-3xl"></div>
-      
-      <div className="container mx-auto px-4 sm:px-6">
-        <div ref={contentRef} className="max-w-5xl mx-auto">
-          {/* Title */}
-          <div ref={titleRef} className="text-center mb-12 sm:mb-16">
-            <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-display font-bold mb-4 text-white">
-              About <span className="text-cyan-400">The Fest</span>
-            </h2>
-            <div className="w-20 sm:w-24 h-1 bg-cyan-400/80 mx-auto rounded-full shadow-[0_0_15px_rgba(0,242,255,0.6)]"></div>
-          </div>
+    <section id="about" ref={containerRef} className="relative py-24 sm:py-32 overflow-hidden">
+      {/* Background Elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-purple-500/10 rounded-full blur-[120px] animate-pulse-slow" />
+        <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-cyan-500/10 rounded-full blur-[120px] animate-pulse-slow" style={{ animationDelay: '2s' }} />
+      </div>
+
+      <div className="container mx-auto px-4 sm:px-6 relative z-10">
+        {/* Header */}
+        <div ref={titleRef} className="text-center mb-16 sm:mb-24">
+          <h2 className="text-5xl sm:text-7xl md:text-8xl font-display font-black text-transparent bg-clip-text bg-linear-to-b from-white to-white/20 mb-6">
+            THE <span className="text-cyan-400">VISION</span>
+          </h2>
+          <p className="text-lg sm:text-xl text-gray-400 max-w-2xl mx-auto font-light leading-relaxed">
+            Where technology meets creativity. Synchronize 4.0 is the ultimate convergence of innovation, competition, and future-tech.
+          </p>
+        </div>
+
+        {/* Bento Grid */}
+        <div className="bento-grid grid grid-cols-1 md:grid-cols-6 lg:grid-cols-12 gap-6 max-w-7xl mx-auto">
           
-          {/* Description Card */}
-          <div ref={descriptionRef} className="glass-card p-6 sm:p-8 md:p-10 lg:p-14 rounded-2xl sm:rounded-3xl text-center relative overflow-hidden mb-12 sm:mb-16 border border-white/10 shadow-[0_0_80px_rgba(0,242,255,0.15)]">
-            {/* Subtle background */}
-            <div className="absolute inset-0 bg-cyan-500/5"></div>
-            
-            {/* Top line */}
-            <div className="absolute top-0 left-0 w-full h-[2px] bg-cyan-400/30"></div>
-            
-            <div className="relative z-10">
-              <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-200 leading-relaxed mb-4 sm:mb-6 font-light">
-                Synchronize 4.0 is not just a tech fest; it's a <span className="text-cyan-400 font-semibold">convergence of ideas</span>, innovation, and futuristic vision. 
-                We bring together the brightest minds to compete, collaborate, and create.
-              </p>
-              <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-200 leading-relaxed font-light">
-                From <span className="text-cyan-400 font-semibold">coding marathons</span> to <span className="text-cyan-400 font-semibold">robotics showdowns</span>, immerse yourself in an ecosystem where technology meets creativity. 
-                Join us as we redefine the boundaries of what's possible.
-              </p>
-            </div>
-            
-            {/* Bottom line */}
-            <div className="absolute bottom-0 left-0 w-full h-[2px] bg-cyan-400/30"></div>
+          {/* Main Description Card - Large */}
+          <div className="md:col-span-6 lg:col-span-8 row-span-2 bento-card">
+            <TiltCard className="h-full p-8 sm:p-10 flex flex-col justify-between bg-linear-to-br from-white/5 to-transparent">
+              <div>
+                <div className="w-16 h-16 rounded-2xl bg-cyan-400/10 flex items-center justify-center mb-6">
+                  <Globe className="w-8 h-8 text-cyan-400" />
+                </div>
+                <h3 className="text-3xl sm:text-4xl font-bold text-white mb-4 font-display">Global Tech Ecosystem</h3>
+                <p className="text-gray-300 text-lg leading-relaxed">
+                  Join a vibrant community of developers, designers, and innovators. We're building a platform where ideas transform into reality through collaboration and competition.
+                </p>
+              </div>
+              <div className="mt-8 flex gap-4">
+                <div className="px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm text-cyan-400">Innovation</div>
+                <div className="px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm text-purple-400">Creativity</div>
+                <div className="px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm text-pink-400">Future</div>
+              </div>
+            </TiltCard>
           </div>
 
-          {/* Stats Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8">
-            <AnimatedNumber finalValue="20+" label="Events" delay={0} />
-            <AnimatedNumber finalValue="1000+" label="Participants" delay={0.2} />
-            <AnimatedNumber finalValue="₹50k+" label="Prizes" delay={0.4} />
+          {/* Stat Card 1 */}
+          <div className="md:col-span-3 lg:col-span-4 bento-card">
+            <TiltCard className="h-full bg-black/20">
+              <StatCard icon={Users} value="1000+" label="Participants" />
+            </TiltCard>
           </div>
+
+          {/* Stat Card 2 */}
+          <div className="md:col-span-3 lg:col-span-4 bento-card">
+            <TiltCard className="h-full bg-black/20">
+              <StatCard icon={Trophy} value="₹50k+" label="Prize Pool" />
+            </TiltCard>
+          </div>
+
+          {/* Feature Card 1 */}
+          <div className="md:col-span-3 lg:col-span-4 bento-card">
+            <TiltCard className="h-full p-6 flex flex-col items-start justify-center bg-linear-to-br from-purple-500/10 to-transparent">
+              <Cpu className="w-10 h-10 text-purple-400 mb-4" />
+              <h4 className="text-xl font-bold text-white mb-2">Cutting Edge</h4>
+              <p className="text-sm text-gray-400">Latest tech stack and hardware integration challenges.</p>
+            </TiltCard>
+          </div>
+
+          {/* Feature Card 2 */}
+          <div className="md:col-span-3 lg:col-span-4 bento-card">
+            <TiltCard className="h-full p-6 flex flex-col items-start justify-center bg-linear-to-br from-cyan-500/10 to-transparent">
+              <Code className="w-10 h-10 text-cyan-400 mb-4" />
+              <h4 className="text-xl font-bold text-white mb-2">24h Hackathon</h4>
+              <p className="text-sm text-gray-400">Non-stop coding marathon to solve real-world problems.</p>
+            </TiltCard>
+          </div>
+
+          {/* Wide Bottom Card */}
+          <div className="md:col-span-6 lg:col-span-4 bento-card">
+            <TiltCard className="h-full p-6 flex items-center justify-between bg-linear-to-r from-cyan-500/5 to-purple-500/5">
+              <div>
+                <h4 className="text-2xl font-bold text-white mb-1">Join Us</h4>
+                <p className="text-sm text-gray-400">Be part of the revolution</p>
+              </div>
+              <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-cyan-400 group-hover:text-black transition-colors duration-300">
+                <Zap className="w-6 h-6" />
+              </div>
+            </TiltCard>
+          </div>
+
         </div>
       </div>
     </section>

@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router';
 import gsap from 'gsap';
 import { FaBars, FaXmark } from 'react-icons/fa6';
+import MagneticButton from './MagneticButton';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -9,19 +10,20 @@ const Navbar = () => {
   const menuRef = useRef(null);
   const linksRef = useRef([]);
   const bgRef = useRef(null);
+  const circleRef = useRef(null);
 
   useEffect(() => {
     const tl = gsap.timeline({ paused: true });
 
     tl.to(bgRef.current, {
       yPercent: 100,
-      duration: 0.8,
+      duration: 1,
       ease: "power4.inOut"
     })
     .fromTo(linksRef.current, 
-      { y: 50, opacity: 0 },
-      { y: 0, opacity: 1, stagger: 0.1, duration: 0.5, ease: "power3.out" },
-      "-=0.4"
+      { y: 100, opacity: 0, rotate: 5 },
+      { y: 0, opacity: 1, rotate: 0, stagger: 0.1, duration: 0.8, ease: "power3.out" },
+      "-=0.6"
     );
 
     menuRef.current = tl;
@@ -56,6 +58,32 @@ const Navbar = () => {
     }
   };
 
+  const handleLinkHover = (index) => {
+    gsap.to(linksRef.current, {
+      opacity: 0.3,
+      scale: 0.95,
+      duration: 0.3,
+      overwrite: true
+    });
+    gsap.to(linksRef.current[index], {
+      opacity: 1,
+      scale: 1.1,
+      x: 20,
+      duration: 0.3,
+      overwrite: true
+    });
+  };
+
+  const handleLinkLeave = () => {
+    gsap.to(linksRef.current, {
+      opacity: 1,
+      scale: 1,
+      x: 0,
+      duration: 0.3,
+      overwrite: true
+    });
+  };
+
   const navLinks = [
     { name: "Home", path: "/" },
     { name: "Events", path: "/events" },
@@ -68,54 +96,56 @@ const Navbar = () => {
   return (
     <>
       {/* Floating Header */}
-      <nav className="fixed top-0 left-0 w-full z-50 px-4 sm:px-6 py-4 sm:py-6 flex justify-between items-center mix-blend-difference text-white transition-all duration-300">
+      <nav className="fixed top-0 left-0 w-full z-50 px-6 py-6 flex justify-between items-center mix-blend-difference text-white">
         <Link 
           to="/" 
           onClick={() => setIsOpen(false)} 
-          className="text-xl sm:text-2xl font-display font-bold tracking-tighter hover:opacity-80 transition-opacity cursor-pointer group italic"
+          className="relative z-50 text-2xl font-display font-bold tracking-tighter hover:opacity-80 transition-opacity cursor-pointer italic"
         >
-          SYNCHRONIZE <span className="text-cyan-400 group-hover:text-purple-400 transition-colors duration-300">4.0</span>
+          SYNCHRONIZE <span className="text-cyan-400">4.0</span>
         </Link>
         
-        <button 
-          onClick={toggleMenu}
-          className="relative z-50 w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center rounded-full hover:bg-white/10 transition-all duration-300 cursor-pointer group active:scale-95"
-        >
-          {isOpen ? (
-            <FaXmark size={20} className="sm:w-6 sm:h-6 group-hover:text-red-500 group-hover:rotate-90 transition-all duration-300" />
-          ) : (
-            <div className="flex flex-col justify-center items-end gap-1.5 w-5 sm:w-6">
-              <span className="block w-full h-0.5 bg-white group-hover:bg-cyan-400 transition-all duration-300 group-hover:w-full"></span>
-              <span className="block w-3/4 h-0.5 bg-white group-hover:bg-cyan-400 transition-all duration-300 delay-75 group-hover:w-full"></span>
-              <span className="block w-1/2 h-0.5 bg-white group-hover:bg-cyan-400 transition-all duration-300 delay-150 group-hover:w-full"></span>
-            </div>
-          )}
-        </button>
+        <div className="relative z-50">
+          <MagneticButton onClick={toggleMenu} className="w-16 h-16 rounded-full cursor-pointer flex items-center justify-center group hover:bg-white/10 transition-all duration-300 hover:shadow-[0_0_20px_rgba(255,255,255,0.2)]">
+             <div className="cursor-pointerrelative w-7 h-7 flex flex-col justify-center items-center gap-1.5">
+                <span className={`absolute h-[2px] bg-white transition-all duration-300 ease-out ${isOpen ? 'w-full rotate-45 top-3.5' : 'w-full top-2 group-hover:w-3/4'}`}></span>
+                <span className={`absolute h-[2px] bg-white transition-all duration-300 ease-out ${isOpen ? 'w-full -rotate-45 top-3.5' : 'w-2/3 top-4 group-hover:w-full'}`}></span>
+             </div>
+          </MagneticButton>
+        </div>
       </nav>
 
       {/* Full Screen Menu Overlay */}
       <div 
         ref={bgRef} 
-        className="fixed inset-0 bg-black z-40 transform -translate-y-full flex flex-col justify-center items-center"
+        className="fixed inset-0 bg-black z-40 transform -translate-y-full flex flex-col justify-center items-center overflow-hidden"
       >
-        <div className="flex flex-col gap-6 sm:gap-8 text-center px-4">
+        {/* Background Noise/Gradient */}
+        <div className="absolute inset-0 opacity-10 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] pointer-events-none"></div>
+        <div className="absolute top-0 left-0 w-full h-full bg-linear-to-b from-black via-black to-cyan-950/20 pointer-events-none"></div>
+        
+        {/* Decorative Circle */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-cyan-500/5 rounded-full blur-[120px] pointer-events-none"></div>
+
+        <div className="flex flex-col gap-2 sm:gap-4 text-center px-4 relative z-10">
           {navLinks.map((link, index) => (
-            <button
-              key={index}
-              ref={el => linksRef.current[index] = el}
-              onClick={() => handleNavigation(link.path)}
-              className="group text-4xl sm:text-5xl md:text-7xl font-display font-bold text-white transition-all duration-300 opacity-0 relative cursor-pointer"
-            >
-              <span className="relative z-10 inline-block transition-all duration-300 group-hover:text-cyan-400">
+            <div key={index} className="overflow-hidden py-2 px-20">
+              <button
+                ref={el => linksRef.current[index] = el}
+                onClick={() => handleNavigation(link.path)}
+                onMouseEnter={() => handleLinkHover(index)}
+                onMouseLeave={handleLinkLeave}
+                className="group text-5xl sm:text-6xl md:text-8xl font-display font-black text-transparent bg-clip-text bg-linear-to-r from-white to-white/60 hover:to-cyan-400 transition-all duration-300 cursor-pointer uppercase tracking-tighter italic px-2.5"
+              >
                 {link.name}
-              </span>
-              <span className="absolute bottom-0 left-0 w-full h-0.5 sm:h-1 bg-cyan-400 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left shadow-[0_0_15px_rgba(0,242,255,0.8)]"></span>
-            </button>
+              </button>
+            </div>
           ))}
         </div>
         
-        <div className="absolute bottom-6 sm:bottom-10 left-0 w-full text-center text-gray-500 font-sans text-xs sm:text-sm px-4">
-          &copy; 2025 Synchronize TechFest. All rights reserved.
+        <div className="absolute bottom-10 left-0 w-full flex justify-between px-10 text-white/40 font-mono text-sm uppercase tracking-widest">
+            <span>Est. 2025</span>
+            <span>Synchronize TechFest</span>
         </div>
       </div>
     </>

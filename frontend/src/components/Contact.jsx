@@ -65,19 +65,20 @@ const Contact = () => {
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: "#contact",
-        start: "top 80%",
+        start: "top 60%", // Trigger earlier
+        end: "bottom bottom",
         toggleActions: "play none none reverse"
       }
     });
 
     tl.fromTo(titleRef.current,
-      { opacity: 0, y: -30 },
-      { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" }
+      { opacity: 0, y: 100, filter: "blur(20px)", scale: 0.8 },
+      { opacity: 1, y: 0, filter: "blur(0px)", scale: 1, duration: 1.2, ease: "power4.out" }
     )
     .fromTo(formRef.current,
-      { opacity: 0, y: 50 },
-      { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" },
-      "-=0.4"
+      { opacity: 0, y: 150, scale: 0.9, rotateX: -10 },
+      { opacity: 1, y: 0, scale: 1, rotateX: 0, duration: 1.2, ease: "power3.out" },
+      "-=0.8"
     );
   }, []);
 
