@@ -100,25 +100,25 @@ const HomePage = ({ loading, setLoading }) => {
     <>
       {loading && <Preloader onComplete={() => setLoading(false)} />}
       <Layout>
-        <div ref={mainRef} className="relative w-full bg-dark-bg">
+        <div ref={mainRef} className="relative w-full">
           <div ref={heroRef} className="relative z-0 w-full h-screen">
             <Hero startAnimation={!loading} />
           </div>
           
-          <div className="relative z-10 bg-dark-bg">
-            <div ref={aboutRef} className="relative bg-dark-bg">
+          <div className="relative z-10">
+            <div ref={aboutRef} className="relative">
               <About />
             </div>
-            <div ref={eventsRef} className="relative bg-dark-bg">
+            <div ref={eventsRef} className="relative">
               <Events />
             </div>
-            <div ref={timelineRef} className="relative bg-dark-bg">
+            <div ref={timelineRef} className="relative">
               <Timeline />
             </div>
-            <div ref={sponsorsRef} className="relative bg-dark-bg">
+            <div ref={sponsorsRef} className="relative">
               <Sponsors />
             </div>
-            <div ref={contactRef} className="relative bg-dark-bg pb-20">
+            <div ref={contactRef} className="relative pb-20">
               <Contact />
             </div>
           </div>

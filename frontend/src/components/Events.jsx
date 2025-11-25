@@ -89,42 +89,43 @@ const Events = () => {
   };
 
   useEffect(() => {
-    const cards = cardsRef.current;
-    
-    cards.forEach((card, index) => {
-      const isLast = index === cards.length - 1;
+    const ctx = gsap.context(() => {
+      const cards = cardsRef.current;
       
-      ScrollTrigger.create({
-        trigger: card,
-        start: "top 15%",
-        end: isLast ? "bottom top" : "bottom 15%",
-        pin: !isLast,
-        pinSpacing: false,
-        scrub: 1,
-        onUpdate: (self) => {
-          if (!isLast) {
-            const progress = self.progress;
-            const scale = 1 - (progress * 0.1);
-            const yOffset = progress * 40;
-            const rotateX = progress * -8;
-            const brightness = 1 - (progress * 0.3);
-            
-            gsap.to(card, {
-              scale: scale,
-              y: yOffset,
-              rotateX: rotateX,
-              filter: `brightness(${brightness})`,
-              duration: 0.1,
-              ease: "none"
-            });
+      cards.forEach((card, index) => {
+        if (!card) return;
+        const isLast = index === cards.length - 1;
+        
+        ScrollTrigger.create({
+          trigger: card,
+          start: "top 15%",
+          end: isLast ? "bottom top" : "bottom 15%",
+          pin: !isLast,
+          pinSpacing: false,
+          scrub: true, // Use boolean true for smoother scrubbing tied directly to scroll
+          onUpdate: (self) => {
+            if (!isLast) {
+              const progress = self.progress;
+              const scale = 1 - (progress * 0.1);
+              const yOffset = progress * 40;
+              const rotateX = progress * -8;
+              const brightness = 1 - (progress * 0.3);
+              
+              // Use set for immediate updates during scroll for better performance
+              gsap.set(card, {
+                scale: scale,
+                y: yOffset,
+                rotateX: rotateX,
+                filter: `brightness(${brightness})`,
+                transformPerspective: 1000
+              });
+            }
           }
-        }
+        });
       });
-    });
+    }, sectionRef);
 
-    return () => {
-      ScrollTrigger.getAll().forEach(t => t.kill());
-    };
+    return () => ctx.revert(); // This safely kills only the ScrollTriggers created in this context
   }, [selectedDay]);
 
   const handleCardClick = (e, event) => {
