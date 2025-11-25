@@ -62,7 +62,7 @@ const Footer = () => {
               <p className="text-xs text-gray-500 mb-3">Previous Editions</p>
               <div className="flex flex-col space-y-2">
                 {[
-                  { name: 'Synchronize 3.0', url: '#' },
+                  { name: 'Synchronize 3.0', url: 'https://synchronizexim.in' },
                   { name: 'Synchronize 2.0', url: '#' },
                   { name: 'Synchronize 1.0', url: '#' }
                 ].map((edition, i) => (
