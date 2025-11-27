@@ -6,28 +6,46 @@ import MagneticButton from './MagneticButton';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isLargeScreen, setIsLargeScreen] = useState(window.innerWidth >= 1024);
   const navigate = useNavigate();
   const menuRef = useRef(null);
   const linksRef = useRef([]);
   const bgRef = useRef(null);
   const circleRef = useRef(null);
 
+  // Detect screen size changes
+  useEffect(() => {
+    const handleResize = () => {
+      setIsLargeScreen(window.innerWidth >= 1024);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   useEffect(() => {
     const tl = gsap.timeline({ paused: true });
 
     tl.to(bgRef.current, {
       yPercent: 100,
-      duration: 1,
+      duration: isLargeScreen ? 1 : 0.6,
       ease: "power4.inOut"
     })
     .fromTo(linksRef.current, 
-      { y: 100, opacity: 0, rotate: 5 },
-      { y: 0, opacity: 1, rotate: 0, stagger: 0.1, duration: 0.8, ease: "power3.out" },
+      { y: isLargeScreen ? 100 : 50, opacity: 0, rotate: isLargeScreen ? 5 : 0 },
+      { 
+        y: 0, 
+        opacity: 1, 
+        rotate: 0, 
+        stagger: isLargeScreen ? 0.1 : 0.05, 
+        duration: isLargeScreen ? 0.8 : 0.4, 
+        ease: "power3.out" 
+      },
       "-=0.6"
     );
 
     menuRef.current = tl;
-  }, []);
+  }, [isLargeScreen]);
 
   useEffect(() => {
     if (isOpen) {
@@ -59,6 +77,9 @@ const Navbar = () => {
   };
 
   const handleLinkHover = (index) => {
+    // Only apply complex hover effects on large screens
+    if (!isLargeScreen) return;
+    
     gsap.to(linksRef.current, {
       opacity: 0.3,
       scale: 0.95,
@@ -75,6 +96,9 @@ const Navbar = () => {
   };
 
   const handleLinkLeave = () => {
+    // Only apply complex hover effects on large screens
+    if (!isLargeScreen) return;
+    
     gsap.to(linksRef.current, {
       opacity: 1,
       scale: 1,
@@ -135,7 +159,11 @@ const Navbar = () => {
                 onClick={() => handleNavigation(link.path)}
                 onMouseEnter={() => handleLinkHover(index)}
                 onMouseLeave={handleLinkLeave}
-                className="group text-5xl sm:text-6xl md:text-8xl font-display font-black text-transparent bg-clip-text bg-linear-to-r from-white to-white/60 hover:to-cyan-400 transition-all duration-300 cursor-pointer uppercase tracking-tighter italic px-2.5"
+                className={`group text-5xl sm:text-6xl md:text-7xl lg:text-7xl font-display font-black text-transparent bg-clip-text bg-linear-to-r from-white to-white/60 cursor-pointer uppercase tracking-tighter italic px-2.5 ${
+                  isLargeScreen 
+                    ? 'hover:to-cyan-400 transition-all duration-300' 
+                    : 'active:to-cyan-400 transition-colors duration-150'
+                }`}
               >
                 {link.name}
               </button>
