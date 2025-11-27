@@ -262,7 +262,7 @@ const GalleryPage = () => {
                 >
                   <div className="polaroid group">
                     {/* Glow effect */}
-                    <div className={`absolute inset-0 bg-linear-to-br ${image.color} rounded-sm blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10`} />
+                    <div className={`absolute inset-0 bg-linear-to-br ${image.color} rounded-sm blur-xl opacity-0 md:group-hover:opacity-100 transition-opacity duration-500 -z-10`} />
                     
                     {/* Tape effect */}
                     <div className="tape tape-top" />
@@ -292,8 +292,8 @@ const GalleryPage = () => {
                     </div>
 
                     {/* Decorative elements */}
-                    <div className="absolute -top-1 -right-1 w-3 h-3 bg-linear-to-br from-yellow-200 to-yellow-400 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ boxShadow: '0 0 10px rgba(250, 204, 21, 0.5)' }} />
-                    <div className="absolute -bottom-1 -left-1 w-2 h-2 bg-linear-to-br from-pink-200 to-pink-400 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ boxShadow: '0 0 8px rgba(244, 114, 182, 0.5)' }} />
+                    <div className="absolute -top-1 -right-1 w-3 h-3 bg-linear-to-br from-yellow-200 to-yellow-400 rounded-full opacity-0 md:group-hover:opacity-100 transition-opacity duration-300" style={{ boxShadow: '0 0 10px rgba(250, 204, 21, 0.5)' }} />
+                    <div className="absolute -bottom-1 -left-1 w-2 h-2 bg-linear-to-br from-pink-200 to-pink-400 rounded-full opacity-0 md:group-hover:opacity-100 transition-opacity duration-300" style={{ boxShadow: '0 0 8px rgba(244, 114, 182, 0.5)' }} />
                   </div>
                 </div>
               );
@@ -380,13 +380,7 @@ const GalleryPage = () => {
           will-change: transform;
         }
 
-        .polaroid-container:hover {
-          z-index: 10;
-        }
 
-        .polaroid-container:active {
-          cursor: grabbing !important;
-        }
 
         .polaroid {
           background: linear-gradient(145deg, #ffffff, #f5f5f5);
@@ -412,15 +406,37 @@ const GalleryPage = () => {
           border-radius: 2px;
         }
 
-        .polaroid:hover {
-          box-shadow: 
-            0 20px 40px rgba(0, 0, 0, 0.25),
-            0 30px 60px rgba(0, 0, 0, 0.2),
-            0 40px 80px rgba(0, 0, 0, 0.15),
-            inset 0 1px 0 rgba(255, 255, 255, 0.9);
-          transform: scale(1.03) translateY(-5px);
-        }
+        @media (min-width: 768px) {
+          .polaroid-container:hover {
+            z-index: 10;
+          }
 
+          .polaroid-container:active {
+            cursor: grabbing !important;
+          }
+
+          .polaroid:hover {
+            box-shadow: 
+              0 20px 40px rgba(0, 0, 0, 0.25),
+              0 30px 60px rgba(0, 0, 0, 0.2),
+              0 40px 80px rgba(0, 0, 0, 0.15),
+              inset 0 1px 0 rgba(255, 255, 255, 0.9);
+            transform: scale(1.03) translateY(-5px);
+          }
+
+          .polaroid-image-wrapper:hover .polaroid-image {
+            transform: scale(1.08);
+          }
+
+          .polaroid:hover .shine {
+            left: 100%;
+          }
+
+          .polaroid:hover .corner-fold {
+            opacity: 1;
+          }
+        }
+        
         .tape {
           position: absolute;
           width: 60px;
@@ -459,9 +475,7 @@ const GalleryPage = () => {
           pointer-events: none;
         }
 
-        .polaroid-image-wrapper:hover .polaroid-image {
-          transform: scale(1.08);
-        }
+
 
         .shine {
           position: absolute;
@@ -474,9 +488,7 @@ const GalleryPage = () => {
           pointer-events: none;
         }
 
-        .polaroid:hover .shine {
-          left: 100%;
-        }
+
 
         .corner-fold {
           position: absolute;
@@ -491,9 +503,7 @@ const GalleryPage = () => {
           transition: opacity 0.3s;
         }
 
-        .polaroid:hover .corner-fold {
-          opacity: 1;
-        }
+
 
         .polaroid-caption {
           position: absolute;
