@@ -168,8 +168,8 @@ const Navbar = () => {
             <MagneticButton 
                 className={`w-20 h-20 flex items-center justify-center transition-all duration-500 rounded-full group-hover/nav:scale-110`}
             >
-               <div className={`relative w-full h-full flex items-center justify-center transition-transform duration-700 ease-in-out ${isOpen ? 'rotate-360 scale-90' : 'group-hover/nav:rotate-45'}`}>
-                   <ArcReactor className="w-full h-full drop-shadow-[0_0_5px_rgba(0,0,0,0.5)]" />
+               <div className={`relative w-full h-full flex items-center justify-center transition-transform duration-700 ease-in-out ${isOpen ? 'rotate-360 scale-90 cursor-pointer' : 'group-hover/nav:rotate-45 cursor-pointer'}`}>
+                   <ArcReactor className="cursor-pointer w-full h-full drop-shadow-[0_0_5px_rgba(0,0,0,0.5)]" />
                    {/* Core Glow Overlay */}
                    <div className={`absolute inset-0 rounded-full bg-cyan-400 opacity-0 ${isOpen ? 'animate-pulse opacity-30' : 'group-hover/nav:opacity-10'} transition-opacity duration-300 mix-blend-screen`}></div>
                </div>

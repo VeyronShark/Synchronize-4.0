@@ -5,11 +5,12 @@ const ComicShield = forwardRef(({ className, style }, ref) => {
     <div 
       ref={ref} 
       className={`relative inline-block ${className}`}
-      style={{ ...style, width: '300px', height: '300px' }} // Default size, can be overridden
+      style={style}
     >
       <svg 
         viewBox="0 0 100 100" 
         className="w-full h-full drop-shadow-xl"
+        preserveAspectRatio="xMidYMid meet"
         style={{ overflow: 'visible' }}
       >
         {/* Outermost Ring (Red) */}

@@ -2,161 +2,279 @@ import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Linkedin, Twitter, Github, ArrowLeft } from 'lucide-react';
-
+import { Linkedin, Twitter, Github, ArrowLeft, Zap, Shield, Star, Hammer, Crown, Heart } from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
 
+const MARVEL_THEMES = [
+  {
+    name: "iron-man",
+    primary: "#D2161E",
+    secondary: "#FFD700",
+    accent: "#FFFFFF",
+    gradient: "from-[#D2161E] to-[#800000]",
+    icon: Zap,
+    alias: "The Armored Avid"
+  },
+  {
+    name: "captain-america",
+    primary: "#1976D2",
+    secondary: "#FFFFFF",
+    accent: "#D2161E",
+    gradient: "from-[#1976D2] to-[#0D47A1]",
+    icon: Shield,
+    alias: "The First Developer"
+  },
+  {
+    name: "hulk",
+    primary: "#4CAF50",
+    secondary: "#81C784",
+    accent: "#1B5E20",
+    gradient: "from-[#4CAF50] to-[#1B5E20]",
+    icon: Star, // Fist icon not available, Star for power
+    alias: "The Incredible Coder"
+  },
+  {
+    name: "thor",
+    primary: "#00BCD4",
+    secondary: "#B0BEC5",
+    accent: "#FFD700",
+    gradient: "from-[#00BCD4] to-[#006064]",
+    icon: Hammer,
+    alias: "God of Backend"
+  },
+  {
+    name: "black-panther",
+    primary: "#9C27B0",
+    secondary: "#FFD700",
+    accent: "#212121",
+    gradient: "from-[#9C27B0] to-[#4A148C]",
+    icon: Crown,
+    alias: "King of Design"
+  },
+  {
+    name: "black-widow",
+    primary: "#212121",
+    secondary: "#D2161E",
+    accent: "#FFFFFF",
+    gradient: "from-[#424242] to-[#212121]",
+    icon: Heart, // Representing the soul/heart of the team? or Spider if avail.
+    alias: "The Silent Fixer"
+  }
+];
+
+const TeamMemberCard = ({ member, index }) => {
+  const cardRef = useRef(null);
+  const theme = MARVEL_THEMES[index % MARVEL_THEMES.length];
+  const Icon = theme.icon;
+
+  const handleMouseEnter = () => {
+    gsap.to(cardRef.current, {
+      y: -10,
+      scale: 1.02,
+      rotation: Math.random() * 2 - 1,
+      boxShadow: `12px 12px 0px 0px ${theme.primary}`,
+      duration: 0.3,
+      ease: "back.out(1.7)"
+    });
+  };
+
+  const handleMouseLeave = () => {
+    gsap.to(cardRef.current, {
+      y: 0,
+      scale: 1,
+      rotation: 0,
+      boxShadow: "6px 6px 0px 0px #000000",
+      duration: 0.3,
+      ease: "power2.out"
+    });
+  };
+
+  return (
+    <div
+      ref={cardRef}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      className="relative bg-white border-4 border-black p-4 group cursor-pointer h-full"
+      style={{
+        boxShadow: "6px 6px 0px 0px #000000",
+        clipPath: "polygon(2% 0, 100% 0, 100% 98%, 98% 100%, 0 100%, 0 2%)"
+      }}
+    >
+      {/* Comic Corner Accent */}
+      <div 
+        className="absolute top-0 right-0 w-12 h-12 border-l-4 border-b-4 border-black z-10" 
+        style={{ backgroundColor: theme.secondary }}
+      />
+      
+      {/* Image Container */}
+      <div className="relative aspect-square mb-4 border-4 border-black overflow-hidden bg-gray-100">
+        <div className="absolute inset-0 halftone-pattern opacity-20" style={{ '--color-marvel-red': theme.primary }} />
+        <img
+          src={member.image}
+          alt={member.name}
+          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110 filter grayscale group-hover:grayscale-0"
+        />
+        {/* Comic Speed Lines Overlay on Hover */}
+        <div className="absolute inset-0 opacity-0 group-hover:opacity-30 speed-lines transition-opacity duration-300 pointer-events-none" />
+        
+        {/* Alias Badge */}
+        <div 
+          className="absolute bottom-0 left-0 right-0 py-1 px-2 border-t-4 border-black text-center transform translate-y-full group-hover:translate-y-0 transition-transform duration-300"
+          style={{ backgroundColor: theme.secondary }}
+        >
+          <span className="text-xs font-black uppercase tracking-widest text-black">{theme.alias}</span>
+        </div>
+      </div>
+
+      {/* Content */}
+      <div className="relative z-10">
+        <div className="flex items-start justify-between mb-2">
+          <h3 className="text-2xl font-black italic uppercase leading-none" style={{ 
+            color: 'black',
+            textShadow: `2px 2px 0px ${theme.secondary}`
+          }}>
+            {member.name}
+          </h3>
+          <Icon className="w-6 h-6" style={{ color: theme.primary }} />
+        </div>
+
+        <div className="inline-block px-3 py-1 mb-4 border-2 border-black transform -skew-x-12" style={{ backgroundColor: theme.primary }}>
+          <span className="block transform skew-x-12 text-white font-bold text-xs uppercase tracking-wider">
+            {member.role}
+          </span>
+        </div>
+
+        {/* Social Links */}
+        <div className="flex gap-3 mt-4 pt-4 border-t-2 border-dashed border-gray-300">
+          {[
+            { Icon: Linkedin, href: "#" },
+            { Icon: Twitter, href: "#" },
+            { Icon: Github, href: "#" }
+          ].map((social, i) => (
+            <a
+              key={i}
+              href={social.href}
+              className="w-8 h-8 flex items-center justify-center border-2 border-black bg-white hover:-translate-y-1 hover:shadow-[3px_3px_0px_#000] transition-all duration-200"
+            >
+              <social.Icon className="w-4 h-4 text-black" />
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const TeamPage = () => {
   const [loading, setLoading] = useState(true);
-  const titleRef = useRef(null);
-  const cardsRef = useRef([]);
-  const loaderRef = useRef(null);
-
+  const containerRef = useRef(null);
+  
   const teamMembers = [
-    { name: "Kaif Khurshid", role: "Lead Organizer", image: "https://randomuser.me/api/portraits/men/32.jpg", color: "cyan" },
-    { name: "Ishan Roy", role: "Tech Lead", image: "https://randomuser.me/api/portraits/men/44.jpg", color: "purple" },
-    { name: "Manish Nanda", role: "Design Head", image: "https://randomuser.me/api/portraits/men/22.jpg", color: "cyan" },
-    { name: "Simran Osta", role: "Marketing Lead", image: "https://randomuser.me/api/portraits/women/28.jpg", color: "purple" },
-    { name: "Suraj Maharana", role: "Logistics", image: "https://randomuser.me/api/portraits/men/54.jpg", color: "cyan" },
-    { name: "Rhea Bachheti", role: "Sponsorships", image: "https://randomuser.me/api/portraits/women/65.jpg", color: "purple" }
+    { name: "Kaif Khurshid", role: "Lead Organizer", image: "https://randomuser.me/api/portraits/men/32.jpg" },
+    { name: "Ishan Roy", role: "Tech Lead", image: "https://randomuser.me/api/portraits/men/44.jpg" },
+    { name: "Manish Nanda", role: "Design Head", image: "https://randomuser.me/api/portraits/men/22.jpg" },
+    { name: "Simran Osta", role: "Marketing Lead", image: "https://randomuser.me/api/portraits/women/28.jpg" },
+    { name: "Suraj Maharana", role: "Logistics", image: "https://randomuser.me/api/portraits/men/54.jpg" },
+    { name: "Rhea Bachheti", role: "Sponsorships", image: "https://randomuser.me/api/portraits/women/65.jpg" }
   ];
 
   useEffect(() => {
     window.scrollTo(0, 0);
-
-    const loaderTimeline = gsap.timeline({
-      onComplete: () => setLoading(false)
-    });
-
-    loaderTimeline
-      .to(loaderRef.current, {
-        opacity: 0,
-        duration: 0.5,
-        delay: 2.2,
-        ease: "power2.inOut"
-      });
-
+    
+    // Simulating load for animation sync
+    setTimeout(() => setLoading(false), 500);
   }, []);
 
   useEffect(() => {
-    if (!loading) {
-      gsap.fromTo(titleRef.current,
-        { opacity: 0, y: -30 },
-        { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" }
-      );
+    if (!loading && containerRef.current) {
+      const ctx = gsap.context(() => {
+        gsap.from(".team-title-char", {
+          y: 100,
+          opacity: 0,
+          rotateX: -90,
+          stagger: 0.05,
+          duration: 0.8,
+          ease: "back.out(1.7)"
+        });
 
-      gsap.fromTo(cardsRef.current,
-        { opacity: 0, y: 30, scale: 0.9 },
-        {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          duration: 0.6,
-          stagger: 0.08,
-          ease: "back.out(1.2)",
-          delay: 0.2
-        }
-      );
+        gsap.from(".team-card", {
+          y: 100,
+          opacity: 0,
+          scale: 0.8,
+          stagger: 0.1,
+          duration: 0.8,
+          delay: 0.5,
+          ease: "back.out(1.2)"
+        });
+      }, containerRef);
+      return () => ctx.revert();
     }
   }, [loading]);
 
   return (
-    <>
+    <div ref={containerRef} className="min-h-screen bg-white relative overflow-hidden pt-24 pb-20">
+      {/* Comic Background Patterns */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-0 right-0 w-1/2 h-full bg-yellow-400 opacity-5 clip-path-notch" />
+        <div className="absolute bottom-0 left-0 w-1/3 h-2/3 bg-blue-500 opacity-5 rounded-full blur-3xl" />
+        <div className="absolute inset-0 halftone-pattern opacity-10" />
+      </div>
 
-
-      <div className="min-h-screen pt-20 sm:pt-24 pb-8 sm:pb-12 px-4 sm:px-6 relative z-10 overflow-hidden">
-        <div className="absolute top-20 left-4 sm:left-10 w-48 h-48 sm:w-72 sm:h-72 bg-cyan-500/10 rounded-full blur-3xl animate-pulse-slow" />
-        <div className="absolute bottom-20 right-4 sm:right-10 w-64 h-64 sm:w-96 sm:h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse-slow" style={{ animationDelay: '1s' }} />
-      
-      <div className="container mx-auto relative z-10">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 sm:mb-16 gap-4 sm:gap-6">
-          <div ref={titleRef}>
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-display font-bold text-white relative">
-              Meet the <span className="text-transparent bg-clip-text bg-linear-to-r from-cyan-400 via-purple-400 to-cyan-400 animate-gradient-text">Team</span>
-              
-              <div className="absolute -bottom-3 sm:-bottom-4 left-0 w-24 sm:w-32 h-0.5 sm:h-1 bg-linear-to-r from-cyan-400 to-purple-400 rounded-full" />
+      <div className="container mx-auto px-6 relative z-10">
+        {/* Header Section */}
+        <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
+          <div>
+            <div className="inline-block px-4 py-2 border-3 border-black bg-red-600 shadow-[4px_4px_0px_#000] mb-4 transform -rotate-2">
+              <span className="text-white font-black uppercase tracking-widest text-sm">Synchronize 4.0</span>
+            </div>
+            <h1 className="text-6xl md:text-8xl font-black italic uppercase leading-none flex flex-wrap gap-x-4">
+              {"MEET THE SQUAD".split(" ").map((word, i) => (
+                <span key={i} className="flex">
+                  {word.split("").map((char, j) => (
+                    <span key={j} className="team-title-char inline-block text-transparent bg-clip-text bg-linear-to-b from-black to-gray-800 drop-shadow-[4px_4px_0px_rgba(200,200,200,1)]">
+                      {char}
+                    </span>
+                  ))}
+                </span>
+              ))}
             </h1>
-            <p className="text-gray-400 mt-6 sm:mt-8 text-base sm:text-lg">The brilliant minds behind Synchronize 4.0</p>
+            <p className="mt-6 text-xl font-bold text-gray-600 max-w-2xl bg-white/80 backdrop-blur-xs p-4 border-l-4 border-black">
+              "Heroes aren't born. They're built, one commit at a time."
+            </p>
           </div>
-          
-          <Link 
-            to="/" 
-            className="group px-6 sm:px-8 py-3 sm:py-4 border-2 border-cyan-400/30 rounded-full text-white hover:border-cyan-400 hover:bg-cyan-400/10 transition-all backdrop-blur-sm relative overflow-hidden text-sm sm:text-base"
+
+          <Link
+            to="/"
+            className="group relative px-8 py-4 bg-black text-white font-black text-xl uppercase tracking-wider hover:-translate-y-1 hover:shadow-[6px_6px_0px_#ED1D24] transition-all duration-200 border-2 border-transparent hover:border-black"
           >
-            <span className="relative z-10 flex items-center gap-2">
-              <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5 transform group-hover:-translate-x-1 transition-transform" />
-              Back to Home
+            <span className="flex items-center gap-2">
+              <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
+              HQ Return
             </span>
-            <div className="absolute inset-0 bg-linear-to-r from-transparent via-cyan-400/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+        {/* Team Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 pb-12">
           {teamMembers.map((member, index) => (
-            <div 
-              key={index} 
-              ref={el => cardsRef.current[index] = el}
-              className="group relative cursor-pointer glass-card p-6 sm:p-8 rounded-xl sm:rounded-2xl flex flex-col items-center text-center hover:border-cyan-400/50 transition-all duration-500 overflow-hidden"
-            >
-              <div className={`absolute inset-0 bg-linear-to-br ${member.color === 'cyan' ? 'from-cyan-500/0 to-cyan-500/10' : 'from-purple-500/0 to-purple-500/10'} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
-              
-              <div className="relative z-10 flex flex-col items-center">
-                <div className="relative mb-4 sm:mb-6">
-                  <div className={`absolute inset-0 rounded-full ${member.color === 'cyan' ? 'bg-cyan-400' : 'bg-purple-400'} blur-xl opacity-0 group-hover:opacity-50 transition-opacity duration-500`} />
-                  
-                  <div className={`relative w-28 h-28 sm:w-32 sm:h-32 md:w-36 md:h-36 rounded-full overflow-hidden border-3 sm:border-4 ${member.color === 'cyan' ? 'border-cyan-400/30 group-hover:border-cyan-400' : 'border-purple-400/30 group-hover:border-purple-400'} transition-all duration-500 shadow-2xl`}>
-                    <img 
-                      src={member.image} 
-                      alt={member.name} 
-                      className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700"
-                    />
-                    
-                    <div className={`absolute inset-0 bg-linear-to-t ${member.color === 'cyan' ? 'from-cyan-400/20' : 'from-purple-400/20'} to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
-                  </div>
-                </div>
-
-                <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-2 group-hover:scale-105 transition-transform duration-300">
-                  {member.name}
-                </h3>
-                
-                <div className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-full ${member.color === 'cyan' ? 'bg-cyan-400/10 border border-cyan-400/30 text-cyan-400' : 'bg-purple-400/10 border border-purple-400/30 text-purple-400'} font-sans tracking-wider uppercase text-[10px] sm:text-xs font-semibold group-hover:shadow-lg transition-all duration-300`}>
-                  {member.role}
-                </div>
-
-                <div className="flex space-x-2 sm:space-x-3 mt-4 sm:mt-6 opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity duration-500">
-                  <a 
-                    href="#"
-                    className={`w-7 h-7 sm:w-8 sm:h-8 rounded-lg ${member.color === 'cyan' ? 'bg-cyan-400/10 hover:bg-cyan-400/20 border-cyan-400/30' : 'bg-purple-400/10 hover:bg-purple-400/20 border-purple-400/30'} border flex items-center justify-center cursor-pointer transform hover:scale-110 transition-all`}
-                  >
-                    <Linkedin className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                  </a>
-                  <a 
-                    href="#"
-                    className={`w-7 h-7 sm:w-8 sm:h-8 rounded-lg ${member.color === 'cyan' ? 'bg-cyan-400/10 hover:bg-cyan-400/20 border-cyan-400/30' : 'bg-purple-400/10 hover:bg-purple-400/20 border-purple-400/30'} border flex items-center justify-center cursor-pointer transform hover:scale-110 transition-all`}
-                    style={{ transitionDelay: '50ms' }}
-                  >
-                    <Twitter className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                  </a>
-                  <a 
-                    href="#"
-                    className={`w-7 h-7 sm:w-8 sm:h-8 rounded-lg ${member.color === 'cyan' ? 'bg-cyan-400/10 hover:bg-cyan-400/20 border-cyan-400/30' : 'bg-purple-400/10 hover:bg-purple-400/20 border-purple-400/30'} border flex items-center justify-center cursor-pointer transform hover:scale-110 transition-all`}
-                    style={{ transitionDelay: '100ms' }}
-                  >
-                    <Github className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                  </a>
-                </div>
-              </div>
-
-              <div className={`absolute top-3 right-3 sm:top-4 sm:right-4 w-6 h-6 sm:w-8 sm:h-8 border-t-2 border-r-2 ${member.color === 'cyan' ? 'border-cyan-400/20' : 'border-purple-400/20'} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
-              <div className={`absolute bottom-3 left-3 sm:bottom-4 sm:left-4 w-6 h-6 sm:w-8 sm:h-8 border-b-2 border-l-2 ${member.color === 'cyan' ? 'border-cyan-400/20' : 'border-purple-400/20'} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
+            <div key={index} className="team-card h-full">
+              <TeamMemberCard member={member} index={index} />
             </div>
           ))}
         </div>
-      </div>
+        
+        {/* Comic Footer Decoration */}
+        <div className="mt-12 text-center">
+            <div className="inline-block px-12 py-6 bg-yellow-400 border-4 border-black shadow-[8px_8px_0px_#000] transform rotate-1">
+                <span className="text-2xl font-black uppercase italic tracking-wider">
+                    MORE HEROES INCOMING...
+                </span>
+            </div>
+        </div>
 
       </div>
-    </>
+    </div>
   );
 };
 

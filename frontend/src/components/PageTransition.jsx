@@ -92,7 +92,7 @@ const HERO_DATA = [
   }
 ];
 
-export default function PageTransition({ children }) {
+export default function PageTransition({ children, skipInitial = false }) {
   const location = useLocation();
   
   // State for current transition content
@@ -107,6 +107,7 @@ export default function PageTransition({ children }) {
   const heroRef = useRef(null);
   const bgImageRef = useRef(null);
   const tlRef = useRef(null);
+  const isFirstRender = useRef(true);
 
   // Helper to get random item
   const getRandom = (arr) => arr[Math.floor(Math.random() * arr.length)];
@@ -114,6 +115,15 @@ export default function PageTransition({ children }) {
   useEffect(() => {
     // Cleanup previous timeline
     if (tlRef.current) tlRef.current.kill();
+
+    // Check if we should skip the initial transition
+    if (isFirstRender.current && skipInitial) {
+        isFirstRender.current = false;
+        // Ensure overlay is hidden
+        gsap.set(overlayRef.current, { display: 'none' });
+        return;
+    }
+    isFirstRender.current = false;
 
     // 1. Select Random Hero
     // To ensure variety, we could potentially check against previous hero, but random is okay for now.
@@ -199,7 +209,7 @@ export default function PageTransition({ children }) {
     return () => {
       if (tlRef.current) tlRef.current.kill();
     };
-  }, [location.pathname]);
+  }, [location.pathname, skipInitial]);
 
   return (
     <>
@@ -208,7 +218,9 @@ export default function PageTransition({ children }) {
         className={`fixed inset-0 pointer-events-none flex flex-col items-center justify-center overflow-hidden ${content.bgColor} border-r-8 border-l-8 border-black`}
         style={{ 
           zIndex: 9999,
-          position: 'fixed'
+          position: 'fixed',
+          // If we want to skip the initial transition, hide it immediately
+          display: (isFirstRender.current && skipInitial) ? 'none' : 'flex'
         }}
       >
         {/* Comic BG Pattern */}
