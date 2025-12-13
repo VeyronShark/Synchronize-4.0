@@ -442,7 +442,99 @@ body.modal-open .navbar-main {
   text-shadow: 0 0 5px #00F2FF;
 }
 
-.text-stroke-gold {
-  -webkit-text-stroke: 1px #FFD700;
-  text-shadow: 2px 2px 0px #AA0505;
+
+/* Spider-Verse Theme Utilities */
+.spidey-bg {
+  background-color: #0a0a0a;
+  background-image: 
+    radial-gradient(circle at 15% 50%, rgba(220, 38, 38, 0.15) 0%, transparent 25%),
+    radial-gradient(circle at 85% 30%, rgba(37, 99, 235, 0.15) 0%, transparent 25%);
 }
+
+.halftone-overlay {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+  background-size: 20px 20px;
+  mask-image: linear-gradient(to bottom, black, transparent);
+}
+
+.glitch-text {
+  position: relative;
+  text-shadow: 
+    2px 2px 0px #FF0055, /* Spider-Gwen Pink/Red */
+    -2px -2px 0px #00F2FF; /* Cyber Blue */
+  animation: glitch-skew 3s infinite linear alternate-reverse;
+}
+
+.glitch-text::before,
+.glitch-text::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.8;
+}
+
+.glitch-text::before {
+  color: #FF0055;
+  clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+  transform: translate(-2px, -2px);
+  animation: glitch-anim-1 2.5s infinite linear alternate-reverse;
+}
+
+.glitch-text::after {
+  color: #00F2FF;
+  clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%);
+  transform: translate(2px, 2px);
+  animation: glitch-anim-2 3s infinite linear alternate-reverse;
+}
+
+@keyframes glitch-skew {
+  0% { transform: skew(0deg); }
+  20% { transform: skew(-2deg); }
+  40% { transform: skew(2deg); }
+  60% { transform: skew(0deg); }
+  80% { transform: skew(-1deg); }
+  100% { transform: skew(1deg); }
+}
+
+@keyframes glitch-anim-1 {
+  0% { clip-path: inset(20% 0 80% 0); transform: translate(-2px, 2px); }
+  20% { clip-path: inset(60% 0 10% 0); transform: translate(2px, -2px); }
+  40% { clip-path: inset(40% 0 50% 0); transform: translate(-2px, 2px); }
+  60% { clip-path: inset(80% 0 5% 0); transform: translate(2px, -2px); }
+  80% { clip-path: inset(10% 0 70% 0); transform: translate(-2px, 2px); }
+  100% { clip-path: inset(30% 0 50% 0); transform: translate(2px, -2px); }
+}
+
+@keyframes glitch-anim-2 {
+  0% { clip-path: inset(10% 0 60% 0); transform: translate(2px, -2px); }
+  20% { clip-path: inset(80% 0 10% 0); transform: translate(-2px, 2px); }
+  40% { clip-path: inset(30% 0 40% 0); transform: translate(2px, -2px); }
+  60% { clip-path: inset(60% 0 20% 0); transform: translate(-2px, 2px); }
+  80% { clip-path: inset(20% 0 50% 0); transform: translate(2px, -2px); }
+  100% { clip-path: inset(50% 0 30% 0); transform: translate(-2px, 2px); }
+}
+
+.comic-card-border {
+  clip-path: polygon(
+    2% 0%, 98% 0%, 
+    100% 2%, 100% 98%, 
+    98% 100%, 2% 100%, 
+    0% 98%, 0% 2%
+  );
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.comic-card-border:hover {
+  clip-path: polygon(
+    0% 0%, 100% 0%, 
+    100% 0%, 100% 100%, 
+    100% 100%, 0% 100%, 
+    0% 100%, 0% 0%
+  );
+  transform: scale(1.02) rotate(-1deg);
+  box-shadow: 10px 10px 0px rgba(230, 36, 41, 0.8);
+}
+

@@ -1,8 +1,19 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import gsap from 'gsap';
-import { ChevronDown } from 'lucide-react';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { ChevronDown, Calendar, MapPin, Trophy } from 'lucide-react';
 import EventDetailsCard from '../components/EventDetailsCard';
+import ComicSticker from '../components/ComicSticker';
 
+// Asset Imports
+import ironManImg from '../assets/iron_man.png';
+import spiderManImg from '../assets/spidey_swinging.png';
+import thorImg from '../assets/thor.png';
+import hulkImg from '../assets/hulk.png';
+import blackPantherImg from '../assets/black_panther.png';
+import capAmericaImg from '../assets/captain_america.png';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const eventsData = {
   flagship: [
@@ -173,75 +184,269 @@ const eventsData = {
   ]
 };
 
+const categories = [
+  { 
+    id: 'all', 
+    name: 'All Events',
+    character: "Avengers",
+    bgImage: capAmericaImg, // Default hero
+    theme: {
+      bg: 'bg-gradient-to-br from-blue-700 via-red-600 to-white',
+      border: 'border-blue-900',
+      accent: 'text-blue-500',
+      shadow: 'shadow-blue-900/50',
+      icon: '🛡️',
+      gradient: "from-blue-600 to-red-600"
+    }
+  },
+  { 
+    id: 'flagship', 
+    name: 'Flagship',
+    character: "Iron Man",
+    bgImage: ironManImg,
+    theme: {
+      bg: 'bg-gradient-to-br from-red-600 via-yellow-500 to-yellow-200',
+      border: 'border-red-900',
+      accent: 'text-yellow-400',
+      shadow: 'shadow-red-900/50',
+      icon: '⚡',
+      gradient: "from-red-600 to-yellow-500"
+    }
+  },
+  { 
+    id: 'coding', 
+    name: 'Coding',
+    character: "Spider-Man",
+    bgImage: spiderManImg,
+    theme: {
+      bg: 'bg-gradient-to-br from-red-600 via-blue-600 to-blue-800',
+      border: 'border-blue-900',
+      accent: 'text-red-500',
+      shadow: 'shadow-red-900/50',
+      icon: '🕸️',
+      gradient: "from-red-500 to-blue-600"
+    }
+  },
+  { 
+    id: 'robotics', 
+    name: 'Robotics',
+    character: "Thor",
+    bgImage: thorImg,
+    theme: {
+      bg: 'bg-gradient-to-br from-slate-700 via-cyan-500 to-yellow-200',
+      border: 'border-slate-800',
+      accent: 'text-cyan-400',
+      shadow: 'shadow-cyan-500/50',
+      icon: '🔨',
+      gradient: "from-slate-600 to-cyan-400"
+    }
+  },
+  { 
+    id: 'gaming', 
+    name: 'Gaming',
+    character: "Hulk",
+    bgImage: hulkImg,
+    theme: {
+      bg: 'bg-gradient-to-br from-green-700 via-green-500 to-purple-700', 
+      border: 'border-green-900',
+      accent: 'text-green-400',
+      shadow: 'shadow-green-900/50',
+      icon: '🎮',
+      gradient: "from-green-700 to-purple-700"
+    }
+  },
+  { 
+    id: 'creative', 
+    name: 'Creative',
+    character: "Black Panther",
+    bgImage: blackPantherImg,
+    theme: {
+      bg: 'bg-gradient-to-br from-purple-900 via-purple-700 to-black',
+      border: 'border-purple-900',
+      accent: 'text-purple-400',
+      shadow: 'shadow-purple-900/50',
+      icon: '🎨',
+      gradient: "from-purple-900 to-black"
+    }
+  }
+];
 
+const HeroBadge = () => {
+    // Generate a random-looking comic badge using SVGs
+    const badges = [
+        // Spider
+        <svg viewBox="0 0 24 24" className="w-full h-full text-white fill-current" key="spider">
+             <path d="M12 2c-5.5 0-10 4.5-10 10s4.5 10 10 10 10-4.5 10-10-4.5-10-10-10zm0 18c-4.4 0-8-3.6-8-8s3.6-8 8-8 8 3.6 8 8-3.6 8-8 8zm-1-13h2v4h-2zm-3 3h8v2h-8z"/>
+             <circle cx="12" cy="12" r="3" className="text-red-600 fill-red-600"/>
+        </svg>,
+        // Star
+        <svg viewBox="0 0 24 24" className="w-full h-full text-yellow-400 fill-current" key="star">
+             <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke="black" strokeWidth="2"/>
+        </svg>,
+        // Bolt
+        <svg viewBox="0 0 24 24" className="w-full h-full text-yellow-400 fill-current" key="bolt">
+             <path d="M11 21v-6H7v-4h3V7h4v4h4v6h-3v4h-4z" stroke="black" strokeWidth="2"/>
+             <path d="M7 2v11h3v9l7-12h-4l4-8z"/>
+        </svg>,
+        // Shield
+        <svg viewBox="0 0 24 24" className="w-full h-full text-blue-600 fill-current" key="shield">
+             <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v10h-2z" />
+             <path d="M12 4l-8 4v6c0 5.5 4.5 10 10 10s10-4.5 10-10V8l-8-4z" className="text-white fill-white"/>
+             <path d="M12 6l-6 3v5c0 4 3 7 7 7s7-3 7-7V9l-6-3z" className="text-blue-600 fill-blue-600"/>
+             <path d="M12 8l-4 2v3c0 2.5 2 4.5 4 4.5s4-2 4-4.5V10l-4-2z" className="text-white fill-white"/>
+             <path d="M12 10.5l-1.5 0.8V12.5c0 1 0.7 2 1.5 2s1.5-1 1.5-2v-1.2l-1.5-0.8z" className="text-blue-600 fill-blue-600"/>
+        </svg>
+    ];
+
+    const randomBadge = useMemo(() => badges[Math.floor(Math.random() * badges.length)], []);
+
+    return (
+        <div className="w-10 h-10 drop-shadow-[2px_2px_0px_#000]">
+            {randomBadge}
+        </div>
+    );
+};
 
 const EventCard = ({ event, onClick }) => {
-  const handleClick = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    onClick();
-  };
+  const cardRef = useRef(null);
+  const categoryTheme = categories.find(c => c.name === event.category)?.theme || categories[0].theme;
+
   const handleMouseMove = (e) => {
-    const card = e.currentTarget;
+    const card = cardRef.current;
+    if (!card) return;
+    
     const rect = card.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
+    
     const centerX = rect.width / 2;
     const centerY = rect.height / 2;
-    const rotateX = (y - centerY) / 30;
-    const rotateY = (centerX - x) / 30;
+    
+    const rotateX = ((y - centerY) / centerY) * -8;
+    const rotateY = ((x - centerX) / centerX) * 8;
     
     gsap.to(card, {
       rotateX: rotateX,
       rotateY: rotateY,
-      scale: 1.02,
-      duration: 0.4,
+      scale: 1.05,
+      duration: 0.1, // Snappier response
       ease: "power2.out",
       transformPerspective: 1000
     });
   };
 
-  const handleMouseLeave = (e) => {
-    gsap.to(e.currentTarget, {
+  const handleMouseLeave = () => {
+    if (!cardRef.current) return;
+    gsap.to(cardRef.current, {
       rotateX: 0,
       rotateY: 0,
       scale: 1,
-      duration: 0.6,
-      ease: "power2.out"
+      duration: 0.5,
+      ease: "elastic.out(1, 0.5)"
     });
   };
 
   return (
     <div
-      className="group relative overflow-hidden rounded-xl border border-white/10 cursor-pointer bg-black"
+      ref={cardRef}
+      className={`group relative cursor-pointer h-full transition-all duration-300 z-10`}
       style={{ transformStyle: 'preserve-3d' }}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      onClick={handleClick}
+      onClick={onClick}
     >
-      <div className="relative h-64 overflow-hidden">
-        <img
-          src={event.image}
-          alt={event.title}
-          className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110"
-        />
-        <div className="absolute inset-0 bg-linear-to-t from-black via-black/50 to-transparent opacity-80 group-hover:opacity-90 transition-opacity"></div>
-        
-        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-          <div className="absolute inset-0 bg-linear-to-t from-cyan-500/20 via-transparent to-transparent"></div>
-        </div>
+      {/* NEW: Generated Comic Sticker Overlay (Top Left) */}
+      <div className="absolute -top-7 -left-8 z-50 w-16 h-16 filter drop-shadow-[5px_5px_0px_rgba(0,0,0,0.5)] transform -rotate-12 hover:scale-110 hover:-rotate-6 transition-all duration-300 pointer-events-none">
+         <ComicSticker />
       </div>
 
-      <div className="absolute bottom-0 left-0 p-6 w-full">
-        <span className="text-cyan-400 text-xs uppercase tracking-wider mb-2 block">{event.category}</span>
-        <h3 className="text-xl font-display font-bold text-white mb-2 group-hover:text-cyan-50 transition-colors">{event.title}</h3>
-        <p className="text-gray-400 text-sm mb-3 line-clamp-2">{event.description}</p>
-        <div className="flex items-center gap-2 text-cyan-400 text-sm font-medium">
-          <span>View Details</span>
-          <svg className="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-          </svg>
+      {/* Dynamic Sizing for "Comic Book" feel */}
+      <div className={`relative h-full bg-white border-4 border-black shadow-[8px_8px_0px_#000] flex flex-col group-hover:shadow-[16px_16px_0px_#000] transition-shadow duration-300 overflow-hidden`}>
+        
+        {/* Comic Header Strip */}
+        <div className="bg-red-600 border-b-4 border-black p-1 flex justify-between items-center relative z-20">
+           <div className="flex items-center gap-2 pl-4"> 
+              {/* OLD LOGO REMOVED from here */}
+              <div className="flex flex-col leading-none">
+                 <span className="text-[10px] font-black uppercase text-white tracking-widest">Marvelous</span>
+                 <span className="text-xs font-black uppercase text-yellow-400 tracking-tighter">Events #00{Array.isArray(event.day) ? event.day[0] : event.day}</span>
+              </div>
+           </div>
+           <div className="bg-white px-2 border-2 border-black transform -rotate-2">
+              <span className="text-xs font-black uppercase text-black">Dec 2024</span>
+           </div>
         </div>
+
+        {/* Main Image Area with Cover Art Style */}
+        <div className="relative h-64 border-b-4 border-black overflow-hidden bg-black">
+          <img
+            src={event.image}
+            alt={event.title}
+            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110 group-hover:contrast-125"
+          />
+          
+          {/* Cover Overlay Gradients */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80"></div>
+          
+          {/* Halftone / Comic Texture */}
+          <div className="absolute inset-0 bg-[radial-gradient(circle,transparent_20%,#000_120%)] opacity-50 mix-blend-multiply"></div>
+          <div className="absolute inset-0 halftone-pattern opacity-10 pointer-events-none"></div>
+
+          {/* Action Burst Badge (Top Right Image) */}
+          <div className="absolute top-4 right-4 z-20 transform rotate-12 group-hover:rotate-[20deg] transition-transform duration-300">
+             <HeroBadge />
+          </div>
+
+          {/* Title on Structure */}
+          <div className="absolute bottom-4 left-2 right-2 z-20">
+             <h3 className="text-3xl font-display font-black text-white uppercase italic leading-[0.85] tracking-tighter" 
+                 style={{ 
+                    WebkitTextStroke: '1.5px black', 
+                    textShadow: `3px 3px 0px ${categoryTheme.accent.replace('text-', '').replace('-500', '') === 'yellow-400' ? '#D2161E' : '#000'}`
+                 }}>
+               {event.title}
+             </h3>
+          </div>
+        </div>
+
+        {/* Content Box - "The Story" */}
+        <div className="flex-1 bg-white p-4 relative">
+             <div className="absolute top-0 right-0 p-1 bg-black text-white text-[10px] font-bold border-l-2 border-b-2 border-black">
+                VOL. {event.id}
+             </div>
+             
+             {/* Description Bubble */}
+             <div className="mb-4 bg-[#f0f0f0] border-2 border-black p-3 relative rounded-xl rounded-tl-none">
+                 <p className="text-sm font-bold font-comic text-black leading-tight line-clamp-3">
+                    {event.description}
+                 </p>
+                 <div className="absolute top-0 -left-[2px] w-4 h-4 bg-[#f0f0f0] border-l-2 border-t-2 border-black transform -skew-x-12 origin-bottom-right"></div>
+             </div>
+
+             {/* Stats Grid */}
+             <div className="grid grid-cols-2 gap-2 mt-auto">
+                 <div className="flex items-center gap-1 border-2 border-black p-1 bg-yellow-200 shadow-[2px_2px_0px_#000]">
+                    <Calendar className="w-4 h-4 text-black" />
+                    <span className="text-xs font-black uppercase text-black">{event.date}</span>
+                 </div>
+                 <div className="flex items-center gap-1 border-2 border-black p-1 bg-blue-200 shadow-[2px_2px_0px_#000]">
+                    <MapPin className="w-4 h-4 text-black" />
+                    <span className="text-xs font-black uppercase text-black truncate">{event.venue}</span>
+                 </div>
+             </div>
+
+             <div className="mt-4 pt-3 border-t-2 border-dashed border-gray-400 flex justify-between items-center group/btn">
+                  <span className="font-black italic text-lg text-black group-hover:text-red-600 transition-colors">
+                     {event.prize}
+                  </span>
+                  <button className="px-4 py-1 bg-black text-white font-black uppercase text-sm border-2 border-transparent hover:bg-red-600 hover:border-black transition-all transform hover:-rotate-2 hover:scale-110 shadow-[2px_2px_0px_#ccc]">
+                      Details
+                  </button>
+             </div>
+        </div>
+
+        {/* Corner Art */}
+        <div className="absolute bottom-0 right-0 w-8 h-8 bg-black clip-path-notch z-30 opacity-20"></div>
       </div>
     </div>
   );
@@ -253,17 +458,7 @@ const EventsPage = () => {
   const [selectedDay, setSelectedDay] = useState('all');
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const loaderRef = useRef(null);
   const dropdownRef = useRef(null);
-
-  const categories = [
-    { id: 'all', name: 'All Events' },
-    { id: 'flagship', name: 'Flagship' },
-    { id: 'coding', name: 'Coding' },
-    { id: 'robotics', name: 'Robotics' },
-    { id: 'gaming', name: 'Gaming' },
-    { id: 'creative', name: 'Creative' }
-  ];
 
   const getFilteredEvents = () => {
     let events = [];
@@ -273,7 +468,6 @@ const EventsPage = () => {
       events = eventsData[selectedCategory] || [];
     }
     
-    // Filter by day if a specific day is selected
     if (selectedDay !== 'all') {
       const dayNumber = parseInt(selectedDay);
       events = events.filter(event => {
@@ -289,24 +483,16 @@ const EventsPage = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-
-    const loaderTimeline = gsap.timeline({
-      onComplete: () => setLoading(false)
-    });
-
-    loaderTimeline.to(loaderRef.current, {
-      opacity: 0,
-      duration: 0.5,
-      delay: 2.2,
-      ease: "power2.inOut"
-    });
+    // Simple mock loading
+    setTimeout(() => setLoading(false), 800);
   }, []);
 
+  // Animation for entering cards
   useEffect(() => {
     if (!loading) {
       gsap.fromTo('.event-card',
-        { y: 50, opacity: 0 },
-        { y: 0, opacity: 1, stagger: 0.1, duration: 0.6, ease: 'power2.out' }
+        { y: 50, opacity: 0, scale: 0.9 },
+        { y: 0, opacity: 1, scale: 1, stagger: 0.1, duration: 0.4, ease: 'back.out(1.7)' }
       );
     }
   }, [selectedCategory, selectedDay, loading]);
@@ -317,101 +503,177 @@ const EventsPage = () => {
         setIsDropdownOpen(false);
       }
     };
-
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
+  
+  // Background transition logic
+  const currentBg = useMemo(() => {
+    return categories.find(c => c.id === selectedCategory)?.bgImage || capAmericaImg;
+  }, [selectedCategory]);
 
   return (
     <>
-
-
-      <div className="min-h-screen text-white pt-24 sm:pt-28 md:pt-32 pb-12 sm:pb-16 md:pb-20 relative z-10 overflow-hidden">
-        <div className="absolute top-20 right-4 sm:right-10 w-64 h-64 sm:w-96 sm:h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse-slow" />
-        <div className="absolute bottom-20 left-4 sm:left-10 w-48 h-48 sm:w-72 sm:h-72 bg-cyan-500/10 rounded-full blur-3xl animate-pulse-slow" style={{ animationDelay: '1.5s' }} />
+      <div className="min-h-screen bg-[#111] pt-24 pb-20 relative overflow-hidden transition-all duration-700">
         
+        {/* Dynamic Character Background */}
+        <div className="fixed inset-0 z-0">
+             {/* Base Dimmer */}
+             <div className="absolute inset-0 bg-black z-0"></div>
+             
+             {/* Character Image Layer */}
+             <div className="absolute inset-0 transition-opacity duration-1000 ease-in-out opacity-40">
+                <img 
+                    src={currentBg} 
+                    alt="Background" 
+                    className="w-full h-full object-cover object-center filter grayscale contrast-125"
+                />
+             </div>
+             
+             {/* Comic Effects Overlay */}
+             <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_30%,#000_100%)]"></div>
+             <div className="absolute inset-0 halftone-pattern opacity-10"></div>
+             
+             {/* Tint Overlay based on Category */}
+             <div className={`
+                 absolute inset-0 mix-blend-color opacity-60 transition-all duration-700
+                 ${categories.find(c => c.id === selectedCategory)?.theme.bg || 'bg-gradient-to-br from-blue-700 via-red-600 to-white'}
+             `}></div>
+             
+             {/* Extra Gradient Wash for vibrancy */}
+             <div className={`
+                 absolute inset-0 mix-blend-overlay opacity-40 transition-all duration-700
+                 ${categories.find(c => c.id === selectedCategory)?.theme.bg || 'bg-gradient-to-br from-blue-700 via-red-600 to-white'}
+             `}></div>
+        </div>
+
         <div className="container mx-auto px-4 sm:px-6 relative z-10">
-        <div className="text-center mb-12 sm:mb-16">
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-display font-bold mb-4 sm:mb-6">
-            Our <span className="text-cyan-400">Events</span>
-          </h1>
-          <p className="text-gray-400 text-sm sm:text-base md:text-lg max-w-2xl mx-auto px-4">
-            Explore our diverse range of technical and creative events. Find your passion and register now!
-          </p>
-        </div>
+            {/* Header Section - Comic Title */}
+            <div className="text-center mb-16 relative">
+                {/* "Stan Lee" Style Intro Box */}
+                <div className="inline-block bg-white border-4 border-black p-2 mb-6 transform -rotate-2 shadow-[4px_4px_0px_#000]">
+                   <span className="text-black font-black uppercase tracking-widest text-sm sm:text-base">
+                      Synchronize Presents
+                   </span>
+                </div>
 
-        <div className="flex flex-wrap justify-center gap-2 sm:gap-3 md:gap-4 mb-8 sm:mb-12 px-4">
-          {categories.map((category) => (
-            <button
-              key={category.id}
-              onClick={() => setSelectedCategory(category.id)}
-              className={`px-4 sm:px-5 md:px-6 py-2 sm:py-2.5 md:py-3 rounded-full font-semibold text-sm sm:text-base transition-all duration-300 cursor-pointer ${
-                selectedCategory === category.id
-                  ? 'bg-cyan-400 text-black shadow-lg shadow-cyan-400/50'
-                  : 'bg-white/5 text-white hover:bg-white/10 border border-white/10'
-              }`}
-            >
-              {category.name}
-            </button>
-          ))}
-        </div>
-
-        {/* Day Filter Dropdown */}
-        <div className="flex justify-center mb-8 sm:mb-12 px-4">
-          <div className="relative" ref={dropdownRef}>
-            <button
-              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-              className="cursor-pointer px-6 sm:px-8 md:px-10 pr-12 sm:pr-14 md:pr-16 py-3 sm:py-2.5 md:py-3 bg-purple-400/10 hover:bg-purple-400/20 border-2 border-purple-400 text-purple-400 rounded-full text-base sm:text-lg font-semibold transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-purple-400/50 backdrop-blur-sm shadow-lg shadow-purple-400/20 relative flex items-center gap-2"
-            >
-              <span>
-                {selectedDay === 'all' ? 'All Days' : `Day ${selectedDay}`}
-              </span>
-              <ChevronDown 
-                className={`absolute right-4 sm:right-5 md:right-6 w-5 h-5 transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : ''}`}
-              />
-            </button>
-
-            {isDropdownOpen && (
-              <div className="absolute top-full mt-2 w-full min-w-[200px] bg-black/95 backdrop-blur-md border-2 border-purple-400/50 rounded-2xl shadow-2xl shadow-purple-400/30 overflow-hidden z-50 animate-fadeIn">
-                {[
-                  { value: 'all', label: 'All Days' },
-                  { value: '1', label: 'Day 1' },
-                  { value: '2', label: 'Day 2' },
-                  { value: '3', label: 'Day 3' }
-                ].map((option) => (
-                  <button
-                    key={option.value}
-                    onClick={() => {
-                      setSelectedDay(option.value);
-                      setIsDropdownOpen(false);
-                    }}
-                    className={`cursor-pointer w-full px-6 py-3 text-left transition-all duration-200 ${
-                      selectedDay === option.value
-                        ? 'bg-purple-400/20 text-purple-300 font-semibold'
-                        : 'text-purple-400 hover:bg-purple-400/10 hover:text-purple-300'
-                    }`}
-                  >
-                    {option.label}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-          {getFilteredEvents().map((event) => (
-            <div key={event.id} className="event-card">
-              <EventCard event={event} onClick={() => setSelectedEvent(event)} />
+                <div className="relative inline-block">
+                    <h1 className="text-7xl sm:text-8xl md:text-9xl font-display font-black text-marvel-red mb-2 tracking-tighter relative z-10 italic" 
+                        style={{ 
+                            WebkitTextStroke: '3px black', 
+                            textShadow: '10px 10px 0px #000' 
+                        }}>
+                        EVENTS
+                    </h1>
+                </div>
+                
+                <div className="max-w-2xl mx-auto mt-6 bg-yellow-400 border-4 border-black p-4 shadow-[8px_8px_0px_#000] transform rotate-1">
+                    <p className="text-black text-lg sm:text-xl font-bold font-comic uppercase tracking-tight leading-tight">
+                        "CHOOSE YOUR ALLIANCE. MASTER YOUR ABILITIES. CONQUER THE CHALLENGE!"
+                    </p>
+                </div>
             </div>
-          ))}
+
+            {/* Filter Roster - New "Character Card" Style */}
+            {/* Filter Roster - Comic Buttons */}
+            <div className="mb-16">
+                <div className="flex flex-wrap justify-center gap-4">
+                {categories.map((category) => (
+                    <button
+                    key={category.id}
+                    onClick={() => setSelectedCategory(category.id)}
+                    className={`
+                        px-8 py-3 font-black uppercase tracking-wider text-lg sm:text-xl
+                        border-4 border-black shadow-[5px_5px_0px_#000]
+                        transition-all duration-200 transform clip-path-slant
+                        ${selectedCategory === category.id 
+                            ? `${category.theme.bg} text-white -rotate-2 scale-110 z-10 shadow-[8px_8px_0px_#000]` 
+                            : 'bg-white text-black hover:bg-black hover:text-white hover:rotate-1 hover:shadow-[8px_8px_0px_#000] hover:-translate-y-1'}
+                    `}
+                    style={{
+                        clipPath: 'polygon(5% 0%, 100% 0%, 95% 100%, 0% 100%)',
+                        textShadow: selectedCategory === category.id ? '2px 2px 0px #000' : 'none'
+                    }}
+                    >
+                        {category.name}
+                    </button>
+                ))}
+                </div>
+            </div>
+
+            {/* Controls Bar */}
+            <div className="flex flex-col md:flex-row justify-between items-center mb-10 bg-black/40 border-y-4 border-black p-4 backdrop-blur-md">
+                <div className="flex items-center gap-2 mb-4 md:mb-0">
+                    <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse"></div>
+                    <span className="text-white font-mono font-bold uppercase tracking-widest text-sm">
+                        Threat Level: <span className="text-red-500">MIDNIGHT</span>
+                    </span>
+                </div>
+                
+                <div className="flex items-center gap-4">
+                    <div className="text-white font-display font-black italic text-xl">
+                        <span className="text-yellow-400 text-3xl mr-2">{getFilteredEvents().length}</span>
+                        MISSIONS ACTIVE
+                    </div>
+                    
+                    <div className="h-8 w-0.5 bg-gray-600 mx-2"></div>
+                    
+                    <div className="relative" ref={dropdownRef}>
+                        <button
+                        onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                        className="flex items-center gap-2 px-4 py-2 bg-yellow-400 border-2 border-black font-black uppercase text-black hover:bg-white transition-colors shadow-[4px_4px_0px_#000] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_#000] active:translate-y-0 active:shadow-[2px_2px_0px_#000]"
+                        >
+                            <Calendar className="w-4 h-4 text-black" />
+                            <span>{selectedDay === 'all' ? 'All Days' : `Day ${selectedDay}`}</span>
+                            <ChevronDown className={`w-4 h-4 text-black transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} />
+                        </button>
+
+                        {isDropdownOpen && (
+                        <div className="absolute right-0 top-full mt-2 w-48 bg-white border-4 border-black shadow-[8px_8px_0px_rgba(0,0,0,1)] z-50">
+                            {[
+                            { value: 'all', label: 'All Days' },
+                            { value: '1', label: 'Day 1' },
+                            { value: '2', label: 'Day 2' },
+                            { value: '3', label: 'Day 3' }
+                            ].map((option) => (
+                            <button
+                                key={option.value}
+                                onClick={() => {
+                                setSelectedDay(option.value);
+                                setIsDropdownOpen(false);
+                                }}
+                                className="w-full text-left px-4 py-3 text-black font-black hover:bg-yellow-400 transition-colors uppercase border-b-2 border-gray-100 last:border-0"
+                            >
+                                {option.label}
+                            </button>
+                            ))}
+                        </div>
+                        )}
+                    </div>
+                </div>
+            </div>
+
+            {/* Events Grid - Comic Page Layout */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 gap-y-10 pb-20">
+            {getFilteredEvents().map((event) => (
+                <div key={event.id} className="event-card h-full">
+                <EventCard event={event} onClick={() => setSelectedEvent(event)} />
+                </div>
+            ))}
+            </div>
+
+            {getFilteredEvents().length === 0 && (
+                <div className="text-center py-20 bg-black/50 border-4 border-dashed border-gray-700 rounded-3xl">
+                    <h3 className="text-4xl font-black text-gray-500 italic mb-4">NO MISSIONS DETECTED</h3>
+                    <p className="text-gray-400 font-mono">Try adjusting your filters, Agent.</p>
+                </div>
+            )}
         </div>
       </div>
 
       {selectedEvent && (
         <EventDetailsCard event={selectedEvent} onClose={() => setSelectedEvent(null)} />
       )}
-      </div>
     </>
   );
 };

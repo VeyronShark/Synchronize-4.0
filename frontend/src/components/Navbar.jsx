@@ -9,6 +9,7 @@ import thorImg from '../assets/thor.png';
 import captainAmericaImg from '../assets/captain_america.png';
 import blackPantherImg from '../assets/black_panther.png';
 import blackWidowImg from '../assets/black_widow.png';
+import ArcReactor from './ArcReactor';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -160,17 +161,24 @@ const Navbar = () => {
 
           
           {/* Menu Toggle - "SECRET FILES" Badge */}
-          <div className="relative z-50">
+          <div 
+            onClick={toggleMenu}
+            className="group/nav relative z-50 flex items-center gap-4 cursor-pointer"
+          >
             <MagneticButton 
-                onClick={toggleMenu} 
-                className={`w-16 h-16 cursor-pointer flex items-center justify-center bg-marvel-red border-4 border-black shadow-[4px_4px_0px_black] hover:shadow-[6px_6px_0px_black] hover:translate-y-[-2px] transition-all rounded-full`}
+                className={`w-20 h-20 flex items-center justify-center transition-all duration-500 rounded-full group-hover/nav:scale-110`}
             >
-               <div className="flex flex-col gap-1.5 items-center justify-center">
-                   <span className={`block w-8 h-[4px] bg-white border-2 border-black transition-all duration-300 ${isOpen ? 'rotate-45 translate-y-2.5' : ''}`}></span>
-                   <span className={`block w-8 h-[4px] bg-white border-2 border-black transition-all duration-300 ${isOpen ? 'opacity-0' : ''}`}></span>
-                   <span className={`block w-8 h-[4px] bg-white border-2 border-black transition-all duration-300 ${isOpen ? '-rotate-45 -translate-y-2.5' : ''}`}></span>
+               <div className={`relative w-full h-full flex items-center justify-center transition-transform duration-700 ease-in-out ${isOpen ? 'rotate-[360deg] scale-90' : 'group-hover/nav:rotate-45'}`}>
+                   <ArcReactor className="w-full h-full drop-shadow-[0_0_5px_rgba(0,0,0,0.5)]" />
+                   {/* Core Glow Overlay */}
+                   <div className={`absolute inset-0 rounded-full bg-cyan-400 opacity-0 ${isOpen ? 'animate-pulse opacity-30' : 'group-hover/nav:opacity-10'} transition-opacity duration-300 mix-blend-screen`}></div>
                </div>
             </MagneticButton>
+            <span 
+                className="hidden sm:block text-2xl font-display font-black italic tracking-widest text-white group-hover/nav:text-cyan-400 transition-colors drop-shadow-[0_0_8px_rgba(0,255,255,0.6)]"
+            >
+                MENU
+            </span>
           </div>
         </div>
       </nav>
