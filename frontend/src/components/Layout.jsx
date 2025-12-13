@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import Lenis from 'lenis';
 import Navbar from './Navbar';
 import Footer from './Footer';
-import Background from './Background';
 
 const Layout = ({ children }) => {
   useEffect(() => {
@@ -34,8 +33,7 @@ const Layout = ({ children }) => {
   }, []);
 
   return (
-    <div className="relative min-h-screen w-full overflow-hidden bg-dark-bg text-white selection:bg-cyan-500 selection:text-black">
-      <Background />
+    <div className="relative min-h-screen w-full overflow-hidden text-white selection:bg-cyan-500 selection:text-black">
       <div className="relative z-10">
         <Navbar />
         <main className="relative flex flex-col">
