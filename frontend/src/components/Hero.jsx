@@ -184,7 +184,7 @@ const Hero = () => {
       </div>
       
       {/* 3. Comic Book Content - Adjusted Layout for Shield Integration */}
-      <div className="absolute inset-0 z-20 flex flex-col justify-center items-start px-8 md:px-20 lg:px-32 pointer-events-none">
+      <div className="absolute inset-0 z-20 flex flex-col justify-center items-start px-8 md:px-20 lg:px-32 pointer-events-none pt-16">
         
         {/* Floating Tag */}
         <div ref={tagRef} className="mb-4 bg-white border-2 border-black shadow-[4px_4px_0px_#000] px-4 py-1 -rotate-2 inline-block animate-pulse">
@@ -199,9 +199,6 @@ const Hero = () => {
                 <h1 className="text-7xl sm:text-8xl md:text-9xl font-display font-black italic tracking-tighter text-[#AA0505] inline-block pop-art-text" style={{ WebkitTextStroke: '2px black' }}>
                     4.
                 </h1>
-                {/* The "0" is physically represented by the 3D Shield at x: 1.8 */}
-                {/* We leave a gap here visually if needed, but the 3D layer is separate */}
-                {/* A spacer div can help align if we were mixing flow, but we are just placing 3D objects */}
                 <div className="w-16 h-16 md:w-24 md:h-24"></div> 
             </div>
         </div>
@@ -214,20 +211,22 @@ const Hero = () => {
             </p>
         </div>
 
-        <div ref={buttonsRef} className="mt-12 flex flex-col sm:flex-row gap-6 pointer-events-auto">
+        <div ref={buttonsRef} className="mt-12 flex flex-row gap-4 sm:gap-6 pointer-events-auto">
           {/* Primary Action Button - Captain America Blue */}
-          <MagneticButton className="cursor-pointer px-10 py-5 bg-[#0055AA] text-white font-black text-xl rounded-none border-4 border-white shadow-[6px_6px_0px_#AA0505] hover:translate-y-[-2px] hover:shadow-[8px_8px_0px_#AA0505] transition-all clip-path-slant group">
+          <MagneticButton className="cursor-pointer px-4 py-3 sm:px-10 sm:py-5 bg-[#0055AA] text-white font-black text-sm sm:text-xl rounded-none border-4 border-white shadow-[6px_6px_0px_#AA0505] hover:translate-y-[-2px] hover:shadow-[8px_8px_0px_#AA0505] transition-all clip-path-slant group">
              <span className="relative z-10 flex items-center gap-2">
-                ENLIST NOW
-                <Star className="w-5 h-5 fill-current" />
+                REGISTER NOW
+                <Star className="w-4 h-4 sm:w-5 sm:h-5 fill-current" />
              </span>
           </MagneticButton>
           
           {/* Secondary Action - White/Red */}
           <Link to="/gallery">
-            <MagneticButton className="cursor-pointer px-10 py-5 bg-white text-[#AA0505] font-black text-xl rounded-none border-4 border-[#AA0505] shadow-[6px_6px_0px_#000] hover:translate-y-[-2px] hover:shadow-[8px_8px_0px_#000] transition-all flex items-center gap-2 clip-path-slant">
-              <span>MISSION LOGS</span>
-              <Images className="w-6 h-6" />
+            <MagneticButton className="cursor-pointer px-4 py-3 sm:px-10 sm:py-5 bg-white text-[#AA0505] font-black text-sm sm:text-xl rounded-none border-4 border-[#AA0505] shadow-[6px_6px_0px_#000] hover:translate-y-[-2px] hover:shadow-[8px_8px_0px_#000] transition-all clip-path-slant">
+              <span className="flex items-center gap-2">
+                <span>VIEW GALLERY</span>
+                <Images className="w-5 h-5 sm:w-6 sm:h-6" />
+              </span>
             </MagneticButton>
           </Link>
         </div>

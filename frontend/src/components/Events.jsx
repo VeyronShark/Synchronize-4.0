@@ -138,7 +138,7 @@ const Events = () => {
   return (
     <>
     {/* Iron Man Theme Section */}
-    <section id="events" ref={sectionRef} className="relative py-20 z-20 bg-gradient-to-b from-black to-[#1a0000] overflow-hidden">
+    <section id="events" ref={sectionRef} className="relative py-20 z-20 bg-linear-to-b from-black to-[#1a0000] overflow-hidden">
       
       {/* Background Decor - Mech Lines */}
       <div className="absolute inset-0 z-0 opacity-20 pointer-events-none">
@@ -153,15 +153,15 @@ const Events = () => {
             <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-48 h-1 bg-[#AA0505] shadow-[0_0_10px_#FFD700]"></div>
             
             <h2 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-display font-black text-white mb-3 sm:mb-4 italic tracking-tighter" style={{ WebkitTextStroke: '2px #AA0505' }}>
-              STARK <span className="text-[#FFD700] drop-shadow-[4px_4px_0px_#AA0505]" style={{ WebkitTextStroke: '2px black' }}>EXPO</span>
+              STARK <span className="text-iron-gold drop-shadow-[4px_4px_0px_#AA0505]" style={{ WebkitTextStroke: '2px black' }}>EXPO</span>
             </h2>
             
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mt-6">
               <button 
                 onClick={() => window.location.href = '/events'}
-                className="cursor-pointer group relative px-8 py-3 bg-[#AA0505] text-[#FFD700] font-black text-lg skew-x-[-10deg] border-2 border-[#FFD700] hover:bg-[#FFD700] hover:text-[#AA0505] hover:border-[#AA0505] transition-all duration-300 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] uppercase tracking-wider"
+                className="cursor-pointer group relative px-8 py-3 bg-[#AA0505] text-iron-gold font-black text-lg skew-x-[-10deg] border-2 border-iron-gold hover:bg-iron-gold hover:text-[#AA0505] hover:border-[#AA0505] transition-all duration-300 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] uppercase tracking-wider"
               >
-                <span className="skew-x-[10deg] inline-block">View All Events →</span>
+                <span className="skew-x-10 inline-block">View All Events →</span>
               </button>
             </div>
           </div>
@@ -182,8 +182,8 @@ const Events = () => {
             onClick={(e) => handleCardClick(e, event)}
           >
             {/* Tech Corners */}
-            <div className="absolute top-0 left-0 w-16 h-16 border-t-8 border-l-8 border-[#FFD700] z-20"></div>
-            <div className="absolute bottom-0 right-0 w-16 h-16 border-b-8 border-r-8 border-[#FFD700] z-20"></div>
+            <div className="absolute top-0 left-0 w-16 h-16 border-t-8 border-l-8 border-iron-gold z-20"></div>
+            <div className="absolute bottom-0 right-0 w-16 h-16 border-b-8 border-r-8 border-iron-gold z-20"></div>
 
             <img 
               src={event.image} 
@@ -192,31 +192,31 @@ const Events = () => {
             />
             {/* JARVIS Overlay Tint */}
             <div className="absolute inset-0 bg-[#AA0505] mix-blend-multiply opacity-40 group-hover:opacity-20 transition-opacity duration-500"></div>
-            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-transparent"></div>
+            <div className="absolute inset-0 bg-linear-to-t from-black via-black/80 to-transparent"></div>
             
             {/* Scanned Grid Overlay */}
-            <div className="absolute inset-0 bg-[linear-gradient(rgba(0,255,255,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(0,255,255,0.1)_1px,transparent_1px)] bg-[size:40px_40px] opacity-20 pointer-events-none group-hover:opacity-40 transition-opacity"></div>
+            <div className="absolute inset-0 bg-[linear-gradient(rgba(0,255,255,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(0,255,255,0.1)_1px,transparent_1px)] bg-size-[40px_40px] opacity-20 pointer-events-none group-hover:opacity-40 transition-opacity"></div>
             
             {/* Content Container */}
             <div className="absolute inset-0 flex flex-col justify-end p-6 sm:p-8 md:p-12 z-20">
               <div className="transform transition-all duration-500 group-hover:translate-y-[-10px]">
                 
                 {/* Category Chip */}
-                <div className="inline-block px-3 py-1 bg-[#FFD700] text-black font-black text-xs uppercase tracking-widest mb-3 skew-x-[-10deg] border-2 border-black">
-                  <span className="skew-x-[10deg] inline-block">{event.category}</span>
+                <div className="inline-block px-3 py-1 bg-iron-gold text-black font-black text-xs uppercase tracking-widest mb-3 skew-x-[-10deg] border-2 border-black">
+                  <span className="skew-x-10 inline-block">{event.category}</span>
                 </div>
 
                 <h3 className="text-4xl sm:text-5xl md:text-7xl font-display font-black text-white mb-3 sm:mb-4 transition-all duration-300 italic" style={{ WebkitTextStroke: '1px black', textShadow: '4px 4px 0px #AA0505' }}>
                   {event.title}
                 </h3>
                 
-                <p className="text-[#FFD700] text-sm sm:text-base md:text-lg mb-4 sm:mb-6 max-w-2xl font-mono opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-500 delay-100 bg-black/50 p-2 border-l-4 border-[#FFD700]">
+                <p className="text-iron-gold text-sm sm:text-base md:text-lg mb-4 sm:mb-6 max-w-2xl font-mono opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-500 delay-100 bg-black/50 p-2 border-l-4 border-iron-gold">
                   {`>> ${event.description}`}
                 </p>
                 
                 <div className="flex items-center gap-3 text-white transition-all duration-300 group-hover:gap-5">
-                  <span className="text-lg font-bold uppercase tracking-widest text-[#FFD700]">View Specs</span>
-                  <div className="w-8 h-8 rounded-full border-2 border-[#FFD700] flex items-center justify-center bg-[#AA0505]">
+                  <span className="text-lg font-bold uppercase tracking-widest text-iron-gold">View Specs</span>
+                  <div className="w-8 h-8 rounded-full border-2 border-iron-gold flex items-center justify-center bg-[#AA0505]">
                     <svg className="w-4 h-4 text-white font-bold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M14 5l7 7m0 0l-7 7m7-7H3" />
                     </svg>
@@ -228,9 +228,8 @@ const Events = () => {
             {/* Arc Reactor / Card Number Indicator */}
             <div className="absolute top-6 right-6 sm:top-8 sm:right-8 z-20">
               <div className="relative flex items-center justify-center w-24 h-24">
-                 <div className="absolute inset-0 rounded-full border-4 border-[#00BCD4] opacity-50 blur-[2px] animate-pulse"></div>
-                 <div className="absolute inset-0 rounded-full border-2 border-white opacity-80"></div>
-                 <span className="text-4xl font-display font-black text-[#00BCD4] drop-shadow-[0_0_10px_#00BCD4]">
+                 <div className="absolute inset-0 rounded-full border-4 border-marvel-red  animate-pulse"></div>
+                 <span className="text-4xl font-display font-black text-marvel-red drop-shadow-[0_0_10px_#111]">
                    0{index + 1}
                  </span>
               </div>
