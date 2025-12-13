@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router';
 import { Toaster } from 'react-hot-toast';
 import Layout from './components/Layout';
 import HomePage from './pages/HomePage';

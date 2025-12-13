@@ -192,7 +192,7 @@ const Navbar = () => {
                 <div className="flex items-baseline justify-center gap-4">
                     <span className="text-xs font-mono text-gray-500 group-hover:text-white transition-colors">0{index + 1} //</span>
                     <span 
-                        className="text-5xl sm:text-6xl md:text-7xl font-display font-black text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400 italic uppercase"
+                        className="text-5xl sm:text-6xl md:text-7xl font-display font-black text-transparent bg-clip-text bg-linear-to-r from-white to-gray-400 italic uppercase"
                         style={{ transition: 'all 0.3s ease' }}
                         onMouseEnter={(e) => {
                             e.target.style.backgroundImage = `linear-gradient(to right, ${link.color}, white)`;

@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import gsap from 'gsap';
-import { ArrowLeft, X, RotateCcw } from 'lucide-react';
+import { ArrowLeft, X, RotateCcw, Bug, Binary } from 'lucide-react';
 import LoadingAnimation from '../components/LoadingAnimation';
+import MagneticButton from '../components/MagneticButton';
 
 const GalleryPage = () => {
   const [loading, setLoading] = useState(true);
@@ -10,34 +11,33 @@ const GalleryPage = () => {
   const [draggedPositions, setDraggedPositions] = useState({});
   const [isMobile, setIsMobile] = useState(false);
   const titleRef = useRef(null);
-  const polaroidsRef = useRef([]);
+  const panelsRef = useRef([]);
   const loaderRef = useRef(null);
   const dragState = useRef({});
 
   const galleryImages = [
-    { id: 1, url: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&h=600", caption: "Opening Ceremony", date: "Jan 2024", color: "from-pink-500/20 to-purple-500/20" },
-    { id: 2, url: "https://images.unsplash.com/photo-1511578314322-379afb476865?w=800&h=1000", caption: "Tech Workshop", date: "Jan 2024", color: "from-blue-500/20 to-cyan-500/20" },
-    { id: 3, url: "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=800&h=1200", caption: "Hackathon Night", date: "Jan 2024", color: "from-purple-500/20 to-pink-500/20" },
-    { id: 4, url: "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=800&h=700", caption: "Team Building", date: "Jan 2024", color: "from-green-500/20 to-emerald-500/20" },
-    { id: 5, url: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=800&h=600", caption: "Keynote Speech", date: "Jan 2024", color: "from-orange-500/20 to-red-500/20" },
-    { id: 6, url: "https://images.unsplash.com/photo-1515187029135-18ee286d815b?w=800&h=900", caption: "Networking", date: "Jan 2024", color: "from-cyan-500/20 to-blue-500/20" },
-    { id: 7, url: "https://images.unsplash.com/photo-1523580494863-6f3031224c94?w=800&h=1100", caption: "Awards Night", date: "Jan 2024", color: "from-yellow-500/20 to-orange-500/20" },
-    { id: 8, url: "https://images.unsplash.com/photo-1464047736614-af63643285bf?w=800&h=650", caption: "Cultural Show", date: "Jan 2024", color: "from-rose-500/20 to-pink-500/20" },
-    { id: 9, url: "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=800&h=800", caption: "Code Sprint", date: "Jan 2024", color: "from-indigo-500/20 to-purple-500/20" },
-    { id: 10, url: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=800&h=600", caption: "Collaboration", date: "Jan 2024", color: "from-teal-500/20 to-cyan-500/20" },
-    { id: 11, url: "https://images.unsplash.com/photo-1591115765373-5207764f72e7?w=800&h=1000", caption: "Innovation Hub", date: "Jan 2024", color: "from-violet-500/20 to-purple-500/20" },
-    { id: 12, url: "https://images.unsplash.com/photo-1528605248644-14dd04022da1?w=800&h=700", caption: "Team Spirit", date: "Jan 2024", color: "from-fuchsia-500/20 to-pink-500/20" },
+    { id: 1, url: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&h=600", caption: "OPENING NIGHT", date: "ISSUE #1", color: "bg-[#E62429]" },
+    { id: 2, url: "https://images.unsplash.com/photo-1511578314322-379afb476865?w=800&h=1000", caption: "WEB SLINGING", date: "ISSUE #2", color: "bg-[#2563EB]" },
+    { id: 3, url: "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=800&h=1200", caption: "SPIDER-VERSE", date: "ISSUE #3", color: "bg-white" },
+    { id: 4, url: "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=800&h=700", caption: "TEAM UP", date: "ISSUE #4", color: "bg-[#E62429]" },
+    { id: 5, url: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=800&h=600", caption: "DAILY BUGLE", date: "ISSUE #5", color: "bg-[#2563EB]" },
+    { id: 6, url: "https://images.unsplash.com/photo-1515187029135-18ee286d815b?w=800&h=900", caption: "NETWORKING", date: "ISSUE #6", color: "bg-white" },
+    { id: 7, url: "https://images.unsplash.com/photo-1523580494863-6f3031224c94?w=800&h=1100", caption: "AWARDS", date: "ISSUE #7", color: "bg-[#E62429]" },
+    { id: 8, url: "https://images.unsplash.com/photo-1464047736614-af63643285bf?w=800&h=650", caption: "CULTURAL", date: "ISSUE #8", color: "bg-[#2563EB]" },
+    { id: 9, url: "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=800&h=800", caption: "CODE SPRINT", date: "ISSUE #9", color: "bg-white" },
+    { id: 10, url: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=800&h=600", caption: "COLLAB", date: "ISSUE #10", color: "bg-[#E62429]" },
+    { id: 11, url: "https://images.unsplash.com/photo-1591115765373-5207764f72e7?w=800&h=1000", caption: "INNOVATION", date: "ISSUE #11", color: "bg-[#2563EB]" },
+    { id: 12, url: "https://images.unsplash.com/photo-1528605248644-14dd04022da1?w=800&h=700", caption: "SPIRIT", date: "ISSUE #12", color: "bg-white" },
   ];
 
   const getRandomRotation = (index) => {
-    const rotations = [-8, -5, -3, 3, 5, 8, -6, 4, -4, 6, -7, 7];
+    const rotations = [-4, -3, -2, 2, 3, 4, -4, 3, -2, 4, -3, 2];
     return rotations[index % rotations.length];
   };
 
   useEffect(() => {
     window.scrollTo(0, 0);
 
-    // Check if mobile on mount and on resize
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
@@ -49,6 +49,7 @@ const GalleryPage = () => {
       onComplete: () => setLoading(false)
     });
 
+    // Simulate loading
     loaderTimeline.to(loaderRef.current, {
       opacity: 0,
       duration: 0.5,
@@ -64,20 +65,19 @@ const GalleryPage = () => {
   useEffect(() => {
     if (!loading) {
       gsap.fromTo(titleRef.current,
-        { opacity: 0, y: -30 },
-        { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" }
+        { opacity: 0, scale: 0.8 },
+        { opacity: 1, scale: 1, duration: 0.6, ease: "back.out(2)" }
       );
 
-      gsap.fromTo(polaroidsRef.current,
-        { opacity: 0, scale: 0.3, y: 100, rotation: 180 },
+      gsap.fromTo(panelsRef.current,
+        { opacity: 0, y: 100, rotation: 180 },
         {
           opacity: 1,
-          scale: 1,
           y: 0,
           rotation: (index) => getRandomRotation(index),
-          duration: 1,
+          duration: 0.8,
           stagger: 0.1,
-          ease: "elastic.out(1, 0.6)",
+          ease: "elastic.out(1, 0.7)",
           delay: 0.2
         }
       );
@@ -85,11 +85,11 @@ const GalleryPage = () => {
   }, [loading]);
 
   const handleMouseDown = (e, id, index) => {
-    if (isMobile) return; // Disable dragging on mobile
-    if (e.target.closest('.polaroid-image-wrapper')) return;
+    if (isMobile) return;
+    if (e.target.closest('.panel-image-wrapper')) return;
     
     e.preventDefault();
-    const element = polaroidsRef.current[index];
+    const element = panelsRef.current[index];
     
     dragState.current[id] = {
       isDragging: true,
@@ -100,7 +100,12 @@ const GalleryPage = () => {
       element: element
     };
 
-    gsap.to(element, { scale: 1.1, duration: 0.2, ease: "power2.out" });
+    gsap.to(element, { 
+      scale: 1.1, 
+      boxShadow: '12px 12px 0px rgba(0,0,0,1)',
+      duration: 0.2, 
+      ease: "power2.out" 
+    });
     element.style.cursor = 'grabbing';
     element.style.zIndex = '1000';
   };
@@ -125,8 +130,13 @@ const GalleryPage = () => {
 
   const handleMouseUp = (id, index) => {
     if (dragState.current[id]) {
-      const element = polaroidsRef.current[index];
-      gsap.to(element, { scale: 1, duration: 0.3, ease: "back.out(1.7)" });
+      const element = panelsRef.current[index];
+      gsap.to(element, { 
+        scale: 1, 
+        boxShadow: '6px 6px 0px rgba(0,0,0,1)',
+        duration: 0.3, 
+        ease: "back.out(1.7)" 
+      });
       dragState.current[id].element.style.cursor = 'grab';
       dragState.current[id].element.style.zIndex = '';
       dragState.current[id].isDragging = false;
@@ -151,18 +161,16 @@ const GalleryPage = () => {
   const openLightbox = (image) => {
     setSelectedImage(image);
     document.body.style.overflow = 'hidden';
-    document.body.classList.add('modal-open');
   };
 
   const closeLightbox = () => {
     setSelectedImage(null);
     document.body.style.overflow = 'auto';
-    document.body.classList.remove('modal-open');
   };
 
   const resetPositions = () => {
     setDraggedPositions({});
-    polaroidsRef.current.forEach((el, index) => {
+    panelsRef.current.forEach((el, index) => {
       gsap.fromTo(el,
         { scale: 0.5, rotation: 360 },
         { 
@@ -178,122 +186,185 @@ const GalleryPage = () => {
 
   return (
     <>
-      {loading && <LoadingAnimation loaderRef={loaderRef} loadingText="Loading Gallery..." />}
+      {loading && <LoadingAnimation loaderRef={loaderRef} loadingText="SENSORS ONLINE..." />}
 
-      <div className="min-h-screen pt-20 sm:pt-24 pb-12 sm:pb-16 px-4 sm:px-6 relative z-10 overflow-hidden">
-        {/* Enhanced Background Effects */}
+      <div className="min-h-screen pt-32 sm:pt-40 pb-12 sm:pb-16 px-4 sm:px-6 relative z-10 overflow-hidden bg-linear-to-br from-red-50 via-blue-50 to-white">
+        {/* Enhanced Spider-Man Web Background */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-20 right-10 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse-slow" />
-          <div className="absolute bottom-20 left-10 w-72 h-72 bg-cyan-500/10 rounded-full blur-3xl animate-pulse-slow" style={{ animationDelay: '1.5s' }} />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-pink-500/5 rounded-full blur-3xl animate-pulse-slow" style={{ animationDelay: '3s' }} />
+          {/* Main Spider Web Pattern */}
+          <div 
+            className="absolute inset-0 opacity-15 z-0 pointer-events-none"
+            style={{
+              backgroundImage: `
+                radial-gradient(circle at 25% 25%, transparent 0, transparent 15px, #E62429 16px, transparent 18px),
+                radial-gradient(circle at 75% 25%, transparent 0, transparent 15px, #2563EB 16px, transparent 18px),
+                radial-gradient(circle at 25% 75%, transparent 0, transparent 15px, #2563EB 16px, transparent 18px),
+                radial-gradient(circle at 75% 75%, transparent 0, transparent 15px, #E62429 16px, transparent 18px),
+                radial-gradient(circle at 50% 50%, transparent 0, transparent 30px, #000 31px, transparent 33px),
+                repeating-conic-gradient(from 0deg at 50% 50%, transparent 0deg, transparent 10deg, rgba(0,0,0,0.3) 11deg, transparent 12deg),
+                linear-gradient(45deg, transparent 48%, rgba(230,36,41,0.1) 49%, rgba(230,36,41,0.1) 51%, transparent 52%),
+                linear-gradient(-45deg, transparent 48%, rgba(37,99,235,0.1) 49%, rgba(37,99,235,0.1) 51%, transparent 52%)
+              `,
+              backgroundSize: '200px 200px, 200px 200px, 200px 200px, 200px 200px, 400px 400px, 100% 100%, 60px 60px, 60px 60px'
+            }}
+          />
           
-          {/* Floating particles */}
-          <div className="particles">
-            {[...Array(20)].map((_, i) => (
-              <div 
-                key={i} 
-                className="particle"
-                style={{
-                  left: `${Math.random() * 100}%`,
-                  top: `${Math.random() * 100}%`,
-                  animationDelay: `${Math.random() * 5}s`,
-                  animationDuration: `${5 + Math.random() * 10}s`
-                }}
-              />
-            ))}
+          {/* Comic Book Halftone Dots */}
+          <div 
+            className="absolute inset-0 opacity-10 z-0 pointer-events-none"
+            style={{
+              backgroundImage: `
+                radial-gradient(circle at 20% 20%, #E62429 2px, transparent 3px),
+                radial-gradient(circle at 80% 20%, #2563EB 2px, transparent 3px),
+                radial-gradient(circle at 20% 80%, #2563EB 2px, transparent 3px),
+                radial-gradient(circle at 80% 80%, #E62429 2px, transparent 3px)
+              `,
+              backgroundSize: '40px 40px, 40px 40px, 40px 40px, 40px 40px'
+            }}
+          />
+          
+          {/* Dynamic Comic Stripes - Enhanced Spidey Colors */}
+          <div className="absolute top-0 right-0 w-full h-full opacity-25 pointer-events-none">
+            <div className="absolute top-10 right-[-200px] w-[800px] h-[60px] bg-linear-to-r from-[#E62429] to-[#FF6B6B] rotate-12 transform shadow-lg" />
+            <div className="absolute top-32 right-[-150px] w-[600px] h-[30px] bg-linear-to-r from-[#2563EB] to-[#60A5FA] rotate-12 transform shadow-lg" />
+            <div className="absolute top-56 right-[-250px] w-[700px] h-[20px] bg-black rotate-12 transform shadow-lg" />
+            <div className="absolute bottom-40 left-[-200px] w-[800px] h-[80px] bg-linear-to-r from-[#E62429] to-[#DC2626] rotate-12 transform shadow-lg" />
+            <div className="absolute bottom-20 left-[-150px] w-[600px] h-[40px] bg-linear-to-r from-[#2563EB] to-[#3B82F6] rotate-12 transform shadow-lg" />
+            <div className="absolute bottom-[-20px] left-[-100px] w-[500px] h-[25px] bg-black rotate-12 transform shadow-lg" />
+          </div>
+          
+          {/* Floating Spider Symbols & Comic Elements */}
+          <div className="absolute inset-0 pointer-events-none opacity-8">
+            <div className="absolute top-20 left-20 text-6xl text-[#E62429] transform rotate-12 animate-pulse">🕷️</div>
+            <div className="absolute top-40 right-32 text-4xl text-[#2563EB] transform -rotate-12 animate-pulse delay-1000">🕸️</div>
+            <div className="absolute bottom-32 left-40 text-5xl text-[#E62429] transform rotate-45 animate-pulse delay-2000">🕷️</div>
+            <div className="absolute bottom-20 right-20 text-3xl text-[#2563EB] transform -rotate-45 animate-pulse delay-3000">🕸️</div>
+            
+            {/* Comic Book Action Words */}
+            <div className = "absolute top-1/4 left-1/4 transform -rotate-12 opacity-10">
+              <div className="bg-[#E62429] text-white font-black text-2xl px-4 py-2 border-4 border-black shadow-[4px_4px_0px_#000] animate-bounce">
+                POW!
+              </div>
+            </div>
+            <div className="absolute top-3/4 right-1/4 transform rotate-12 opacity-10">
+              <div className="bg-[#2563EB] text-white font-black text-xl px-3 py-1 border-4 border-black shadow-[4px_4px_0px_#000] animate-bounce delay-1000">
+                THWIP!
+              </div>
+            </div>
+            <div className="absolute top-1/2 left-1/6 transform rotate-45 opacity-10">
+              <div className="bg-yellow-400 text-black font-black text-lg px-3 py-1 border-4 border-black shadow-[4px_4px_0px_#000] animate-bounce delay-2000">
+                ZAP!
+              </div>
+            </div>
           </div>
         </div>
         
         <div className="container mx-auto relative z-10">
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 sm:mb-16 gap-4 sm:gap-6">
-            <div ref={titleRef}>
-              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-display font-bold text-white relative">
-                Event <span className="text-transparent bg-clip-text bg-linear-to-r from-purple-400 via-cyan-400 to-purple-400 animate-gradient-text">Gallery</span>
-                <div className="absolute -bottom-3 sm:-bottom-4 left-0 w-24 sm:w-32 h-0.5 sm:h-1 bg-linear-to-r from-purple-400 to-cyan-400 rounded-full" />
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-16 gap-8">
+            <div ref={titleRef} className="relative">
+              {/* Daily Bugle Style Box */}
+              <div className="absolute -top-8 -left-8 bg-[#E62429] text-white px-4 py-2 font-bold transform -rotate-6 border-4 border-black shadow-[6px_6px_0px_#000] z-20">
+                <div className="flex items-center gap-2">
+                <span className="text-sm font-black uppercase tracking-wider">DAILY BUGLE EXCLUSIVE</span>
+                </div>
+              </div>
+              
+              <h1 className="text-6xl sm:text-7xl md:text-8xl font-display font-black italic relative z-10 tracking-tighter">
+                <span className="text-[#1e56cd] drop-shadow-[4px_4px_0px_rgba(37,99,235,0.5)] stroke-white stroke-2">AMAZING</span>{' '}
+                <span className="text-[#E62429] drop-shadow-[4px_4px_0px_rgba(230,36,41,0.5)] stroke-white stroke-2">GALLERY</span>
               </h1>
-              <p className="text-gray-400 mt-6 sm:mt-8 text-base sm:text-lg">
-                {isMobile ? 'Click to enlarge' : 'Drag photos around • Click to enlarge'}
-              </p>
+              
+              <div className="mt-4 bg- text-black bg-white border-2 border-black p-3 inline-block shadow-[4px_4px_0px_#111] max-w-md transform rotate-1">
+                 <p className="font-bold uppercase tracking-widest text-sm flex items-center gap-2">
+                   <Bug className="w-5 h-5 fill-black text-black" />
+                   {isMobile ? 'Touch for details' : 'Use your web shooters to drag panels'}
+                 </p>
+              </div>
             </div>
             
-            <div className="flex gap-3">
+            <div className="flex gap-4 z-50">
               {!isMobile && (
-                <button
+                <MagneticButton
                   onClick={resetPositions}
-                  className="cursor-pointer group px-6 sm:px-8 py-3 sm:py-4 bg-linear-to-r from-purple-500/10 to-pink-500/10 border-2 border-purple-400/30 rounded-full text-white hover:border-purple-400 hover:from-purple-500/20 hover:to-pink-500/20 transition-all backdrop-blur-sm relative overflow-hidden text-sm sm:text-base shadow-lg hover:shadow-purple-500/50"
+                  className="cursor-pointer px-6 py-3 bg-white text-black font-black border-4 border-black shadow-[4px_4px_0px_#000] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_#E62429] transition-all"
                 >
-                  <span className="relative z-10 flex items-center gap-2 font-semibold">
-                    <RotateCcw className="w-4 h-4 sm:w-5 sm:h-5 transform group-hover:rotate-180 transition-transform duration-500" />
-                    Reset
-                  </span>
-                  <div className="absolute inset-0 bg-linear-to-r from-purple-400/0 via-purple-400/20 to-purple-400/0 -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
-                </button>
+                    <span className="flex items-center gap-2">
+                      <RotateCcw className="w-5 h-5 font-bold" />
+                      RESET
+                    </span>
+                </MagneticButton>
               )}
               
-              <Link 
-                to="/" 
-                className="group px-6 sm:px-8 py-3 sm:py-4 bg-linear-to-r from-cyan-500/10 to-blue-500/10 border-2 border-cyan-400/30 rounded-full text-white hover:border-cyan-400 hover:from-cyan-500/20 hover:to-blue-500/20 transition-all backdrop-blur-sm relative overflow-hidden text-sm sm:text-base shadow-lg hover:shadow-cyan-500/50"
-              >
-                <span className="relative z-10 flex items-center gap-2 font-semibold">
-                  <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5 transform group-hover:-translate-x-1 transition-transform" />
-                  Back
-                </span>
-                <div className="absolute inset-0 bg-linear-to-r from-cyan-400/0 via-cyan-400/20 to-cyan-400/0 -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
+              <Link to="/">
+                <MagneticButton className="cursor-pointer px-6 py-3 bg-[#E62429] text-white font-black border-4 border-black shadow-[4px_4px_0px_#000] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_#000] transition-all">
+                  <span className="flex items-center gap-2">
+                    <ArrowLeft className="w-5 h-5 font-bold" />
+                    BACK
+                  </span>
+                </MagneticButton>
               </Link>
             </div>
           </div>
 
-          {/* Polaroid Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 md:gap-12 max-w-7xl mx-auto py-8">
+          {/* Comic Panel Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-12 md:gap-16 max-w-7xl mx-auto py-8 px-4">
             {galleryImages.map((image, index) => {
               const position = draggedPositions[image.id] || { x: 0, y: 0 };
               
               return (
                 <div
                   key={image.id}
-                  ref={el => polaroidsRef.current[index] = el}
-                  className="polaroid-container"
+                  ref={el => panelsRef.current[index] = el}
+                  className="panel-container relative"
                   style={{
                     transform: `rotate(${getRandomRotation(index)}deg) translate(${position.x}px, ${position.y}px)`,
                     cursor: isMobile ? 'default' : 'grab',
                     touchAction: isMobile ? 'auto' : 'none',
+                    zIndex: 1
                   }}
                   onMouseDown={(e) => !isMobile && handleMouseDown(e, image.id, index)}
                 >
-                  <div className="polaroid group">
-                    {/* Glow effect */}
-                    <div className={`absolute inset-0 bg-linear-to-br ${image.color} rounded-sm blur-xl opacity-0 md:group-hover:opacity-100 transition-opacity duration-500 -z-10`} />
+                  {/* Comic Panel */}
+                  <div className="group relative bg-white border-4 border-black p-2 shadow-[6px_6px_0px_#000] transition-transform hover:scale-[1.02]">
                     
-                    {/* Tape effect */}
-                    <div className="tape tape-top" />
-                    <div className="tape tape-bottom" />
-                    
+                    {/* Spider Icon Accent */}
+                    <div className={`absolute -top-3 -right-3 w-8 h-8 ${index % 2 === 0 ? 'bg-[#E62429]' : 'bg-[#2563EB]'} border-2 border-black z-20 flex items-center justify-center shadow-[2px_2px_0px_#000] rounded-full`}>
+                       <Bug className="w-4 h-4 text-white fill-current" />
+                    </div>
+
                     <div 
-                      className={`polaroid-image-wrapper ${!isMobile ? 'cursor-pointer' : ''}`}
+                      className={`panel-image-wrapper border-2 border-black overflow-hidden relative aspect-4/5 bg-gray-100 ${!isMobile ? 'cursor-pointer' : ''}`}
                       onClick={() => !isMobile && openLightbox(image)}
                     >
                       <img 
                         src={image.url} 
                         alt={image.caption}
-                        className="polaroid-image"
+                        className="w-full h-full object-cover filter hover:scale-110 transition-transform duration-500"
                         draggable="false"
                       />
                       
-                      {/* Shine effect */}
-                      <div className="shine" />
-                      
-                      {/* Corner fold */}
-                      <div className="corner-fold" />
+                      {/* Web Overlay Pattern on Hover */}
+                      <div 
+                        className="absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-300 pointer-events-none"
+                        style={{
+                            backgroundImage: 'radial-gradient(circle at center, transparent 0, transparent 10px, black 11px, transparent 12px)',
+                            backgroundSize: '20px 20px'
+                        }}
+                      />
                     </div>
                     
-                    <div className="polaroid-caption">
-                      <p className="text-gray-800 font-handwriting text-lg leading-tight">{image.caption}</p>
-                      <p className="text-gray-500 text-xs mt-1 font-mono">{image.date}</p>
+                    {/* Caption Box */}
+                    <div className="mt-2 relative">
+                      <div className={`absolute inset-0 ${image.color} opacity-20 -skew-x-6 transform`} />
+                      <div className="relative border-b-2 border-black pb-1 flex justify-between items-end">
+                        <div>
+                           <p className="text-lg font-display font-black italic text-black uppercase leading-none">{image.caption}</p>
+                           <p className="text-xs font-mono font-bold text-[#E62429] mt-1">{image.date} // 2024</p>
+                        </div>
+                        {/* Binary deco */}
+                        <Binary className="w-4 h-4 text-gray-400" />
+                      </div>
                     </div>
-
-                    {/* Decorative elements */}
-                    <div className="absolute -top-1 -right-1 w-3 h-3 bg-linear-to-br from-yellow-200 to-yellow-400 rounded-full opacity-0 md:group-hover:opacity-100 transition-opacity duration-300" style={{ boxShadow: '0 0 10px rgba(250, 204, 21, 0.5)' }} />
-                    <div className="absolute -bottom-1 -left-1 w-2 h-2 bg-linear-to-br from-pink-200 to-pink-400 rounded-full opacity-0 md:group-hover:opacity-100 transition-opacity duration-300" style={{ boxShadow: '0 0 8px rgba(244, 114, 182, 0.5)' }} />
                   </div>
                 </div>
               );
@@ -301,229 +372,52 @@ const GalleryPage = () => {
           </div>
         </div>
 
-        {/* Lightbox Modal */}
+        {/* Comic Lightbox Modal */}
         {selectedImage && (
           <div 
-            className="fixed inset-0 z-100 bg-black/95 backdrop-blur-xl flex items-center justify-center p-4 sm:p-6 animate-fadeIn"
+            className="fixed inset-0 z-100 flex items-center justify-center p-4 sm:p-8 animate-fadeIn"
             onClick={closeLightbox}
-            style={{ isolation: 'isolate' }}
           >
-            {/* Animated background gradient */}
-            <div className="absolute inset-0 opacity-30">
-              <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500/30 rounded-full blur-3xl animate-pulse-slow" />
-              <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-cyan-500/30 rounded-full blur-3xl animate-pulse-slow" style={{ animationDelay: '1s' }} />
+           {/* Enhanced Spider-Web Backdrop */}
+            <div className="absolute inset-0 bg-black/90 backdrop-blur-md" >
+              {/* Animated Spider Symbols */}
+              <div className="absolute inset-0 pointer-events-none opacity-20">
+                <div className="absolute top-10 left-10 text-4xl text-[#E62429] animate-pulse">🕷️</div>
+                <div className="absolute top-20 right-20 text-3xl text-[#2563EB] animate-pulse delay-500">🕸️</div>
+                <div className="absolute bottom-20 left-20 text-5xl text-[#E62429] animate-pulse delay-1000">🕷️</div>
+                <div className="absolute bottom-10 right-10 text-2xl text-[#2563EB] animate-pulse delay-1500">🕸️</div>
+              </div>
             </div>
 
-            <div className="max-w-6xl w-full relative z-10" onClick={(e) => e.stopPropagation()}>
-              <div className="relative w-fit mx-auto">
-                <div className="absolute inset-0 bg-linear-to-br from-purple-500/20 to-cyan-500/20 rounded-2xl blur-2xl" />
-                <img 
-                  src={selectedImage.url} 
-                  alt={selectedImage.caption}
-                  className="relative max-h-[70vh] sm:max-h-[85vh] w-auto rounded-xl sm:rounded-2xl shadow-2xl object-contain border-4 border-white/10"
-                  style={{ boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 100px rgba(168, 85, 247, 0.3)' }}
-                />
+            <div className="relative max-w-5xl w-full z-10" onClick={(e) => e.stopPropagation()}>
+              <div className="relative bg-white border-[6px] border-black shadow-[16px_16px_0px_#E62429] p-2 sm:p-4 transform rotate-1">
+                
+                {/* Close Button */}
                 <button
                   onClick={closeLightbox}
-                  className="cursor-pointer absolute -top-4 -right-4 sm:-top-6 sm:-right-6 z-101 w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center rounded-full bg-linear-to-br from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 border-2 border-white/20 transition-all duration-300 group backdrop-blur-sm shadow-lg hover:shadow-red-500/50 hover:scale-110"
-                  aria-label="Close gallery"
+                  className="cursor-pointer absolute -top-8 -right-8 z-50 w-16 h-16 flex items-center justify-center bg-[#E62429] border-4 border-black text-white shadow-[4px_4px_0px_#000] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_#fff] transition-all hover:rotate-90 group rounded-full"
                 >
-                  <X className="w-6 h-6 sm:w-7 sm:h-7 text-white group-hover:rotate-90 transition-all duration-300" />
+                  <X className="w-8 h-8 stroke-[3px]" />
                 </button>
-              </div>
-              <div className="mt-6 sm:mt-8 text-center px-4">
-                <h3 className="text-3xl sm:text-4xl font-display font-bold text-transparent bg-clip-text bg-linear-to-r from-purple-400 via-pink-400 to-cyan-400 animate-gradient-text">{selectedImage.caption}</h3>
-                <p className="text-gray-400 mt-3 text-lg font-mono">{selectedImage.date}</p>
+
+                <div className="relative border-4 border-black overflow-hidden bg-black">
+                  <img 
+                    src={selectedImage.url} 
+                    alt={selectedImage.caption}
+                    className="w-full max-h-[80vh] object-contain"
+                  />
+                  
+                  {/* Comic Overlay Details */}
+                  <div className="absolute bottom-0 left-0 right-0 bg-[#E62429] border-t-4 border-black p-6 transform translate-y-full hover:translate-y-0 transition-transform duration-300 ease-out text-white">
+                     <h3 className="text-4xl font-display font-black italic uppercase text-shadow-black">{selectedImage.caption}</h3>
+                     <p className="font-mono font-bold mt-2 text-black bg-white inline-block px-2">DAILY BUGLE // {selectedImage.date}</p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         )}
       </div>
-
-      <style jsx>{`
-        .particles {
-          position: absolute;
-          inset: 0;
-          overflow: hidden;
-        }
-
-        .particle {
-          position: absolute;
-          width: 4px;
-          height: 4px;
-          background: linear-gradient(45deg, #a855f7, #06b6d4);
-          border-radius: 50%;
-          animation: float linear infinite;
-          opacity: 0.3;
-        }
-
-        @keyframes float {
-          0%, 100% {
-            transform: translateY(0) translateX(0);
-            opacity: 0;
-          }
-          10% {
-            opacity: 0.3;
-          }
-          90% {
-            opacity: 0.3;
-          }
-          100% {
-            transform: translateY(-100vh) translateX(50px);
-            opacity: 0;
-          }
-        }
-
-        .polaroid-container {
-          transition: transform 0.05s ease-out, z-index 0s;
-          user-select: none;
-          will-change: transform;
-        }
-
-
-
-        .polaroid {
-          background: linear-gradient(145deg, #ffffff, #f5f5f5);
-          padding: 14px;
-          padding-bottom: 65px;
-          box-shadow: 
-            0 4px 6px rgba(0, 0, 0, 0.1),
-            0 10px 20px rgba(0, 0, 0, 0.15),
-            0 20px 40px rgba(0, 0, 0, 0.1),
-            inset 0 1px 0 rgba(255, 255, 255, 0.8);
-          transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-          position: relative;
-          pointer-events: auto;
-          border-radius: 2px;
-        }
-
-        .polaroid::before {
-          content: '';
-          position: absolute;
-          inset: 0;
-          background: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, transparent 50%, rgba(0,0,0,0.1) 100%);
-          pointer-events: none;
-          border-radius: 2px;
-        }
-
-        @media (min-width: 768px) {
-          .polaroid-container:hover {
-            z-index: 10;
-          }
-
-          .polaroid-container:active {
-            cursor: grabbing !important;
-          }
-
-          .polaroid:hover {
-            box-shadow: 
-              0 20px 40px rgba(0, 0, 0, 0.25),
-              0 30px 60px rgba(0, 0, 0, 0.2),
-              0 40px 80px rgba(0, 0, 0, 0.15),
-              inset 0 1px 0 rgba(255, 255, 255, 0.9);
-            transform: scale(1.03) translateY(-5px);
-          }
-
-          .polaroid-image-wrapper:hover .polaroid-image {
-            transform: scale(1.08);
-          }
-
-          .polaroid:hover .shine {
-            left: 100%;
-          }
-
-          .polaroid:hover .corner-fold {
-            opacity: 1;
-          }
-        }
-        
-        .tape {
-          position: absolute;
-          width: 60px;
-          height: 20px;
-          background: rgba(255, 248, 220, 0.7);
-          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-          z-index: 10;
-          left: 50%;
-          transform: translateX(-50%);
-        }
-
-        .tape-top {
-          top: -8px;
-          transform: translateX(-50%) rotate(-2deg);
-        }
-
-        .tape-bottom {
-          bottom: 55px;
-          transform: translateX(-50%) rotate(2deg);
-        }
-
-        .polaroid-image-wrapper {
-          width: 100%;
-          aspect-ratio: 1;
-          overflow: hidden;
-          background: #f5f5f5;
-          position: relative;
-          box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .polaroid-image {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-          pointer-events: none;
-        }
-
-
-
-        .shine {
-          position: absolute;
-          top: 0;
-          left: -100%;
-          width: 100%;
-          height: 100%;
-          background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-          transition: left 0.5s;
-          pointer-events: none;
-        }
-
-
-
-        .corner-fold {
-          position: absolute;
-          bottom: 0;
-          right: 0;
-          width: 0;
-          height: 0;
-          border-style: solid;
-          border-width: 0 0 20px 20px;
-          border-color: transparent transparent rgba(0, 0, 0, 0.1) transparent;
-          opacity: 0;
-          transition: opacity 0.3s;
-        }
-
-
-
-        .polaroid-caption {
-          position: absolute;
-          bottom: 14px;
-          left: 14px;
-          right: 14px;
-          text-align: center;
-          pointer-events: none;
-        }
-
-        @font-face {
-          font-family: 'Handwriting';
-          src: local('Bradley Hand'), local('Comic Sans MS'), local('Segoe Print'), local('Brush Script MT');
-        }
-
-        .font-handwriting {
-          font-family: 'Handwriting', cursive;
-          text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-        }
-      `}</style>
     </>
   );
 };

@@ -187,7 +187,7 @@ const Hero = () => {
       <div className="absolute inset-0 z-20 flex flex-col justify-center items-start px-8 md:px-20 lg:px-32 pointer-events-none">
         
         {/* Floating Tag */}
-        <div ref={tagRef} className="mb-4 bg-white border-2 border-black shadow-[4px_4px_0px_#000] px-4 py-1 rotate-[-2deg] inline-block animate-pulse">
+        <div ref={tagRef} className="mb-4 bg-white border-2 border-black shadow-[4px_4px_0px_#000] px-4 py-1 -rotate-2 inline-block animate-pulse">
             <span className="font-display font-black text-[#AA0505] tracking-widest text-sm">FIRST AVENGER EDITION</span>
         </div>
 
