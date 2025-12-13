@@ -217,34 +217,34 @@ const About = () => {
       <div className="relative z-10 w-full max-w-7xl mx-auto px-6 h-full flex flex-col justify-center">
         
         {/* Hero Section */}
-        <div ref={heroRef} className="text-center mb-12">
-          <div className="inline-flex items-center gap-3 mb-6 px-6 py-3 bg-linear-to-r from-purple-600 to-purple-800 border-4 border-yellow-400 shadow-[6px_6px_0px_#FFD700] transform -rotate-1">
-            <Crown className="w-6 h-6 text-yellow-400" />
-            <span className="text-white font-black text-sm tracking-widest uppercase">WAKANDA FOREVER</span>
-            <Crown className="w-6 h-6 text-yellow-400" />
+        <div ref={heroRef} className="text-center mb-12 sm:mb-16">
+          <div className="inline-flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6 px-4 sm:px-6 py-2 sm:py-3 bg-linear-to-r from-purple-600 to-purple-800 border-2 sm:border-4 border-yellow-400 shadow-[4px_4px_0px_#FFD700] sm:shadow-[6px_6px_0px_#FFD700] transform -rotate-1">
+            <Crown className="w-4 h-4 sm:w-6 sm:h-6 text-yellow-400" />
+            <span className="text-white font-black text-xs sm:text-sm tracking-widest uppercase">WAKANDA FOREVER</span>
+            <Crown className="w-4 h-4 sm:w-6 sm:h-6 text-yellow-400" />
           </div>
           
-          <div ref={titleRef} className="space-y-4">
-            <h2 className="text-6xl lg:text-8xl font-black font-display italic leading-none">
+          <div ref={titleRef} className="space-y-2 sm:space-y-4">
+            <h2 className="text-4xl sm:text-6xl lg:text-8xl font-black font-display italic leading-none flex flex-col items-center justify-center">
               <span 
-                className="block text-white drop-shadow-[4px_4px_0px_#9C27B0]" 
-                style={{ WebkitTextStroke: '3px #9C27B0' }}
+                className="block text-white drop-shadow-[2px_2px_0px_#9C27B0] sm:drop-shadow-[4px_4px_0px_#9C27B0]" 
+                style={{ WebkitTextStroke: '1px #9C27B0' }}
               >
                 VIBRANIUM
               </span>
               <span 
-                className="block text-yellow-400 drop-shadow-[4px_4px_0px_#000]" 
-                style={{ WebkitTextStroke: '3px black' }}
+                className="block text-yellow-400 drop-shadow-[2px_2px_0px_#000] sm:drop-shadow-[4px_4px_0px_#000]" 
+                style={{ WebkitTextStroke: '1px black' }}
               >
                 INNOVATION
               </span>
             </h2>
             
-            <div className="relative inline-block mt-6">
-              <div className="absolute -left-4 top-0 bottom-0 w-3 bg-linear-to-b from-purple-500 to-yellow-400 transform -skew-x-12" />
-              <p className="text-white text-lg lg:text-xl font-bold pl-6 max-w-2xl mx-auto leading-relaxed">
-                <span className="text-purple-300">"WHERE TECHNOLOGY MEETS TRADITION"</span>
-                <span className="block text-gray-300 font-normal text-base mt-2">
+            <div className="relative inline-block mt-4 sm:mt-6 max-w-[90%] sm:max-w-2xl mx-auto">
+              <div className="absolute -left-2 sm:-left-4 top-0 bottom-0 w-2 sm:w-3 bg-linear-to-b from-purple-500 to-yellow-400 transform -skew-x-12" />
+              <p className="text-white text-base sm:text-lg lg:text-xl font-bold pl-4 sm:pl-6 leading-relaxed text-left sm:text-center">
+                <span className="text-purple-300 block sm:inline">"WHERE TECHNOLOGY MEETS TRADITION"</span>
+                <span className="block text-gray-300 font-normal text-sm sm:text-base mt-2">
                   Join the elite circle of innovators shaping tomorrow's digital landscape
                 </span>
               </p>

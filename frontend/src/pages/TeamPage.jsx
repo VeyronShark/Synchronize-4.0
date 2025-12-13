@@ -221,35 +221,35 @@ const TeamPage = () => {
         <div className="absolute inset-0 halftone-pattern opacity-10" />
       </div>
 
-      <div className="container mx-auto px-6 relative z-10">
+      <div className="container mx-auto px-4 sm:px-6 relative z-10">
         {/* Header Section */}
-        <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 sm:mb-16 gap-6 sm:gap-8">
           <div>
-            <div className="inline-block px-4 py-2 border-3 border-black bg-red-600 shadow-[4px_4px_0px_#000] mb-4 transform -rotate-2">
-              <span className="text-white font-black uppercase tracking-widest text-sm">Synchronize 4.0</span>
+            <div className="inline-block px-3 sm:px-4 py-1.5 sm:py-2 border-2 sm:border-3 border-black bg-red-600 shadow-[3px_3px_0px_#000] sm:shadow-[4px_4px_0px_#000] mb-3 sm:mb-4 transform -rotate-2">
+              <span className="text-white font-black uppercase tracking-widest text-xs sm:text-sm">Synchronize 4.0</span>
             </div>
-            <h1 className="text-6xl md:text-8xl font-black italic uppercase leading-none flex flex-wrap gap-x-4">
+            <h1 className="text-5xl sm:text-6xl md:text-8xl font-black italic uppercase leading-none flex flex-wrap gap-x-2 sm:gap-x-4">
               {"MEET THE SQUAD".split(" ").map((word, i) => (
                 <span key={i} className="flex">
                   {word.split("").map((char, j) => (
-                    <span key={j} className="team-title-char inline-block text-transparent bg-clip-text bg-linear-to-b from-black to-gray-800 drop-shadow-[4px_4px_0px_rgba(200,200,200,1)]">
+                    <span key={j} className="team-title-char inline-block text-transparent bg-clip-text bg-linear-to-b from-black to-gray-800 drop-shadow-[2px_2px_0px_rgba(200,200,200,1)] sm:drop-shadow-[4px_4px_0px_rgba(200,200,200,1)]">
                       {char}
                     </span>
                   ))}
                 </span>
               ))}
             </h1>
-            <p className="mt-6 text-xl font-bold text-gray-600 max-w-2xl bg-white/80 backdrop-blur-xs p-4 border-l-4 border-black">
+            <p className="mt-4 sm:mt-6 text-lg sm:text-xl font-bold text-gray-600 max-w-2xl bg-white/80 backdrop-blur-xs p-3 sm:p-4 border-l-4 border-black">
               "Heroes aren't born. They're built, one commit at a time."
             </p>
           </div>
 
           <Link
             to="/"
-            className="group relative px-8 py-4 bg-black text-white font-black text-xl uppercase tracking-wider hover:-translate-y-1 hover:shadow-[6px_6px_0px_#ED1D24] transition-all duration-200 border-2 border-transparent hover:border-black"
+            className="group relative px-6 sm:px-8 py-3 sm:py-4 bg-black text-white font-black text-lg sm:text-xl uppercase tracking-wider hover:-translate-y-1 hover:shadow-[6px_6px_0px_#ED1D24] transition-all duration-200 border-2 border-transparent hover:border-black self-start md:self-auto"
           >
             <span className="flex items-center gap-2">
-              <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
+              <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5 group-hover:-translate-x-1 transition-transform" />
               HQ Return
             </span>
           </Link>

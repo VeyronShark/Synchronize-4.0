@@ -96,49 +96,49 @@ const Contact = () => {
       
       <div className="container mx-auto px-4 z-20 relative">
         {/* Header */}
-        <div ref={titleRef} className="text-center mb-16">
-          <h2 className="text-6xl md:text-8xl font-display font-black text-white uppercase text-shadow-comic tracking-wider">
+        <div ref={titleRef} className="text-center mb-10 sm:mb-16">
+          <h2 className="text-4xl sm:text-6xl md:text-8xl font-display font-black text-white uppercase text-shadow-comic tracking-wider">
             CONTACT <span className="text-red-600">US</span>
           </h2>
-          <div className="h-1 w-48 bg-red-600 mx-auto mt-4 shadow-[0_0_20px_#DC2626]"></div>
-          <p className="mt-6 text-xl text-gray-300 font-mono">Secure Channel Open. Transmit Data.</p>
+          <div className="h-1 w-24 sm:w-48 bg-red-600 mx-auto mt-2 sm:mt-4 shadow-[0_0_20px_#DC2626]"></div>
+          <p className="mt-4 sm:mt-6 text-base sm:text-xl text-gray-300 font-mono">Secure Channel Open. Transmit Data.</p>
         </div>
 
-        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-12 items-center">
           
-          <div className="space-y-8">
-             <div className="comic-panel p-8 bg-zinc-900 border-l-8 border-red-600 transform hover:-translate-y-2 transition-transform duration-300 shadow-[0_4px_0_#000]">
-                <div className="flex items-center gap-6">
-                  <div className="w-16 h-16 bg-red-600 flex items-center justify-center rounded-none transform rotate-3 shadow-[4px_4px_0_#000]">
-                    <Mail className="w-8 h-8 text-white -rotate-3" />
+          <div className="space-y-6 sm:space-y-8">
+             <div className="comic-panel p-6 sm:p-8 bg-zinc-900 border-l-4 sm:border-l-8 border-red-600 transform hover:-translate-y-2 transition-transform duration-300 shadow-[0_4px_0_#000]">
+                <div className="flex items-center gap-4 sm:gap-6">
+                  <div className="w-12 h-12 sm:w-16 sm:h-16 bg-red-600 flex items-center justify-center rounded-none transform rotate-3 shadow-[3px_3px_0_#000] sm:shadow-[4px_4px_0_#000]">
+                    <Mail className="w-6 h-6 sm:w-8 sm:h-8 text-white -rotate-3" />
                   </div>
                   <div>
-                    <h3 className="text-2xl font-black text-white uppercase tracking-wider italic">Email Link</h3>
-                    <p className="text-gray-400 font-mono mt-1">techfest-scse@xim.edu.in</p>
+                    <h3 className="text-xl sm:text-2xl font-black text-white uppercase tracking-wider italic">Email Link</h3>
+                    <p className="text-gray-400 font-mono mt-0.5 sm:mt-1 text-sm sm:text-base break-all">techfest-scse@xim.edu.in</p>
                   </div>
                 </div>
              </div>
 
-             <div className="comic-panel p-8 bg-zinc-900 border-l-8 border-white transform hover:-translate-y-2 transition-transform duration-300 shadow-[0_4px_0_#000]">
-                <div className="flex items-center gap-6">
-                  <div className="w-16 h-16 bg-white flex items-center justify-center rounded-none transform -rotate-2 shadow-[4px_4px_0_#000]">
-                    <MapPin className="w-8 h-8 text-black rotate-2" />
+             <div className="comic-panel p-6 sm:p-8 bg-zinc-900 border-l-4 sm:border-l-8 border-white transform hover:-translate-y-2 transition-transform duration-300 shadow-[0_4px_0_#000]">
+                <div className="flex items-center gap-4 sm:gap-6">
+                  <div className="w-12 h-12 sm:w-16 sm:h-16 bg-white flex items-center justify-center rounded-none transform -rotate-2 shadow-[3px_3px_0_#000] sm:shadow-[4px_4px_0_#000]">
+                    <MapPin className="w-6 h-6 sm:w-8 sm:h-8 text-black rotate-2" />
                   </div>
                   <div>
-                    <h3 className="text-2xl font-black text-white uppercase tracking-wider italic">Location</h3>
-                    <p className="text-gray-400 font-mono mt-1">XIM University, Odisha</p>
+                    <h3 className="text-xl sm:text-2xl font-black text-white uppercase tracking-wider italic">Location</h3>
+                    <p className="text-gray-400 font-mono mt-0.5 sm:mt-1 text-sm sm:text-base">XIM University, Odisha</p>
                   </div>
                 </div>
              </div>
 
-             <div className="flex gap-6 mt-8 justify-center md:justify-start">
+             <div className="flex gap-4 sm:gap-6 mt-6 sm:mt-8 justify-center md:justify-start">
                {[
                  { Icon: Github, color: "hover:text-black hover:bg-white" },
                  { Icon: Instagram, color: "hover:text-white hover:bg-pink-600" },
                  { Icon: Linkedin, color: "hover:text-white hover:bg-blue-600" }
                ].map(({ Icon, color }, i) => (
-                 <a key={i} href="#" className={`w-14 h-14 bg-zinc-900 border-2 border-gray-700 flex items-center justify-center text-gray-400 ${color} transition-all transform hover:scale-110 shadow-[4px_4px_0_#000]`}>
-                   <Icon className="w-8 h-8" />
+                 <a key={i} href="#" className={`w-10 h-10 sm:w-14 sm:h-14 bg-zinc-900 border-2 border-gray-700 flex items-center justify-center text-gray-400 ${color} transition-all transform hover:scale-110 shadow-[3px_3px_0_#000] sm:shadow-[4px_4px_0_#000]`}>
+                   <Icon className="w-5 h-5 sm:w-8 sm:h-8" />
                  </a>
                ))}
              </div>

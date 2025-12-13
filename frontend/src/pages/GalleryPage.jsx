@@ -276,42 +276,42 @@ const GalleryPage = () => {
         </div>
         
         <div className="container mx-auto relative z-10">
-          {/* Header Section */}
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-16 gap-8">
+            {/* Header Section */}
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 sm:mb-16 gap-6 sm:gap-8">
             <div ref={titleRef} className="relative">
-              <div className="absolute -top-8 -left-8 bg-[#E62429] text-white px-4 py-2 font-bold transform -rotate-6 border-4 border-black shadow-[6px_6px_0px_#000] z-20">
+              <div className="absolute -top-6 -left-4 sm:-top-8 sm:-left-8 bg-[#E62429] text-white px-3 py-1 sm:px-4 sm:py-2 font-bold transform -rotate-6 border-2 sm:border-4 border-black shadow-[4px_4px_0px_#000] sm:shadow-[6px_6px_0px_#000] z-20">
                 <div className="flex items-center gap-2">
-                <span className="text-sm font-black uppercase tracking-wider">DAILY BUGLE EXCLUSIVE</span>
+                <span className="text-xs sm:text-sm font-black uppercase tracking-wider">DAILY BUGLE EXCLUSIVE</span>
                 </div>
               </div>
               
-              <h1 className="text-6xl sm:text-7xl md:text-8xl font-display font-black italic relative z-10 tracking-tighter">
-                <span className="text-[#1e56cd] drop-shadow-[4px_4px_0px_rgba(37,99,235,0.5)] stroke-white stroke-2">AMAZING</span>{' '}
-                <span className="text-[#E62429] drop-shadow-[4px_4px_0px_rgba(230,36,41,0.5)] stroke-white stroke-2">GALLERY</span>
+              <h1 className="text-5xl sm:text-7xl md:text-8xl font-display font-black italic relative z-10 tracking-tighter leading-none mt-4 sm:mt-0">
+                <span className="text-[#1e56cd] drop-shadow-[2px_2px_0px_rgba(37,99,235,0.5)] sm:drop-shadow-[4px_4px_0px_rgba(37,99,235,0.5)] stroke-white stroke-2">AMAZING</span>{' '}
+                <span className="text-[#E62429] drop-shadow-[2px_2px_0px_rgba(230,36,41,0.5)] sm:drop-shadow-[4px_4px_0px_rgba(230,36,41,0.5)] stroke-white stroke-2">GALLERY</span>
               </h1>
               
-              <div className="mt-4 bg- text-black bg-white border-2 border-black p-3 inline-block shadow-[4px_4px_0px_#111] max-w-md transform rotate-1">
-                 <p className="font-bold uppercase tracking-widest text-sm flex items-center gap-2">
-                   <Bug className="w-5 h-5 fill-black text-black" />
-                   {isMobile ? 'Touch for details' : 'Use your web shooters to drag panels'}
+              <div className="mt-4 bg- text-black bg-white border-2 border-black p-2 sm:p-3 inline-block shadow-[3px_3px_0px_#111] sm:shadow-[4px_4px_0px_#111] max-w-md transform rotate-1">
+                 <p className="font-bold uppercase tracking-widest text-xs sm:text-sm flex items-center gap-2">
+                   <Bug className="w-4 h-4 sm:w-5 sm:h-5 fill-black text-black" />
+                   {isMobile ? 'Touch panels to view' : 'Use your web shooters to drag panels'}
                  </p>
               </div>
             </div>
             
-            <div className="flex gap-4 z-50">
+            <div className="flex gap-4 z-50 self-end md:self-auto">
               {!isMobile && (
-                <MagneticButton onClick={resetPositions} className="cursor-pointer px-6 py-3 bg-white text-black font-black border-4 border-black shadow-[4px_4px_0px_#000] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_#E62429] transition-all">
+                <MagneticButton onClick={resetPositions} className="cursor-pointer px-4 sm:px-6 py-2 sm:py-3 bg-white text-black font-black border-2 sm:border-4 border-black shadow-[3px_3px_0px_#000] sm:shadow-[4px_4px_0px_#000] hover:translate-y-[-2px] hover:shadow-[5px_5px_0px_#E62429] transition-all text-sm sm:text-base">
                     <span className="flex items-center gap-2">
-                      <RotateCcw className="w-5 h-5 font-bold" />
+                      <RotateCcw className="w-4 h-4 sm:w-5 sm:h-5 font-bold" />
                       RESET
                     </span>
                 </MagneticButton>
               )}
               
               <Link to="/">
-                <MagneticButton className="cursor-pointer px-6 py-3 bg-[#E62429] text-white font-black border-4 border-black shadow-[4px_4px_0px_#000] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_#000] transition-all">
+                <MagneticButton className="cursor-pointer px-4 sm:px-6 py-2 sm:py-3 bg-[#E62429] text-white font-black border-2 sm:border-4 border-black shadow-[3px_3px_0px_#000] sm:shadow-[4px_4px_0px_#000] hover:translate-y-[-2px] hover:shadow-[5px_5px_0px_#000] transition-all text-sm sm:text-base">
                   <span className="flex items-center gap-2">
-                    <ArrowLeft className="w-5 h-5 font-bold" />
+                    <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5 font-bold" />
                     BACK
                   </span>
                 </MagneticButton>
@@ -319,7 +319,7 @@ const GalleryPage = () => {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-12 md:gap-16 max-w-7xl mx-auto py-8 px-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 sm:gap-12 md:gap-16 max-w-7xl mx-auto py-8 px-2 sm:px-4">
             {galleryImages.map((image, index) => {
               const position = draggedPositions[image.id] || { x: 0, y: 0 };
               
@@ -337,27 +337,27 @@ const GalleryPage = () => {
                   onMouseDown={(e) => !isMobile && handleMouseDown(e, image.id, index)}
                 >
                   {/* Comic Panel - The Card Frame */}
-                  <div className="group relative bg-white border-4 border-black p-3 shadow-[8px_8px_0px_#000] transition-transform hover:scale-[1.02]">
+                  <div className="group relative bg-white border-2 sm:border-4 border-black p-2 sm:p-3 shadow-[6px_6px_0px_#000] sm:shadow-[8px_8px_0px_#000] transition-transform hover:scale-[1.02]">
                     
                     {/* Corner Decorations on Frame (NOT on photo) */}
-                    <div className="absolute -top-2 -left-2 w-6 h-6 border-t-4 border-l-4 border-[#E62429] z-20"></div>
-                    <div className="absolute -bottom-2 -right-2 w-6 h-6 border-b-4 border-r-4 border-[#2563EB] z-20"></div>
+                    <div className="absolute -top-1.5 -left-1.5 sm:-top-2 sm:-left-2 w-4 h-4 sm:w-6 sm:h-6 border-t-2 sm:border-t-4 border-l-2 sm:border-l-4 border-[#E62429] z-20"></div>
+                    <div className="absolute -bottom-1.5 -right-1.5 sm:-bottom-2 sm:-right-2 w-4 h-4 sm:w-6 sm:h-6 border-b-2 sm:border-b-4 border-r-2 sm:border-r-4 border-[#2563EB] z-20"></div>
 
                     {/* Spider Icon Stamp on Frame */}
-                    <div className={`absolute -top-4 -right-4 w-10 h-10 ${index % 2 === 0 ? 'bg-[#E62429]' : 'bg-[#2563EB]'} border-2 border-black z-30 flex items-center justify-center shadow-[2px_2px_0px_#000] rounded-full transform rotate-12 group-hover:rotate-45 transition-transform duration-300`}>
-                       <Bug className="w-6 h-6 text-white fill-current" />
+                    <div className={`absolute -top-3 -right-3 sm:-top-4 sm:-right-4 w-8 h-8 sm:w-10 sm:h-10 ${index % 2 === 0 ? 'bg-[#E62429]' : 'bg-[#2563EB]'} border-2 border-black z-30 flex items-center justify-center shadow-[2px_2px_0px_#000] rounded-full transform rotate-12 group-hover:rotate-45 transition-transform duration-300`}>
+                       <Bug className="w-5 h-5 sm:w-6 sm:h-6 text-white fill-current" />
                     </div>
 
                     {/* "Flash" Sticker on random cards */}
                     {index % 3 === 0 && (
-                        <div className="absolute -bottom-4 -left-4 bg-iron-gold border-2 border-black px-2 py-1 transform -rotate-12 z-30 shadow-[2px_2px_0px_#000]">
-                            <span className="text-xs font-black">POP!</span>
+                        <div className="absolute -bottom-3 -left-3 sm:-bottom-4 sm:-left-4 bg-iron-gold border-2 border-black px-1.5 py-0.5 sm:px-2 sm:py-1 transform -rotate-12 z-30 shadow-[2px_2px_0px_#000]">
+                            <span className="text-[10px] sm:text-xs font-black">POP!</span>
                         </div>
                     )}
 
                     <div 
                       className={`panel-image-wrapper border-2 border-black overflow-hidden relative aspect-4/5 bg-gray-100 ${!isMobile ? 'cursor-pointer' : ''}`}
-                      onClick={() => !isMobile && openLightbox(image)}
+                      onClick={() => openLightbox(image)}
                     >
                       <img 
                         src={image.url} 
@@ -369,15 +369,15 @@ const GalleryPage = () => {
                     </div>
                     
                     {/* Caption Box - Part of the Card */}
-                    <div className="mt-3 relative">
+                    <div className="mt-2 sm:mt-3 relative">
                       <div className={`absolute inset-0 ${image.color} opacity-10 -skew-x-6 transform`} />
                       <div className="relative border-b-2 border-black pb-1 flex justify-between items-end">
                         <div className="flex flex-col">
-                           <span className="text-xxs font-black tracking-widest text-gray-500 uppercase">MARVEL COMICS GROUP</span>
-                           <p className="text-lg font-display font-black italic text-black uppercase leading-none mt-1">{image.caption}</p>
-                           <p className="text-xs font-mono font-bold text-[#E62429] mt-1">{image.date} // $0.50</p>
+                           <span className="text-[8px] sm:text-xxs font-black tracking-widest text-gray-500 uppercase">MARVEL COMICS GROUP</span>
+                           <p className="text-base sm:text-lg font-display font-black italic text-black uppercase leading-none mt-0.5 sm:mt-1">{image.caption}</p>
+                           <p className="text-[10px] sm:text-xs font-mono font-bold text-[#E62429] mt-0.5 sm:mt-1">{image.date} // $0.50</p>
                         </div>
-                        <Binary className="w-4 h-4 text-gray-400" />
+                        <Binary className="w-3 h-3 sm:w-4 sm:h-4 text-gray-400" />
                       </div>
                     </div>
                   </div>
@@ -398,24 +398,24 @@ const GalleryPage = () => {
             </div>
 
             <div className="relative max-w-5xl w-full z-10" onClick={(e) => e.stopPropagation()}>
-              <div className="relative bg-white border-[6px] border-black shadow-[16px_16px_0px_#E62429] p-2 sm:p-4 transform rotate-1">
+              <div className="relative bg-white border-4 sm:border-[6px] border-black shadow-[10px_10px_0px_#E62429] sm:shadow-[16px_16px_0px_#E62429] p-2 sm:p-4 transform rotate-1">
                 
                 <button
                   onClick={closeLightbox}
-                  className="cursor-pointer absolute -top-8 -right-8 z-50 w-16 h-16 flex items-center justify-center bg-[#E62429] hover:bg-white text-white hover:text-[#E62429] border-4 border-black shadow-[4px_4px_0px_#000] hover:scale-110 hover:rotate-180 transition-all duration-300 group rounded-full"
+                  className="cursor-pointer absolute -top-4 -right-4 sm:-top-8 sm:-right-8 z-50 w-10 h-10 sm:w-16 sm:h-16 flex items-center justify-center bg-[#E62429] hover:bg-white text-white hover:text-[#E62429] border-2 sm:border-4 border-black shadow-[2px_2px_0px_#000] sm:shadow-[4px_4px_0px_#000] hover:scale-110 hover:rotate-180 transition-all duration-300 group rounded-full"
                 >
-                  <X className="w-8 h-8 stroke-[3px]" />
+                  <X className="w-5 h-5 sm:w-8 sm:h-8 stroke-[3px]" />
                 </button>
 
-                <div className="relative border-4 border-black overflow-hidden bg-black">
+                <div className="relative border-2 sm:border-4 border-black overflow-hidden bg-black">
                   <img 
                     src={selectedImage.url} 
                     alt={selectedImage.caption}
-                    className="w-full max-h-[80vh] object-contain"
+                    className="w-full max-h-[70vh] sm:max-h-[80vh] object-contain"
                   />
-                  <div className="absolute bottom-0 left-0 right-0 bg-[#E62429] border-t-4 border-black p-6 transform translate-y-full hover:translate-y-0 transition-transform duration-300 ease-out text-white">
-                     <h3 className="text-4xl font-display font-black italic uppercase text-shadow-black">{selectedImage.caption}</h3>
-                     <p className="font-mono font-bold mt-2 text-black bg-white inline-block px-2">DAILY BUGLE // {selectedImage.date}</p>
+                  <div className="absolute bottom-0 left-0 right-0 bg-[#E62429] border-t-2 sm:border-t-4 border-black p-4 sm:p-6 transform translate-y-full hover:translate-y-0 transition-transform duration-300 ease-out text-white">
+                     <h3 className="text-2xl sm:text-4xl font-display font-black italic uppercase text-shadow-black">{selectedImage.caption}</h3>
+                     <p className="font-mono font-bold mt-2 text-black bg-white inline-block px-2 text-xs sm:text-base">DAILY BUGLE // {selectedImage.date}</p>
                   </div>
                 </div>
               </div>

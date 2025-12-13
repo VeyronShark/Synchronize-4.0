@@ -55,41 +55,41 @@ const Sponsors = () => {
       <div className="container mx-auto px-4 sm:px-6 relative z-10">
         
         {/* Comic Header */}
-        <div className="text-center mb-16 relative">
+        <div className="text-center mb-10 sm:mb-16 relative">
           <div className="inline-block relative">
-            <h2 className="text-5xl md:text-7xl font-display font-black text-white italic tracking-tighter transform -skew-x-6 text-shadow-comic">
+            <h2 className="text-4xl sm:text-5xl md:text-7xl font-display font-black text-white italic tracking-tighter transform -skew-x-6 text-shadow-comic">
               OUR <span className="text-transparent bg-clip-text bg-linear-to-r from-yellow-400 to-red-600">ALLIES</span>
             </h2>
             {/* Speech Bubble Decoration */}
-            <div className="absolute -top-12 -right-12 hidden md:block">
-              <div className="speech-bubble p-3 transform rotate-12 animate-bounce-slow">
-                <span className="font-bold text-black text-sm uppercase">Powered By!</span>
+            <div className="absolute -top-8 -right-8 sm:-top-12 sm:-right-12 hidden md:block">
+              <div className="speech-bubble p-2 sm:p-3 transform rotate-12 animate-bounce-slow">
+                <span className="font-bold text-black text-xs sm:text-sm uppercase">Powered By!</span>
               </div>
             </div>
           </div>
-          <div className="h-2 w-32 bg-yellow-400 mx-auto mt-4 transform -skew-x-12 border-2 border-black shadow-[4px_4px_0px_black]"></div>
+          <div className="h-1 sm:h-2 w-20 sm:w-32 bg-yellow-400 mx-auto mt-2 sm:mt-4 transform -skew-x-12 border-2 border-black shadow-[2px_2px_0px_black] sm:shadow-[4px_4px_0px_black]"></div>
         </div>
         
         {/* Infinite Scroll Marquee Container - Comic Strip Style */}
-        <div className="relative w-full overflow-hidden border-y-4 border-black bg-white/5 backdrop-blur-sm py-8 comic-shadow">
-          <div className="absolute top-0 left-0 w-full h-1 bg-yellow-400 z-20"></div>
-          <div className="absolute bottom-0 left-0 w-full h-1 bg-yellow-400 z-20"></div>
+        <div className="relative w-full overflow-hidden border-y-2 sm:border-y-4 border-black bg-white/5 backdrop-blur-sm py-4 sm:py-8 comic-shadow">
+          <div className="absolute top-0 left-0 w-full h-0.5 sm:h-1 bg-yellow-400 z-20"></div>
+          <div className="absolute bottom-0 left-0 w-full h-0.5 sm:h-1 bg-yellow-400 z-20"></div>
           
           <div className="flex animate-infinite-scroll">
             {duplicatedSponsors.map((sponsor, index) => (
               <div 
                 key={index} 
-                className="shrink-0 mx-6 md:mx-10 comic-panel p-6 bg-white rotate-1 hover:rotate-0 transition-all duration-300 w-48 h-32 flex items-center justify-center group cursor-pointer"
+                className="shrink-0 mx-3 sm:mx-6 md:mx-10 comic-panel p-4 sm:p-6 bg-white rotate-1 hover:rotate-0 transition-all duration-300 w-32 h-20 sm:w-48 sm:h-32 flex items-center justify-center group cursor-pointer"
               >
                 <img 
                   src={sponsor.logo} 
                   alt={sponsor.name} 
-                  className="max-h-16 w-auto filter grayscale group-hover:grayscale-0 transition-all duration-300 transform group-hover:scale-110"
+                  className="max-h-8 sm:max-h-16 w-auto filter grayscale group-hover:grayscale-0 transition-all duration-300 transform group-hover:scale-110"
                 />
                 
                 {/* Comic Corner Fold/Detail */}
-                <div className="absolute top-1 right-1 w-2 h-2 bg-black rounded-full opacity-20"></div>
-                <div className="absolute bottom-1 left-1 w-2 h-2 bg-black rounded-full opacity-20"></div>
+                <div className="absolute top-1 right-1 w-1.5 h-1.5 sm:w-2 sm:h-2 bg-black rounded-full opacity-20"></div>
+                <div className="absolute bottom-1 left-1 w-1.5 h-1.5 sm:w-2 sm:h-2 bg-black rounded-full opacity-20"></div>
               </div>
             ))}
           </div>
@@ -97,8 +97,8 @@ const Sponsors = () => {
       </div>
       
       {/* Decorative Comic Elements */}
-      <div className="absolute top-20 left-10 text-6xl text-white/5 font-black hidden lg:block -rotate-12">BOOM!</div>
-      <div className="absolute bottom-20 right-10 text-6xl text-white/5 font-black hidden lg:block rotate-12">ZAP!</div>
+      <div className="absolute top-10 left-4 sm:top-20 sm:left-10 text-4xl sm:text-6xl text-white/5 font-black hidden lg:block -rotate-12">BOOM!</div>
+      <div className="absolute bottom-10 right-4 sm:bottom-20 sm:right-10 text-4xl sm:text-6xl text-white/5 font-black hidden lg:block rotate-12">ZAP!</div>
 
       <style>{`
         @keyframes infinite-scroll {

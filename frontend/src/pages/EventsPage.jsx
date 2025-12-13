@@ -549,26 +549,26 @@ const EventsPage = () => {
 
         <div className="container mx-auto px-4 sm:px-6 relative z-10">
             {/* Header Section - Comic Title */}
-            <div className="text-center mb-16 relative">
+            <div className="text-center mb-10 sm:mb-16 relative">
                 {/* "Stan Lee" Style Intro Box */}
-                <div className="inline-block bg-white border-4 border-black p-2 mb-6 transform -rotate-2 shadow-[4px_4px_0px_#000]">
-                   <span className="text-black font-black uppercase tracking-widest text-sm sm:text-base">
+                <div className="inline-block bg-white border-4 border-black p-2 mb-4 sm:mb-6 transform -rotate-2 shadow-[4px_4px_0px_#000]">
+                   <span className="text-black font-black uppercase tracking-widest text-xs sm:text-sm md:text-base">
                       Synchronize Presents
                    </span>
                 </div>
 
-                <div className="relative inline-block">
-                    <h1 className="text-7xl sm:text-8xl md:text-9xl font-display font-black text-marvel-red mb-2 tracking-tighter relative z-10 italic" 
+                <div className="relative inline-block px-4">
+                    <h1 className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-display font-black text-marvel-red mb-2 tracking-tighter relative z-10 italic leading-none" 
                         style={{ 
-                            WebkitTextStroke: '3px black', 
-                            textShadow: '10px 10px 0px #000' 
+                            WebkitTextStroke: '2px black', 
+                            textShadow: '4px 4px 0px #000' 
                         }}>
                         EVENTS
                     </h1>
                 </div>
                 
-                <div className="max-w-2xl mx-auto mt-6 bg-yellow-400 border-4 border-black p-4 shadow-[8px_8px_0px_#000] transform rotate-1">
-                    <p className="text-black text-lg sm:text-xl font-bold font-comic uppercase tracking-tight leading-tight">
+                <div className="max-w-[90%] sm:max-w-2xl mx-auto mt-4 sm:mt-6 bg-yellow-400 border-2 sm:border-4 border-black p-3 sm:p-4 shadow-[6px_6px_0px_#000] sm:shadow-[8px_8px_0px_#000] transform rotate-1">
+                    <p className="text-black text-sm sm:text-xl font-bold font-comic uppercase tracking-tight leading-tight">
                         "CHOOSE YOUR ALLIANCE. MASTER YOUR ABILITIES. CONQUER THE CHALLENGE!"
                     </p>
                 </div>
@@ -576,19 +576,19 @@ const EventsPage = () => {
 
             {/* Filter Roster - New "Character Card" Style */}
             {/* Filter Roster - Comic Buttons */}
-            <div className="mb-16">
-                <div className="flex flex-wrap justify-center gap-4">
+            <div className="mb-10 sm:mb-16">
+                <div className="flex flex-wrap justify-center gap-2 sm:gap-4">
                 {categories.map((category) => (
                     <button
                     key={category.id}
                     onClick={() => setSelectedCategory(category.id)}
                     className={`
-                        px-8 py-3 font-black uppercase tracking-wider text-lg sm:text-xl
-                        border-4 border-black shadow-[5px_5px_0px_#000]
+                        px-4 sm:px-8 py-2 sm:py-3 font-black uppercase tracking-wider text-xs sm:text-lg md:text-xl
+                        border-2 sm:border-4 border-black shadow-[3px_3px_0px_#000] sm:shadow-[5px_5px_0px_#000]
                         transition-all duration-200 transform clip-path-slant
                         ${selectedCategory === category.id 
-                            ? `${category.theme.bg} text-white -rotate-2 scale-110 z-10 shadow-[8px_8px_0px_#000]` 
-                            : 'bg-white text-black hover:bg-black hover:text-white hover:rotate-1 hover:shadow-[8px_8px_0px_#000] hover:-translate-y-1'}
+                            ? `${category.theme.bg} text-white -rotate-2 scale-105 sm:scale-110 z-10 shadow-[6px_6px_0px_#000] sm:shadow-[8px_8px_0px_#000]` 
+                            : 'bg-white text-black hover:bg-black hover:text-white hover:rotate-1 hover:shadow-[6px_6px_0px_#000] sm:hover:shadow-[8px_8px_0px_#000] hover:-translate-y-1'}
                     `}
                     style={{
                         clipPath: 'polygon(5% 0%, 100% 0%, 95% 100%, 0% 100%)',
