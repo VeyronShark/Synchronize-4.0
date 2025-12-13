@@ -268,3 +268,61 @@ body.modal-open .navbar-main {
     0 100%
   );
 }
+
+/* Comic Panel Styles */
+.comic-panel {
+  border: 3px solid black;
+  box-shadow: 6px 6px 0px 0px rgba(0,0,0,1);
+  transition: all 0.2s cubic-bezier(0.1, 0.7, 1.0, 0.1);
+}
+
+.comic-panel:hover {
+  transform: translate(-3px, -3px);
+  box-shadow: 9px 9px 0px 0px rgba(0,0,0,1);
+}
+
+.comic-button {
+  position: relative;
+  border: 3px solid black;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transform: skewX(-10deg);
+  transition: all 0.2s ease;
+}
+
+.comic-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--hover-color, #fff);
+  z-index: -1;
+  transition: transform 0.2s ease;
+  transform: scaleX(0);
+  transform-origin: right;
+}
+
+.comic-button:hover::before {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+.comic-button:hover {
+  transform: skewX(-10deg) translateY(-2px);
+  box-shadow: 5px 5px 0px black;
+  color: white;
+}
+
+.comic-text-stroke {
+  -webkit-text-stroke: 1.5px black;
+  color: white;
+  text-shadow: 3px 3px 0px black;
+}
+
+.navbar-blur {
+  backdrop-filter: blur(8px);
+  background: rgba(255, 255, 255, 0.9);
+}
