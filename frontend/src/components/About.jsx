@@ -1,50 +1,40 @@
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Code, Cpu, Globe, Zap, Trophy, Users } from 'lucide-react';
+import { Code, Cpu, Globe, Zap, Trophy, Users, Shield } from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const TiltCard = ({ children, className = "" }) => {
+const Card = ({ children, className = "" }) => {
   const cardRef = useRef(null);
-  const glowRef = useRef(null);
 
-  const handleMouseMove = (e) => {
-    if (!cardRef.current) return;
-    
-    const rect = cardRef.current.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
-    
-    const rotateX = ((y - centerY) / centerY) * -10; // Max 10deg rotation
-    const rotateY = ((x - centerX) / centerX) * 10;
-
+  const handleMouseEnter = () => {
+    // Card lift and shake
     gsap.to(cardRef.current, {
-      rotateX: rotateX,
-      rotateY: rotateY,
-      duration: 0.5,
-      ease: "power2.out",
-      transformPerspective: 1000
+      y: -5,
+      rotation: Math.random() * 2 - 1,
+      duration: 0.3,
+      ease: "back.out(1.7)"
     });
 
-    if (glowRef.current) {
-      gsap.to(glowRef.current, {
-        x: x,
-        y: y,
-        duration: 0.1,
-        ease: "none"
+    // Bounce icons
+    const icons = cardRef.current?.querySelectorAll('.card-icon');
+    icons?.forEach(icon => {
+      gsap.to(icon, {
+        y: -10,
+        duration: 0.4,
+        ease: "power2.out",
+        yoyo: true,
+        repeat: 1
       });
-    }
+    });
   };
 
   const handleMouseLeave = () => {
     gsap.to(cardRef.current, {
-      rotateX: 0,
-      rotateY: 0,
-      duration: 0.5,
+      y: 0,
+      rotation: 0,
+      duration: 0.3,
       ease: "power2.out"
     });
   };
@@ -52,15 +42,10 @@ const TiltCard = ({ children, className = "" }) => {
   return (
     <div 
       ref={cardRef}
-      onMouseMove={handleMouseMove}
+      onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      className={`relative overflow-hidden glass-card rounded-3xl border border-white/10 group hover:border-cyan-400/30 transition-colors duration-300 ${className}`}
-      style={{ transformStyle: 'preserve-3d' }}
+      className={`relative overflow-visible bg-gradient-to-br from-gray-900 to-gray-950 border-4 border-black transition-all duration-200 ${className}`}
     >
-      <div 
-        ref={glowRef}
-        className="absolute w-[300px] h-[300px] bg-cyan-400/20 blur-[100px] rounded-full pointer-events-none -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-      />
       <div className="relative z-10 h-full">
         {children}
       </div>
@@ -68,29 +53,49 @@ const TiltCard = ({ children, className = "" }) => {
   );
 };
 
-const StatCard = ({ icon: Icon, value, label, delay }) => (
-  <div className="flex flex-col items-center justify-center p-6 text-center space-y-2">
-    <div className="w-12 h-12 rounded-full bg-cyan-500/10 flex items-center justify-center mb-2 group-hover:scale-110 transition-transform duration-300">
-      <Icon className="w-6 h-6 text-cyan-400" />
-    </div>
-    <h4 className="text-3xl font-bold text-white font-display">{value}</h4>
-    <p className="text-sm text-gray-400 uppercase tracking-wider">{label}</p>
-  </div>
-);
+
 
 const About = () => {
   const containerRef = useRef(null);
+  const bgRef = useRef(null);
   const titleRef = useRef(null);
+  const particlesRef = useRef([]);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Title Animation
+      // Mouse Parallax for Background
+      const handleMouseMove = (e) => {
+        if (bgRef.current) {
+          const x = (e.clientX / window.innerWidth - 0.5) * 30;
+          const y = (e.clientY / window.innerHeight - 0.5) * 30;
+          
+          gsap.to(bgRef.current, {
+            x: x,
+            y: y,
+            duration: 1,
+            ease: "power2.out"
+          });
+          
+          // Move particles slightly more for depth
+          gsap.to(particlesRef.current, {
+            x: x * 1.5,
+            y: y * 1.5,
+            duration: 1.2,
+            ease: "power2.out"
+          });
+        }
+      };
+      
+      window.addEventListener('mousemove', handleMouseMove);
+
+      // Title entrance animation
       gsap.fromTo(titleRef.current,
-        { y: 50, opacity: 0 },
+        { y: 80, opacity: 0 },
         {
           y: 0,
           opacity: 1,
           duration: 1,
+          ease: "power3.out",
           scrollTrigger: {
             trigger: containerRef.current,
             start: "top 80%",
@@ -100,20 +105,40 @@ const About = () => {
         }
       );
 
-      // Cards Stagger Animation
-      gsap.from(".bento-card", {
-        y: 100,
+      // Cards stagger animation
+      gsap.from(".about-card", {
+        y: 60,
         opacity: 0,
-        duration: 1,
+        duration: 0.8,
         stagger: 0.1,
         ease: "power3.out",
         scrollTrigger: {
-          trigger: ".bento-grid",
+          trigger: ".cards-grid",
           start: "top 85%",
-          end: "bottom 80%",
+          end: "top 60%",
           scrub: 1
         }
       });
+
+      // Animate particles randomly (floating effect) + parallax mixed
+      particlesRef.current.forEach((particle, i) => {
+        if (particle) {
+          gsap.to(particle, {
+            y: `+=${Math.random() * 60 - 30}`,
+            x: `+=${Math.random() * 60 - 30}`,
+            opacity: Math.random() * 0.4 + 0.2,
+            duration: Math.random() * 2.5 + 1.5,
+            repeat: -1,
+            yoyo: true,
+            ease: "sine.inOut",
+            delay: Math.random() * 1.5
+          });
+        }
+      });
+      
+      return () => {
+        window.removeEventListener('mousemove', handleMouseMove);
+      };
 
     }, containerRef);
 
@@ -121,94 +146,174 @@ const About = () => {
   }, []);
 
   return (
-    <section id="about" ref={containerRef} className="relative py-24 sm:py-32 overflow-hidden">
-      {/* Background Elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-purple-500/10 rounded-full blur-[120px] animate-pulse-slow" />
-        <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-cyan-500/10 rounded-full blur-[120px] animate-pulse-slow" style={{ animationDelay: '2s' }} />
-      </div>
-
-      <div className="container mx-auto px-4 sm:px-6 relative z-10">
-        {/* Header */}
-        <div ref={titleRef} className="text-center mb-16 sm:mb-24">
-          <h2 className="text-5xl sm:text-7xl md:text-8xl font-display font-black text-transparent bg-clip-text bg-linear-to-b from-white to-white/20 mb-6">
-            THE <span className="text-cyan-400">VISION</span>
-          </h2>
-          <p className="text-lg sm:text-xl text-gray-400 max-w-2xl mx-auto font-light leading-relaxed">
-            Where technology meets creativity. Synchronize 4.0 is the ultimate convergence of innovation, competition, and future-tech.
-          </p>
+    <section id="about" ref={containerRef} className="relative h-screen overflow-hidden bg-black flex items-center justify-center">
+      
+      {/* Comic Background with Parallax */}
+      <div ref={bgRef} className="absolute inset-0">
+        {/* Vibranium energy particles */}
+        <div className="absolute inset-0">
+          {[...Array(30)].map((_, i) => (
+            <div
+              key={i}
+              ref={el => particlesRef.current[i] = el}
+              className="absolute rounded-full"
+              style={{
+                width: `${Math.random() * 4 + 2}px`,
+                height: `${Math.random() * 4 + 2}px`,
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+                background: i % 2 === 0 ? '#7C3AED' : '#B8860B',
+                opacity: 0.25,
+                filter: 'blur(1px)',
+                boxShadow: `0 0 8px currentColor`
+              }}
+            />
+          ))}
         </div>
 
-        {/* Bento Grid */}
-        <div className="bento-grid grid grid-cols-1 md:grid-cols-6 lg:grid-cols-12 gap-6 max-w-7xl mx-auto">
-          
-          {/* Main Description Card - Large */}
-          <div className="md:col-span-6 lg:col-span-8 row-span-2 bento-card">
-            <TiltCard className="h-full p-8 sm:p-10 flex flex-col justify-between bg-linear-to-br from-white/5 to-transparent">
-              <div>
-                <div className="w-16 h-16 rounded-2xl bg-cyan-400/10 flex items-center justify-center mb-6">
-                  <Globe className="w-8 h-8 text-cyan-400" />
-                </div>
-                <h3 className="text-3xl sm:text-4xl font-bold text-white mb-4 font-display">Global Tech Ecosystem</h3>
-                <p className="text-gray-300 text-lg leading-relaxed">
-                  Join a vibrant community of developers, designers, and innovators. We're building a platform where ideas transform into reality through collaboration and competition.
-                </p>
-              </div>
-              <div className="mt-8 flex gap-4">
-                <div className="px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm text-cyan-400">Innovation</div>
-                <div className="px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm text-purple-400">Creativity</div>
-                <div className="px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm text-pink-400">Future</div>
-              </div>
-            </TiltCard>
+        {/* Comic halftone dots */}
+        <div 
+          className="absolute inset-0 opacity-10 pointer-events-none"
+          style={{
+            backgroundImage: 'radial-gradient(circle, #7C3AED 1.5px, transparent 2px)',
+            backgroundSize: '25px 25px'
+          }}
+        />
+
+        {/* Diagonal speed lines */}
+        <div 
+          className="absolute inset-0 opacity-5 pointer-events-none"
+          style={{
+            backgroundImage: `
+              repeating-linear-gradient(45deg, transparent, transparent 80px, #7C3AED 80px, #7C3AED 82px),
+              repeating-linear-gradient(-45deg, transparent, transparent 80px, #B8860B 80px, #B8860B 82px)
+            `
+          }}
+        />
+      </div>
+
+      {/* Content - Compact */}
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 py-6">
+        
+        {/* Header - Compact */}
+        <div ref={titleRef} className="text-center mb-6">
+          <div className="inline-flex items-center gap-2 mb-3 px-4 py-1 bg-purple-700 border-3 border-black rounded-none shadow-[4px_4px_0px_#000] rotate-[-1deg]">
+            <Shield className="w-4 h-4 text-white" />
+            <span className="text-white font-black text-xs tracking-widest uppercase">Wakanda Forever</span>
           </div>
+          
+          <h2 className="text-5xl lg:text-7xl font-black mb-2 font-display italic">
+            <span className="text-white drop-shadow-[3px_3px_0px_#000]" style={{ WebkitTextStroke: '2px black' }}>
+              THE{' '}
+            </span>
+            <span className="text-purple-500 drop-shadow-[4px_4px_0px_#B8860B]" style={{ WebkitTextStroke: '2px black' }}>
+              VISION
+            </span>
+          </h2>
+          
+          <div className="relative inline-block">
+            <div className="absolute -left-3 top-0 bottom-0 w-2 bg-purple-600 -skew-x-12" />
+            <p className="text-white text-sm lg:text-base font-bold pl-2 max-w-xl mx-auto">
+              "INNOVATION MEETS LEGACY."
+              <span className="block text-gray-400 font-normal text-xs mt-0.5">
+                Join the next generation of tech warriors.
+              </span>
+            </p>
+          </div>
+        </div>
+
+        {/* Cards Grid - Compact */}
+        <div className="cards-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 lg:gap-4">
+          
+          {/* Main Card */}
+          <Card className="md:col-span-2 lg:col-span-2 about-card p-4 lg:p-5 shadow-[6px_6px_0px_#7C3AED]">
+            <div className="flex items-start gap-4">
+              <div className="flex-shrink-0">
+                <div className="w-12 h-12 lg:w-14 lg:h-14 rounded-none bg-purple-600 border-3 border-black flex items-center justify-center shadow-[3px_3px_0px_#000] rotate-3 card-icon">
+                  <Globe className="w-6 h-6 lg:w-7 lg:h-7 text-white" />
+                </div>
+              </div>
+              <div className="flex-1">
+                <h3 className="text-lg lg:text-xl font-black text-white mb-2 font-display italic" style={{ WebkitTextStroke: '0.5px black' }}>
+                  Global Tech Ecosystem
+                </h3>
+                <p className="text-gray-300 text-xs lg:text-sm leading-snug mb-3">
+                  Join a vibrant community of developers, designers, and innovators building the future.
+                </p>
+                <div className="flex flex-wrap gap-1.5">
+                  <span className="px-3 py-1 bg-purple-600 border-2 border-black text-white text-[10px] font-black shadow-[2px_2px_0px_#000] uppercase">Innovation</span>
+                  <span className="px-3 py-1 bg-black border-2 border-purple-600 text-purple-400 text-[10px] font-black shadow-[2px_2px_0px_#7C3AED] uppercase">Creativity</span>
+                  <span className="px-3 py-1 bg-yellow-700 border-2 border-black text-white text-[10px] font-black shadow-[2px_2px_0px_#000] uppercase">Future</span>
+                </div>
+              </div>
+            </div>
+          </Card>
 
           {/* Stat Card 1 */}
-          <div className="md:col-span-3 lg:col-span-4 bento-card">
-            <TiltCard className="h-full bg-black/20">
-              <StatCard icon={Users} value="1000+" label="Participants" />
-            </TiltCard>
-          </div>
-
-          {/* Stat Card 2 */}
-          <div className="md:col-span-3 lg:col-span-4 bento-card">
-            <TiltCard className="h-full bg-black/20">
-              <StatCard icon={Trophy} value="₹50k+" label="Prize Pool" />
-            </TiltCard>
-          </div>
+          <Card className="about-card p-4 text-center shadow-[5px_5px_0px_#B8860B]">
+            <div className="w-12 h-12 rounded-none bg-purple-600 border-3 border-black flex items-center justify-center mx-auto mb-2 shadow-[3px_3px_0px_#000] card-icon">
+              <Users className="w-6 h-6 text-white" />
+            </div>
+            <h4 className="text-3xl font-black text-white mb-1 font-display italic" style={{ WebkitTextStroke: '1px black' }}>1000+</h4>
+            <p className="text-purple-400 text-[10px] font-black uppercase tracking-widest">Participants</p>
+          </Card>
 
           {/* Feature Card 1 */}
-          <div className="md:col-span-3 lg:col-span-4 bento-card">
-            <TiltCard className="h-full p-6 flex flex-col items-start justify-center bg-linear-to-br from-purple-500/10 to-transparent">
-              <Cpu className="w-10 h-10 text-purple-400 mb-4" />
-              <h4 className="text-xl font-bold text-white mb-2">Cutting Edge</h4>
-              <p className="text-sm text-gray-400">Latest tech stack and hardware integration challenges.</p>
-            </TiltCard>
-          </div>
+          <Card className="about-card p-4 shadow-[5px_5px_0px_#7C3AED]">
+            <div className="w-10 h-10 rounded-none bg-purple-600 border-3 border-black flex items-center justify-center mb-2 shadow-[3px_3px_0px_#000] -rotate-6 card-icon">
+              <Cpu className="w-5 h-5 text-white" />
+            </div>
+            <h4 className="text-base lg:text-lg font-black text-white mb-1 font-display italic">Cutting Edge</h4>
+            <p className="text-gray-400 text-xs">Latest tech stack challenges.</p>
+          </Card>
+
+          {/* Stat Card 2 */}
+          <Card className="about-card p-4 text-center shadow-[5px_5px_0px_#7C3AED]">
+            <div className="w-12 h-12 rounded-none bg-yellow-700 border-3 border-black flex items-center justify-center mx-auto mb-2 shadow-[3px_3px_0px_#000] card-icon">
+              <Trophy className="w-6 h-6 text-white" />
+            </div>
+            <h4 className="text-3xl font-black text-white mb-1 font-display italic" style={{ WebkitTextStroke: '1px black' }}>₹50k+</h4>
+            <p className="text-yellow-600 text-[10px] font-black uppercase tracking-widest">Prize Pool</p>
+          </Card>
 
           {/* Feature Card 2 */}
-          <div className="md:col-span-3 lg:col-span-4 bento-card">
-            <TiltCard className="h-full p-6 flex flex-col items-start justify-center bg-linear-to-br from-cyan-500/10 to-transparent">
-              <Code className="w-10 h-10 text-cyan-400 mb-4" />
-              <h4 className="text-xl font-bold text-white mb-2">24h Hackathon</h4>
-              <p className="text-sm text-gray-400">Non-stop coding marathon to solve real-world problems.</p>
-            </TiltCard>
-          </div>
+          <Card className="about-card p-4 shadow-[5px_5px_0px_#B8860B]">
+            <div className="w-10 h-10 rounded-none bg-yellow-700 border-3 border-black flex items-center justify-center mb-2 shadow-[3px_3px_0px_#000] rotate-6 card-icon">
+              <Code className="w-5 h-5 text-white" />
+            </div>
+            <h4 className="text-base lg:text-lg font-black text-white mb-1 font-display italic">24h Hackathon</h4>
+            <p className="text-gray-400 text-xs">Non-stop coding marathon.</p>
+          </Card>
 
-          {/* Wide Bottom Card */}
-          <div className="md:col-span-6 lg:col-span-4 bento-card">
-            <TiltCard className="h-full p-6 flex items-center justify-between bg-linear-to-r from-cyan-500/5 to-purple-500/5">
+          {/* CTA Card */}
+          <Card className="about-card p-4 bg-gradient-to-r from-purple-700 to-purple-800 shadow-[5px_5px_0px_#000]">
+            <div className="flex items-center justify-between h-full">
               <div>
-                <h4 className="text-2xl font-bold text-white mb-1">Join Us</h4>
-                <p className="text-sm text-gray-400">Be part of the revolution</p>
+                <h4 className="text-xl font-black text-white mb-0.5 font-display italic" style={{ WebkitTextStroke: '0.5px black' }}>Join Us</h4>
+                <p className="text-purple-200 text-[10px] font-black uppercase tracking-wider">Revolution Awaits</p>
               </div>
-              <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-cyan-400 group-hover:text-black transition-colors duration-300">
-                <Zap className="w-6 h-6" />
+              <div className="w-10 h-10 rounded-none bg-black border-3 border-white flex items-center justify-center shadow-[3px_3px_0px_#7C3AED] card-icon">
+                <Zap className="w-5 h-5 text-purple-400 fill-current" />
               </div>
-            </TiltCard>
-          </div>
+            </div>
+          </Card>
 
         </div>
       </div>
+
+      {/* Comic Corner Accents */}
+      <div className="absolute top-0 left-0 w-20 h-20 border-t-6 border-l-6 border-purple-600 z-30" />
+      <div className="absolute top-0 right-0 w-20 h-20 border-t-6 border-r-6 border-purple-600 z-30" />
+      <div className="absolute bottom-0 left-0 w-20 h-20 border-b-6 border-l-6 border-yellow-700 z-30" />
+      <div className="absolute bottom-0 right-0 w-20 h-20 border-b-6 border-r-6 border-yellow-700 z-30" />
+
+      {/* Speed Lines Decoration */}
+      <div className="absolute top-1/4 left-0 w-2 h-24 bg-gradient-to-b from-transparent via-purple-600 to-transparent opacity-40 -skew-y-12" />
+      <div className="absolute top-3/4 left-0 w-2 h-24 bg-gradient-to-b from-transparent via-yellow-700 to-transparent opacity-40 -skew-y-12" />
+      <div className="absolute top-1/4 right-0 w-2 h-24 bg-gradient-to-b from-transparent via-purple-600 to-transparent opacity-40 skew-y-12" />
+      <div className="absolute top-3/4 right-0 w-2 h-24 bg-gradient-to-b from-transparent via-yellow-700 to-transparent opacity-40 skew-y-12" />
+
+
     </section>
   );
 };
