@@ -281,6 +281,57 @@ body.modal-open .navbar-main {
   box-shadow: 9px 9px 0px 0px rgba(0,0,0,1);
 }
 
+/* Wakanda/Black Panther Theme Styles */
+.wakanda-pattern {
+  background-image: 
+    radial-gradient(circle at 25% 25%, #9C27B0 2px, transparent 2px),
+    radial-gradient(circle at 75% 75%, #FFD700 1px, transparent 1px);
+  background-size: 30px 30px, 20px 20px;
+}
+
+.vibranium-glow {
+  box-shadow: 
+    0 0 20px rgba(156, 39, 176, 0.5),
+    0 0 40px rgba(156, 39, 176, 0.3),
+    inset 0 0 20px rgba(156, 39, 176, 0.1);
+}
+
+.panther-text {
+  background: linear-gradient(45deg, #9C27B0, #FFD700, #9C27B0);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer-text 3s ease-in-out infinite;
+}
+
+@keyframes energy-pulse {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.05);
+  }
+}
+
+.energy-pulse {
+  animation: energy-pulse 2s ease-in-out infinite;
+}
+
+/* Performance optimizations for About section */
+.about-panel {
+  will-change: transform;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+}
+
+.panel-icon {
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
 .comic-button {
   position: relative;
   border: 3px solid black;
