@@ -270,10 +270,10 @@ const Timeline = () => {
                       <div className="bg-black text-white px-2 py-0.5 sm:py-1 font-mono font-bold text-[10px] sm:text-xs inline-block mb-2 transform -rotate-2 border border-white">
                           TIMESTAMPS // {item.time}
                       </div>
-                      <h3 className="relative z-10 text-xl sm:text-3xl font-display font-black text-black mb-1 sm:mb-2 uppercase tracking-wide italic leading-none text-left md:text-inherit">
+                      <h3 className="relative z-10 text-xl sm:text-3xl font-display font-black text-black mb-1 sm:mb-2 uppercase tracking-wide italic leading-none">
                           {item.title}
                       </h3>
-                      <p className="relative z-10 text-black font-bold font-sans text-xs sm:text-base leading-relaxed max-w-sm text-left md:text-inherit">
+                      <p className="relative z-10 text-black font-bold font-sans text-xs sm:text-base leading-relaxed max-w-sm">
                           {item.description}
                       </p>
                   </div>
