@@ -8,11 +8,10 @@ import Events from '../components/Events';
 import Timeline from '../components/Timeline';
 import Contact from '../components/Contact';
 import Sponsors from '../components/Sponsors';
-import Preloader from '../components/Preloader';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const HomePage = ({ loading, setLoading }) => {
+const HomePage = () => {
   const mainRef = useRef(null);
   const heroRef = useRef(null);
   const aboutRef = useRef(null);
@@ -22,8 +21,6 @@ const HomePage = ({ loading, setLoading }) => {
   const contactRef = useRef(null);
 
   useEffect(() => {
-    if (loading) return;
-
     const ctx = gsap.context(() => {
       // Hero Pinning Effect
       ScrollTrigger.create({
@@ -94,15 +91,13 @@ const HomePage = ({ loading, setLoading }) => {
     }, mainRef);
 
     return () => ctx.revert();
-  }, [loading]);
+  }, []);
 
   return (
-    <>
-      {loading && <Preloader onComplete={() => setLoading(false)} />}
-      <Layout>
-        <div ref={mainRef} className="relative w-full">
-          <div ref={heroRef} className="relative z-0 w-full h-screen">
-            <Hero startAnimation={!loading} />
+    <Layout>
+      <div ref={mainRef} className="relative w-full bg-black">
+        <div ref={heroRef} className="relative z-0 w-full h-screen">
+          <Hero />
           </div>
           
           <div className="relative z-10">
@@ -124,7 +119,6 @@ const HomePage = ({ loading, setLoading }) => {
           </div>
         </div>
       </Layout>
-    </>
   );
 };
 

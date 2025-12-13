@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router';
 import gsap from 'gsap';
-import { FaBars, FaXmark } from 'react-icons/fa6';
 import MagneticButton from './MagneticButton';
 
 const Navbar = () => {
@@ -11,7 +10,6 @@ const Navbar = () => {
   const menuRef = useRef(null);
   const linksRef = useRef([]);
   const bgRef = useRef(null);
-  const circleRef = useRef(null);
 
   // Detect screen size changes
   useEffect(() => {
@@ -28,20 +26,20 @@ const Navbar = () => {
 
     tl.to(bgRef.current, {
       yPercent: 100,
-      duration: isLargeScreen ? 1 : 0.6,
+      duration: 1,
       ease: "power4.inOut"
     })
     .fromTo(linksRef.current, 
-      { y: isLargeScreen ? 100 : 50, opacity: 0, rotate: isLargeScreen ? 5 : 0 },
+      { y: 100, opacity: 0, scale: 0.8 },
       { 
         y: 0, 
         opacity: 1, 
-        rotate: 0, 
-        stagger: isLargeScreen ? 0.1 : 0.05, 
-        duration: isLargeScreen ? 0.8 : 0.4, 
-        ease: "power3.out" 
+        scale: 1,
+        stagger: 0.1, 
+        duration: 0.8, 
+        ease: "back.out(1.7)" 
       },
-      "-=0.6"
+      "-=0.5"
     );
 
     menuRef.current = tl;
@@ -76,104 +74,97 @@ const Navbar = () => {
     }
   };
 
-  const handleLinkHover = (index) => {
-    // Only apply complex hover effects on large screens
-    if (!isLargeScreen) return;
-    
-    gsap.to(linksRef.current, {
-      opacity: 0.3,
-      scale: 0.95,
-      duration: 0.3,
-      overwrite: true
-    });
-    gsap.to(linksRef.current[index], {
-      opacity: 1,
-      scale: 1.1,
-      x: 20,
-      duration: 0.3,
-      overwrite: true
-    });
-  };
-
-  const handleLinkLeave = () => {
-    // Only apply complex hover effects on large screens
-    if (!isLargeScreen) return;
-    
-    gsap.to(linksRef.current, {
-      opacity: 1,
-      scale: 1,
-      x: 0,
-      duration: 0.3,
-      overwrite: true
-    });
-  };
-
   const navLinks = [
-    { name: "Home", path: "/" },
-    { name: "Events", path: "/events" },
-    { name: "Schedule", path: "/#schedule" },
-    { name: "Sponsors", path: "/#sponsors" },
-    { name: "Team", path: "/team" },
-    { name: "Gallery", path: "/gallery" },
+    { name: "Home", path: "/", color: "var(--color-marvel-red)" },
+    { name: "Events", path: "/events", color: "var(--color-hulk-green)" },
+    { name: "Schedule", path: "/#schedule", color: "var(--color-iron-gold)" },
+    { name: "Sponsors", path: "/#sponsors", color: "var(--color-thor-lightning)" },
+    { name: "Team", path: "/team", color: "var(--color-vibranium)" },
+    { name: "Gallery", path: "/gallery", color: "var(--color-arc-reactor)" },
   ];
 
   return (
     <>
-      {/* Floating Header */}
-      <nav className="navbar-main fixed top-0 left-0 w-full z-50 px-6 py-6 flex justify-between items-center mix-blend-difference text-white">
+      <nav className="navbar-main fixed top-0 left-0 w-full z-50 px-6 py-4 flex justify-between items-center bg-red-900/90 text-white backdrop-blur-md border-b-4 border-black box-border">
         <Link 
           to="/" 
           onClick={() => setIsOpen(false)} 
-          className="relative z-50 text-2xl font-display font-bold tracking-tighter hover:opacity-80 transition-opacity cursor-pointer italic"
+          className="relative z-50 group cursor-pointer"
         >
-          SYNCHRONIZE <span className="text-cyan-400">4.0</span>
+          <div className="flex items-center gap-2 transform -skew-x-12">
+             <div className="w-12 h-12 bg-[--color-marvel-red] border-4 border-white flex items-center justify-center comic-shadow group-hover:translate-y-[-2px] transition-transform">
+                <span className="font-display font-black text-3xl text-white italic skew-x-12">S</span>
+             </div>
+             <div className="flex flex-col skew-x-12">
+                <span className="text-2xl font-display font-black tracking-tighter italic leading-none text-white pop-art-text">SYNCHRONIZE</span>
+                <span className="text-xs font-black tracking-widest bg-black px-1">4.0 EDITION</span>
+             </div>
+          </div>
         </Link>
         
         <div className="relative z-50">
-          <MagneticButton onClick={toggleMenu} className="w-16 h-16 rounded-full cursor-pointer flex items-center justify-center group hover:bg-white/10 transition-all duration-300 hover:shadow-[0_0_20px_rgba(255,255,255,0.2)]">
-             <div className="cursor-pointerrelative w-7 h-7 flex flex-col justify-center items-center gap-1.5">
-                <span className={`absolute h-[2px] bg-white transition-all duration-300 ease-out ${isOpen ? 'w-full rotate-45 top-3.5' : 'w-full top-2 group-hover:w-3/4'}`}></span>
-                <span className={`absolute h-[2px] bg-white transition-all duration-300 ease-out ${isOpen ? 'w-full -rotate-45 top-3.5' : 'w-2/3 top-4 group-hover:w-full'}`}></span>
+          <MagneticButton onClick={toggleMenu} className="w-16 h-16 cursor-pointer flex items-center justify-center group bg-[--color-marvel-red] border-4 border-black comic-shadow hover:-translate-y-1 transition-transform">
+             <div className="relative w-8 h-8 flex flex-col justify-center items-center gap-1.5">
+                 <span className={`block w-full h-[4px] bg-white border border-black transition-all duration-300 ${isOpen ? 'rotate-45 translate-y-2.5' : ''}`}></span>
+                 <span className={`block w-full h-[4px] bg-white border border-black transition-all duration-300 ${isOpen ? 'opacity-0' : ''}`}></span>
+                 <span className={`block w-full h-[4px] bg-white border border-black transition-all duration-300 ${isOpen ? '-rotate-45 -translate-y-2.5' : ''}`}></span>
              </div>
           </MagneticButton>
         </div>
       </nav>
 
-      {/* Full Screen Menu Overlay */}
+      {/* Full Screen Menu Overlay - Avengers Tower UI */}
       <div 
         ref={bgRef} 
-        className="fixed inset-0 bg-black z-35 transform -translate-y-full flex flex-col justify-center items-center overflow-hidden"
+        className="fixed inset-0 bg-[#0a0a0a] z-35 transform -translate-y-full flex flex-col justify-center items-center overflow-hidden"
       >
-        {/* Background Noise/Gradient */}
-        <div className="absolute inset-0 opacity-10 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] pointer-events-none"></div>
-        <div className="absolute top-0 left-0 w-full h-full bg-linear-to-b from-black via-black to-cyan-950/20 pointer-events-none"></div>
+        {/* HUD Grid Background */}
+        <div 
+          className="absolute inset-0 opacity-10 pointer-events-none" 
+          style={{
+             backgroundImage: `linear-gradient(to right, #333 1px, transparent 1px),
+                               linear-gradient(to bottom, #333 1px, transparent 1px)`,
+             backgroundSize: '40px 40px'
+          }}
+        />
         
-        {/* Decorative Circle */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-cyan-500/5 rounded-full blur-[120px] pointer-events-none"></div>
+        {/* Character Gradient Orbs */}
+        <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-[--color-marvel-red] rounded-full blur-[150px] opacity-20 pointer-events-none animate-pulse-slow"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-[--color-iron-gold] rounded-full blur-[150px] opacity-20 pointer-events-none animate-pulse-slow" style={{ animationDelay: '2s' }}></div>
 
-        <div className="flex flex-col gap-2 sm:gap-4 text-center px-4 relative z-10">
+        <div className="flex flex-col gap-2 sm:gap-6 text-center px-4 relative z-10 w-full max-w-4xl">
           {navLinks.map((link, index) => (
-            <div key={index} className="overflow-hidden py-2 px-20">
+            <div key={index} className="overflow-hidden group">
               <button
                 ref={el => linksRef.current[index] = el}
                 onClick={() => handleNavigation(link.path)}
-                onMouseEnter={() => handleLinkHover(index)}
-                onMouseLeave={handleLinkLeave}
-                className={`group text-5xl sm:text-6xl md:text-7xl lg:text-7xl font-display font-black text-transparent bg-clip-text bg-linear-to-r from-white to-white/60 cursor-pointer uppercase tracking-tighter italic px-2.5 ${
-                  isLargeScreen 
-                    ? 'hover:to-cyan-400 transition-all duration-150' 
-                    : 'active:to-cyan-400 transition-colors duration-150'
-                }`}
+                className="relative w-full text-center py-4 cursor-pointer hover:bg-white/5 transition-colors rounded-lg group-hover:tracking-widest duration-500"
               >
-                {link.name}
+                <div className="flex items-baseline justify-center gap-4">
+                    <span className="text-xs font-mono text-gray-500 group-hover:text-white transition-colors">0{index + 1} //</span>
+                    <span 
+                        className="text-5xl sm:text-6xl md:text-7xl font-display font-black text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400 italic uppercase"
+                        style={{ transition: 'all 0.3s ease' }}
+                        onMouseEnter={(e) => {
+                            e.target.style.backgroundImage = `linear-gradient(to right, ${link.color}, white)`;
+                            e.target.style.webkitTextStroke = `1px ${link.color}`;
+                        }}
+                        onMouseLeave={(e) => {
+                             e.target.style.backgroundImage = 'linear-gradient(to right, white, gray)';
+                             e.target.style.webkitTextStroke = '0px transparent';
+                        }}
+                    >
+                        {link.name}
+                    </span>
+                </div>
               </button>
             </div>
           ))}
         </div>
         
-        <div className="absolute bottom-10 left-0 w-full flex justify-between px-10 text-white/40 font-mono text-sm uppercase tracking-widest">
-            <span>Est. 2025</span>
-            <span>TechFest, Synchronize 4.0</span>
+        <div className="absolute bottom-10 left-0 w-full flex justify-between px-10 text-white/30 font-mono text-xs uppercase tracking-[0.3em]">
+            <span>Stark Industries System</span>
+            <span>Auth: Levels 1-10</span>
         </div>
       </div>
     </>

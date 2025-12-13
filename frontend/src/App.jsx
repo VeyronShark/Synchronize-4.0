@@ -31,8 +31,6 @@ function ScrollToHash() {
 
 
 function App() {
-  const [loading, setLoading] = useState(true);
-
   return (
     <Router>
       <ScrollToHash />
@@ -62,7 +60,7 @@ function App() {
         }}
       />
       <Routes>
-        <Route path="/" element={<HomePage loading={loading} setLoading={setLoading} />} />
+        <Route path="/" element={<HomePage />} />
         <Route path="/team" element={
           <Layout>
             <TeamPage />
