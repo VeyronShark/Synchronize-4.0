@@ -107,17 +107,20 @@ const Navbar = () => {
   const handleNavigation = (path) => {
     setIsOpen(false);
     
+    // Always navigate to the full path first to ensure URL is updated with hash
+    navigate(path);
+    
     if (path.includes('#')) {
-      const [route, hash] = path.split('#');
-      navigate(route || '/');
-      setTimeout(() => {
-        const element = document.getElementById(hash);
-        if (element) {
-          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-      }, 300);
-    } else {
-      navigate(path);
+      const hash = path.split('#')[1];
+      // Helper timeout to attempt scroll if on same page or quick mount
+      [100, 300, 800].forEach(delay => {
+        setTimeout(() => {
+          const element = document.getElementById(hash);
+          if (element) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        }, delay);
+      });
     }
   };
 

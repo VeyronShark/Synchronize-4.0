@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import { useLocation } from 'react-router';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Layout from '../components/Layout';
@@ -19,6 +20,33 @@ const HomePage = () => {
   const timelineRef = useRef(null);
   const sponsorsRef = useRef(null);
   const contactRef = useRef(null);
+  const location = useLocation();
+
+  // Handle Hash Scrolling
+  useEffect(() => {
+    if (location.hash) {
+      const hash = location.hash.substring(1); // remove '#'
+      
+      // We use a slight delay specifically to allow GSAP pinning calculations to settle if needed,
+      // or simply rely on the fact that we are in a useEffect after render.
+      // Retrying a few times is robust for heavy pages.
+      const scrollToHash = () => {
+        const element = document.getElementById(hash);
+        if (element) {
+          // Check if we need to offset for pinned header?
+          // Using scrollIntoView usually handles it, but verify.
+          element.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      };
+
+      // Immediate attempt
+      scrollToHash();
+      
+      // Delayed attempt for ensuring layout stability
+      setTimeout(scrollToHash, 500);
+      setTimeout(scrollToHash, 1000);
+    }
+  }, [location.hash]);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
