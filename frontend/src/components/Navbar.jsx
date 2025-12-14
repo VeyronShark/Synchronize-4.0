@@ -293,7 +293,7 @@ const Navbar = () => {
       {/* Full Screen Menu Overlay */}
       <div 
         ref={bgRef} 
-        className="fixed inset-0 bg-[#0a0a0a] z-40 transform -translate-y-full flex flex-col justify-center items-center overflow-hidden"
+        className="fixed inset-0 bg-[#0a0a0a] z-90 transform -translate-y-full flex flex-col justify-center items-center overflow-hidden"
       >
         {/* Halftone & Action Lines */}
         <div className="absolute inset-0 halftone-pattern opacity-10 pointer-events-none"></div>
