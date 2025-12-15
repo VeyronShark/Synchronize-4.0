@@ -211,7 +211,7 @@ const Navbar = () => {
           >
             <div className="flex items-center gap-2 transform skew-x-6">
                 <div className="flex flex-col items-center">
-                    <span className="text-3xl font-display font-black italic leading-none text-black tracking-tighter transition-all duration-300 group-hover:tracking-widest" style={{ textShadow: '2px 2px 0px #ED1D24' }}>SYNCHRONIZE</span>
+                    <span className="text-xl sm:text-3xl font-display font-black italic leading-none text-black tracking-tighter transition-all duration-300 group-hover:tracking-widest" style={{ textShadow: '2px 2px 0px #ED1D24' }}>SYNCHRONIZE</span>
                     <span className="text-xs font-black tracking-[0.5em] bg-black text-white px-2 py-0.5 mt-[-4px] -rotate-2 group-hover:rotate-0 transition-transform duration-300">4.0 EDITION</span>
                 </div>
             </div>
@@ -226,7 +226,7 @@ const Navbar = () => {
           >
             <div className="relative">
                 <MagneticButton 
-                    className={`w-20 h-20 flex items-center justify-center transition-all duration-500 rounded-full group-hover/nav:scale-110`}
+                    className={`w-14 h-14 sm:w-20 sm:h-20 flex items-center justify-center transition-all duration-500 rounded-full group-hover/nav:scale-110`}
                 >
                 <div 
                     onMouseEnter={() => setHoveredReact(true)}
@@ -293,7 +293,7 @@ const Navbar = () => {
       {/* Full Screen Menu Overlay */}
       <div 
         ref={bgRef} 
-        className="fixed inset-0 bg-[#0a0a0a] z-90 transform -translate-y-full flex flex-col justify-center items-center overflow-hidden"
+        className="fixed inset-0 bg-[#0a0a0a] z-90 transform -translate-y-full flex flex-col justify-center items-center overflow-hidden overflow-y-auto"
       >
         {/* Halftone & Action Lines */}
         <div className="absolute inset-0 halftone-pattern opacity-10 pointer-events-none"></div>
@@ -309,8 +309,8 @@ const Navbar = () => {
         ))}
 
         {/* Floating Comic Particles */}
-        <div className="absolute top-40 left-20 text-6xl font-black text-white/10 rotate-[-15deg] pointer-events-none">POW!</div>
-        <div className="absolute bottom-20 right-20 text-8xl font-black text-white/10 rotate-15 pointer-events-none">BAM!</div>
+        <div className="hidden lg:block absolute top-40 left-20 text-6xl font-black text-white/10 rotate-[-15deg] pointer-events-none">POW!</div>
+        <div className="hidden lg:block absolute bottom-20 right-20 text-8xl font-black text-white/10 rotate-15 pointer-events-none">BAM!</div>
 
         <div className="flex flex-col items-center gap-6 relative z-10 w-full max-w-2xl px-4">
           <h2 
@@ -335,7 +335,7 @@ const Navbar = () => {
               <div className="relative inline-block transform transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-2">
                 <div className="absolute -inset-2 bg-white skew-x-12 opacity-0 group-hover:opacity-100 transition-opacity duration-200 border-2 border-black shadow-[4px_4px_0px_#000]"></div>
                 <span 
-                    className="relative z-10 text-5xl sm:text-7xl font-display font-black text-transparent bg-clip-text bg-white italic uppercase group-hover:text-black transition-colors duration-200"
+                    className="relative z-10 text-4xl sm:text-7xl font-display font-black text-transparent bg-clip-text bg-white italic uppercase group-hover:text-black transition-colors duration-200"
                     style={{ WebkitTextStroke: '2px black' }}
                 >
                     {link.name}
