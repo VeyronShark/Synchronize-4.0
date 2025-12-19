@@ -11,6 +11,7 @@ import blackPantherImg from '../assets/black_panther.png';
 import blackWidowImg from '../assets/black_widow.png';
 import ximLogo from '../assets/xim-logo.png';
 import ArcReactor from './ArcReactor';
+import { useCursor } from '../context/CursorContext';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -199,6 +200,8 @@ const Navbar = () => {
   // Comic "Sticker" effect class
   const stickerClass = "comic-panel bg-white text-black";
 
+  const { setShowModal, currentCursor } = useCursor();
+
   return (
     <>
       <nav className={`navbar-main fixed top-6 left-0 w-full z-100 px-4 sm:px-8 py-4 transition-all duration-300 ${isOpen ? '' : 'pointer-events-none'}`}>
@@ -230,74 +233,86 @@ const Navbar = () => {
           </Link>
 
 
-          
-          {/* Menu Toggle - "SECRET FILES" Badge */}
-          <div 
-            onClick={toggleMenu}
-            className="group/nav relative z-50 flex items-center gap-4 cursor-pointer"
-          >
-            <div className="relative">
-                <MagneticButton 
-                    className={`w-14 h-14 sm:w-20 sm:h-20 flex items-center justify-center transition-all duration-500 rounded-full group-hover/nav:scale-110`}
-                >
-                <div 
-                    onMouseEnter={() => setHoveredReact(true)}
-                    onMouseLeave={() => setHoveredReact(false)}
-                    className="relative w-full h-full flex items-center justify-center scale-90"
-                >
-                    {/* Rotator Container - Pure Animation, No CSS Transforms */}
-                    <div ref={el => { if (el) reactorRef.current = el; }} className="w-full h-full">
-                        <ArcReactor className="cursor-pointer w-full h-full drop-shadow-[0_0_5px_rgba(0,0,0,0.5)]" />
+          <div className="flex items-center gap-4">
+              {/* CHOOSE WEAPON BUTTON */}
+              <button
+                onClick={() => setShowModal(true)}
+                className="hidden md:flex items-center gap-2 bg-yellow-400 border-3 border-black px-4 py-2 transform -skew-x-12 hover:scale-105 hover:rotate-1 hover:shadow-[4px_4px_0px_black] transition-all duration-200 cursor-pointer"
+              >
+                  <span className="font-display font-black italic text-black text-sm transform skew-x-12 tracking-wider">
+                      {currentCursor !== 'default' ? 'CHANGE WEAPON' : 'CHOOSE WEAPON'}
+                  </span>
+                  <div className="w-2 h-2 bg-black rounded-full animate-pulse transform skew-x-12"></div>
+              </button>
+
+              {/* Menu Toggle - "SECRET FILES" Badge */}
+              <div 
+                onClick={toggleMenu}
+                className="group/nav relative z-50 flex items-center gap-4 cursor-pointer"
+              >
+                <div className="relative">
+                    <MagneticButton 
+                        className={`w-14 h-14 sm:w-20 sm:h-20 flex items-center justify-center transition-all duration-500 rounded-full group-hover/nav:scale-110`}
+                    >
+                    <div 
+                        onMouseEnter={() => setHoveredReact(true)}
+                        onMouseLeave={() => setHoveredReact(false)}
+                        className="relative w-full h-full flex items-center justify-center scale-90"
+                    >
+                        {/* Rotator Container - Pure Animation, No CSS Transforms */}
+                        <div ref={el => { if (el) reactorRef.current = el; }} className="w-full h-full">
+                            <ArcReactor className="cursor-pointer w-full h-full drop-shadow-[0_0_5px_rgba(0,0,0,0.5)]" />
+                        </div>
+                        
+                        {/* Core Glow Overlay */}
+                        <div className={`absolute inset-0 rounded-full bg-cyan-400 opacity-0 ${isOpen ? 'animate-pulse opacity-30' : 'group-hover/nav:opacity-10'} transition-opacity duration-300 mix-blend-screen pointer-events-none`}></div>
                     </div>
+                    </MagneticButton>
                     
-                    {/* Core Glow Overlay */}
-                    <div className={`absolute inset-0 rounded-full bg-cyan-400 opacity-0 ${isOpen ? 'animate-pulse opacity-30' : 'group-hover/nav:opacity-10'} transition-opacity duration-300 mix-blend-screen pointer-events-none`}></div>
-                </div>
-                </MagneticButton>
-                
-                {/* Electric Discharges - Fancier Comic Style */}
-                <div className={`absolute inset-[-40%] pointer-events-none transition-all duration-300 group-hover/nav:scale-110 ${isOpen ? 'opacity-100' : 'opacity-0'}`}>
-                    <div className="w-full h-full relative">
-                        
-                        {/* Rotating Plasma Rings */}
-                        <div className="absolute inset-0 border-4 border-cyan-400 border-dashed rounded-full animate-spin-slow opacity-60"></div>
-                        <div className="absolute inset-2 border-4 border-yellow-400 border-dotted rounded-full animate-spin-reverse-slow opacity-60"></div>
-                        
-                        {/* Chaotic Lightning Bolts */}
-                        {/* Bolt 1: Top Right */}
-                        <svg className="absolute top-0 right-0 w-12 h-16 text-cyan-400 animate-pulse-fast fill-current rotate-12 drop-shadow-[0_0_8px_rgba(34,211,238,0.8)]" viewBox="0 0 24 24">
-                           <path d="M13 2L3 14H12L11 22L21 10H12L13 2Z" />
-                        </svg>
+                    {/* Electric Discharges - Fancier Comic Style */}
+                    <div className={`absolute inset-[-40%] pointer-events-none transition-all duration-300 group-hover/nav:scale-110 ${isOpen ? 'opacity-100' : 'opacity-0'}`}>
+                        <div className="w-full h-full relative">
+                            
+                            {/* Rotating Plasma Rings */}
+                            <div className="absolute inset-0 border-4 border-cyan-400 border-dashed rounded-full animate-spin-slow opacity-60"></div>
+                            <div className="absolute inset-2 border-4 border-yellow-400 border-dotted rounded-full animate-spin-reverse-slow opacity-60"></div>
+                            
+                            {/* Chaotic Lightning Bolts */}
+                            {/* Bolt 1: Top Right */}
+                            <svg className="absolute top-0 right-0 w-12 h-16 text-cyan-400 animate-pulse-fast fill-current rotate-12 drop-shadow-[0_0_8px_rgba(34,211,238,0.8)]" viewBox="0 0 24 24">
+                              <path d="M13 2L3 14H12L11 22L21 10H12L13 2Z" />
+                            </svg>
 
-                        {/* Bolt 2: Bottom Left */}
-                        <svg className="absolute bottom-0 left-0 w-10 h-14 text-yellow-300 animate-pulse-fast fill-current -rotate-12 drop-shadow-[0_0_8px_rgba(253,224,71,0.8)]" viewBox="0 0 24 24" style={{ animationDelay: '0.1s' }}>
-                           <path d="M13 2L3 14H12L11 22L21 10H12L13 2Z" />
-                        </svg>
-                        
-                        {/* Bolt 3: Top Left (Small) */}
-                        <svg className="absolute top-2 left-2 w-6 h-8 text-white animate-ping-slow fill-current -rotate-45" viewBox="0 0 24 24">
-                           <path d="M11 2L2 14H10L9 22L19 10H10L11 2Z" />
-                        </svg>
+                            {/* Bolt 2: Bottom Left */}
+                            <svg className="absolute bottom-0 left-0 w-10 h-14 text-yellow-300 animate-pulse-fast fill-current -rotate-12 drop-shadow-[0_0_8px_rgba(253,224,71,0.8)]" viewBox="0 0 24 24" style={{ animationDelay: '0.1s' }}>
+                              <path d="M13 2L3 14H12L11 22L21 10H12L13 2Z" />
+                            </svg>
+                            
+                            {/* Bolt 3: Top Left (Small) */}
+                            <svg className="absolute top-2 left-2 w-6 h-8 text-white animate-ping-slow fill-current -rotate-45" viewBox="0 0 24 24">
+                              <path d="M11 2L2 14H10L9 22L19 10H10L11 2Z" />
+                            </svg>
 
-                        {/* Bolt 4: Bottom Right (Small) */}
-                        <svg className="absolute bottom-2 right-2 w-6 h-8 text-white animate-ping-slow fill-current rotate-45" viewBox="0 0 24 24" style={{ animationDelay: '0.2s' }}>
-                           <path d="M11 2L2 14H10L9 22L19 10H10L11 2Z" />
-                        </svg>
+                            {/* Bolt 4: Bottom Right (Small) */}
+                            <svg className="absolute bottom-2 right-2 w-6 h-8 text-white animate-ping-slow fill-current rotate-45" viewBox="0 0 24 24" style={{ animationDelay: '0.2s' }}>
+                              <path d="M11 2L2 14H10L9 22L19 10H10L11 2Z" />
+                            </svg>
 
-                        {/* Kirby Krackle / Energy Dots */}
-                         <div className="absolute top-0 left-1/2 w-3 h-3 bg-black border border-cyan-400 rounded-full animate-ping"></div>
-                         <div className="absolute bottom-0 left-1/2 w-2 h-2 bg-black border border-yellow-400 rounded-full animate-ping" style={{ animationDelay: '0.3s' }}></div>
-                         <div className="absolute top-1/2 left-0 w-2 h-2 bg-black border border-cyan-400 rounded-full animate-ping" style={{ animationDelay: '0.5s' }}></div>
-                         <div className="absolute top-1/2 right-0 w-3 h-3 bg-black border border-yellow-400 rounded-full animate-ping" style={{ animationDelay: '0.1s' }}></div>
+                            {/* Kirby Krackle / Energy Dots */}
+                            <div className="absolute top-0 left-1/2 w-3 h-3 bg-black border border-cyan-400 rounded-full animate-ping"></div>
+                            <div className="absolute bottom-0 left-1/2 w-2 h-2 bg-black border border-yellow-400 rounded-full animate-ping" style={{ animationDelay: '0.3s' }}></div>
+                            <div className="absolute top-1/2 left-0 w-2 h-2 bg-black border border-cyan-400 rounded-full animate-ping" style={{ animationDelay: '0.5s' }}></div>
+                            <div className="absolute top-1/2 right-0 w-3 h-3 bg-black border border-yellow-400 rounded-full animate-ping" style={{ animationDelay: '0.1s' }}></div>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <span 
-                className="hidden sm:block text-2xl font-display font-black italic tracking-widest text-white group-hover/nav:text-cyan-400 transition-colors drop-shadow-[0_0_8px_rgba(0,255,255,0.6)]"
-            >
-                MENU
-            </span>
+                <span 
+                    className="hidden sm:block text-2xl font-display font-black italic tracking-widest text-white group-hover/nav:text-cyan-400 transition-colors drop-shadow-[0_0_8px_rgba(0,255,255,0.6)]"
+                >
+                    MENU
+                </span>
+              </div>
           </div>
         </div>
       </nav>

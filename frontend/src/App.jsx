@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router';
 import { Toaster } from 'react-hot-toast';
+import { CursorProvider } from './context/CursorContext';
+import CursorChoiceModal from './components/CursorChoiceModal';
 import Layout from './components/Layout';
 import HomePage from './pages/HomePage';
 import TeamPage from './pages/TeamPage';
@@ -55,10 +57,11 @@ function App() {
   };
 
   return (
-    <>
+    <CursorProvider>
       {loading && <Preloader onComplete={handlePreloaderComplete} />}
       {!loading && (
         <Router>
+          <CursorChoiceModal />
           <ScrollToHash />
           <Toaster
             position="top-right"
@@ -107,7 +110,7 @@ function App() {
           </PageTransition>
         </Router>
       )}
-    </>
+    </CursorProvider>
   );
 }
 
