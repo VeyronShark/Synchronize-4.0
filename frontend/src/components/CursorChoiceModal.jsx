@@ -76,7 +76,7 @@ const CursorChoiceModal = () => {
                             color: 'white'
                         }}
                     >
-                        CHOOSE YOUR <span style={{ color: activeColor === '#000000' ? '#ffffff' : activeColor, textShadow: 'none' }}>WEAPON</span>
+                        CHOOSE YOUR <span style={{ color: activeColor === '#000000' ? '#ffffff' : activeColor, textShadow: 'none' }}>CHARACTER</span>
                     </h2>
                 </div>
 

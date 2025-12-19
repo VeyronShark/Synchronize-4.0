@@ -10,6 +10,10 @@ import strangeCursor from '../assets/cursor_strange.png';
 import deadpoolCursor from '../assets/cursor_deadpool.png';
 import wolverineCursor from '../assets/cursor_wolverine.png';
 import grootCursor from '../assets/cursor_groot.png';
+import thanosCursor from '../assets/cursor_thanos.png';
+import doomCursor from '../assets/cursor_doom.png';
+import hawkeyeCursor from '../assets/cursor_hawkeye.png';
+import venomCursor from '../assets/cursor_venom.png';
 
 const CursorContext = createContext();
 
@@ -26,6 +30,10 @@ export const CURSOR_OPTIONS = [
   { id: 'deadpool', name: 'Deadpool', icon: deadpoolCursor, color: '#b71c1c' },
   { id: 'wolverine', name: 'Wolverine', icon: wolverineCursor, color: '#fbc02d' },
   { id: 'groot', name: 'Groot', icon: grootCursor, color: '#795548' },
+  { id: 'thanos', name: 'Thanos', icon: thanosCursor, color: '#673ab7' },
+  { id: 'doom', name: 'Dr. Doom', icon: doomCursor, color: '#4caf50' },
+  { id: 'hawkeye', name: 'Hawkeye', icon: hawkeyeCursor, color: '#7e57c2' },
+  { id: 'venom', name: 'Venom', icon: venomCursor, color: '#000000' },
 ];
 
 export const CursorProvider = ({ children }) => {
@@ -121,7 +129,7 @@ export const CursorProvider = ({ children }) => {
                 <img 
                     src={CURSOR_OPTIONS.find(c => c.id === currentCursor)?.icon} 
                     alt="cursor" 
-                    className="w-12 h-12 object-contain drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]"
+                    className="w-16 h-16 object-contain drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]"
                 />
             </div>
         </div>

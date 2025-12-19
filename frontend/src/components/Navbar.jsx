@@ -234,13 +234,13 @@ const Navbar = () => {
 
 
           <div className="flex items-center gap-4">
-              {/* CHOOSE WEAPON BUTTON */}
+              {/* CHOOSE CURSOR BUTTON */}
               <button
                 onClick={() => setShowModal(true)}
                 className="hidden md:flex items-center gap-2 bg-yellow-400 border-3 border-black px-4 py-2 transform -skew-x-12 hover:scale-105 hover:rotate-1 hover:shadow-[4px_4px_0px_black] transition-all duration-200 cursor-pointer"
               >
                   <span className="font-display font-black italic text-black text-sm transform skew-x-12 tracking-wider">
-                      {currentCursor !== 'default' ? 'CHANGE WEAPON' : 'CHOOSE WEAPON'}
+                      {currentCursor !== 'default' ? 'CHANGE CURSOR' : 'CHOOSE CURSOR'}
                   </span>
                   <div className="w-2 h-2 bg-black rounded-full animate-pulse transform skew-x-12"></div>
               </button>
