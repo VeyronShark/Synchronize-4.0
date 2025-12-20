@@ -1,429 +1,297 @@
-import { useEffect, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
-import gsap from 'gsap';
-import { ArrowLeft, X, RotateCcw, Bug, Binary } from 'lucide-react';
+import React, { useState, useEffect, useRef } from "react";
+import { Share2, Heart } from "lucide-react";
+import gsap from "gsap";
+import spideyCursor from "../assets/cursor_spiderman.png";
+import venomCursor from "../assets/cursor_venom.png";
+import spideyComicBg from "../assets/spidey_comic_bg.png";
 
-import MagneticButton from '../components/MagneticButton';
-
-import spideyBg from '../assets/spidey_comic_bg.png';
+// Mock Data for Gallery
+const GALLERY_ITEMS = [
+  {
+    id: 1,
+    title: "The Ultimate Clash",
+    image: "/assets/gallery/spidey_venom_clash.png", // Generated
+    category: "Covers",
+    likes: "12.5k",
+  },
+  {
+    id: 2,
+    title: "Maximum Carnage",
+    image: "/assets/gallery/carnage.png", // Generated
+    category: "Villains",
+    likes: "8.9k",
+  },
+  {
+    id: 3,
+    title: "Friendly Neighborhood",
+    image: "/assets/gallery/spidey_venom_clash.png", // Reuse
+    category: "Heroes",
+    likes: "15.2k",
+  },
+  {
+    id: 4,
+    title: "Symbiote Takeover",
+    image: "/assets/gallery/carnage.png", // Reuse
+    category: "Black Suit",
+    likes: "10.1k",
+  },
+  {
+    id: 5,
+    title: "Web of Shadows",
+    image: "/assets/gallery/spidey_venom_clash.png",
+    category: "Events",
+    likes: "9.4k",
+  },
+  {
+    id: 6,
+    title: "Lethal Protector",
+    image: "/assets/gallery/carnage.png",
+    category: "Anti-Hero",
+    likes: "11.8k",
+  },
+];
 
 const GalleryPage = () => {
-  const [loading, setLoading] = useState(true);
+  const [theme, setTheme] = useState("spiderman"); // 'spiderman' or 'venom'
   const [selectedImage, setSelectedImage] = useState(null);
-  const [draggedPositions, setDraggedPositions] = useState({});
-  const [isMobile, setIsMobile] = useState(false);
-  const titleRef = useRef(null);
-  const panelsRef = useRef([]);
-  const loaderRef = useRef(null);
-  const dragState = useRef({});
+  const overlayRef = useRef(null);
+  const modalRef = useRef(null);
 
-  // Reverted to Event/Vibe Photos (User wants theme on cards, not AS the content)
-  const galleryImages = [
-    { id: 1, url: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&h=600", caption: "OPENING NIGHT", date: "ISSUE #1", color: "bg-[#E62429]" },
-    { id: 2, url: "https://images.unsplash.com/photo-1511578314322-379afb476865?w=800&h=1000", caption: "WEB SLINGING", date: "ISSUE #2", color: "bg-[#2563EB]" },
-    { id: 3, url: "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=800&h=1200", caption: "SPIDER-VERSE", date: "ISSUE #3", color: "bg-white" },
-    { id: 4, url: "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=800&h=700", caption: "TEAM UP", date: "ISSUE #4", color: "bg-[#E62429]" },
-    { id: 5, url: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=800&h=600", caption: "DAILY BUGLE", date: "ISSUE #5", color: "bg-[#2563EB]" },
-    { id: 6, url: "https://images.unsplash.com/photo-1515187029135-18ee286d815b?w=800&h=900", caption: "NETWORKING", date: "ISSUE #6", color: "bg-white" },
-    { id: 7, url: "https://images.unsplash.com/photo-1523580494863-6f3031224c94?w=800&h=1100", caption: "AWARDS", date: "ISSUE #7", color: "bg-[#E62429]" },
-    { id: 8, url: "https://images.unsplash.com/photo-1464047736614-af63643285bf?w=800&h=650", caption: "CULTURAL", date: "ISSUE #8", color: "bg-[#2563EB]" },
-    { id: 9, url: "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=800&h=800", caption: "CODE SPRINT", date: "ISSUE #9", color: "bg-white" },
-    { id: 10, url: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=800&h=600", caption: "COLLAB", date: "ISSUE #10", color: "bg-[#E62429]" },
-    { id: 11, url: "https://images.unsplash.com/photo-1591115765373-5207764f72e7?w=800&h=1000", caption: "INNOVATION", date: "ISSUE #11", color: "bg-[#2563EB]" },
-    { id: 12, url: "https://images.unsplash.com/photo-1528605248644-14dd04022da1?w=800&h=700", caption: "SPIRIT", date: "ISSUE #12", color: "bg-white" },
-  ];
-
-  const getRandomRotation = (index) => {
-    const rotations = [-4, -3, -2, 2, 3, 4, -4, 3, -2, 4, -3, 2];
-    return rotations[index % rotations.length];
+  const toggleTheme = () => {
+    setTheme((prev) => (prev === "spiderman" ? "venom" : "spiderman"));
   };
 
+  // Animate In when selectedImage changes
   useEffect(() => {
-    window.scrollTo(0, 0);
-
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-
-    const loaderTimeline = gsap.timeline({
-      onComplete: () => setLoading(false)
-    });
-
-    // Simulate loading
-    loaderTimeline.to(loaderRef.current, {
-      opacity: 0,
-      duration: 0.5,
-      delay: 2.2,
-      ease: "power2.inOut"
-    });
-
-    return () => {
-      window.removeEventListener('resize', checkMobile);
-    };
-  }, []);
-
-  // THWIP Sound Effect Interaction
-  useEffect(() => {
-    const createThwipObj = (e) => {
-        // Only trigger on main body, not if inside interacting elements
-        if (e.target.closest('button') || e.target.closest('a') || e.target.closest('.panel-image-wrapper')) return;
-
-        const thwip = document.createElement('div');
-        thwip.innerText = 'THWIP!';
-        thwip.style.position = 'fixed';
-        thwip.style.left = `${e.clientX}px`;
-        thwip.style.top = `${e.clientY}px`;
-        thwip.style.color = '#fff';
-        thwip.style.fontFamily = 'Montserrat, sans-serif'; 
-        thwip.style.fontWeight = '900';
-        thwip.style.fontSize = '1.5rem';
-        thwip.style.fontStyle = 'italic';
-        thwip.style.textShadow = '3px 3px 0px #000';
-        thwip.style.pointerEvents = 'none';
-        thwip.style.zIndex = '9999';
-        thwip.style.transform = 'translate(-50%, -50%) rotate(-10deg)';
-        
-        // Add comic bubble style
-        thwip.style.backgroundColor = '#E62429';
-        thwip.style.padding = '5px 10px';
-        thwip.style.border = '2px solid black';
-        thwip.style.boxShadow = '4px 4px 0px black';
-        
-        document.body.appendChild(thwip);
-
-        gsap.to(thwip, {
-            y: -50,
-            opacity: 0,
-            scale: 1.5,
-            rotation: 10,
-            duration: 0.8,
-            ease: "power2.out",
-            onComplete: () => {
-                if(document.body.contains(thwip)) document.body.removeChild(thwip);
-            }
-        });
-    };
-
-    window.addEventListener('click', createThwipObj);
-    return () => window.removeEventListener('click', createThwipObj);
-  }, []);
-
-  useEffect(() => {
-    if (!loading) {
-      gsap.fromTo(titleRef.current,
-        { opacity: 0, scale: 0.8 },
-        { opacity: 1, scale: 1, duration: 0.6, ease: "back.out(2)" }
-      );
-
-      gsap.fromTo(panelsRef.current,
-        { opacity: 0, y: 100, rotation: 180 },
-        {
-          opacity: 1,
-          y: 0,
-          rotation: (index) => getRandomRotation(index),
-          duration: 0.8,
-          stagger: 0.1,
-          ease: "elastic.out(1, 0.7)",
-          delay: 0.2
-        }
-      );
+    if (selectedImage && overlayRef.current && modalRef.current) {
+        // Overlay fade in
+        gsap.fromTo(overlayRef.current, 
+            { opacity: 0 }, 
+            { opacity: 1, duration: 0.3, ease: "power2.out" }
+        );
+        // Modal zoom/fade in
+        gsap.fromTo(modalRef.current,
+            { scale: 0.8, opacity: 0, rotate: -5 },
+            { scale: 1, opacity: 1, rotate: 1, duration: 0.4, ease: "back.out(1.7)" }
+        );
     }
-  }, [loading]);
+  }, [selectedImage]);
 
-  const handleMouseDown = (e, id, index) => {
-    if (isMobile) return;
-    if (e.target.closest('.panel-image-wrapper')) return;
-    
-    e.preventDefault();
-    const element = panelsRef.current[index];
-    
-    dragState.current[id] = {
-      isDragging: true,
-      startX: e.clientX,
-      startY: e.clientY,
-      currentX: draggedPositions[id]?.x || 0,
-      currentY: draggedPositions[id]?.y || 0,
-      element: element
-    };
-
-    gsap.to(element, { 
-      scale: 1.1, 
-      boxShadow: '12px 12px 0px rgba(0,0,0,1)',
-      duration: 0.2, 
-      ease: "power2.out" 
-    });
-    element.style.cursor = 'grabbing';
-    element.style.zIndex = '1000';
-  };
-
-  const handleMouseMove = (e) => {
-    Object.keys(dragState.current).forEach(id => {
-      const state = dragState.current[id];
-      if (state?.isDragging) {
-        const deltaX = e.clientX - state.startX;
-        const deltaY = e.clientY - state.startY;
-        
-        setDraggedPositions(prev => ({
-          ...prev,
-          [id]: {
-            x: state.currentX + deltaX,
-            y: state.currentY + deltaY
-          }
-        }));
+  const closeOverlay = () => {
+      if (overlayRef.current && modalRef.current) {
+          gsap.to(overlayRef.current, {
+              opacity: 0,
+              duration: 0.3,
+              ease: "power2.in"
+          });
+          gsap.to(modalRef.current, {
+              scale: 0.8,
+              opacity: 0,
+              rotate: 5,
+              duration: 0.3,
+              ease: "power2.in",
+              onComplete: () => setSelectedImage(null)
+          });
+      } else {
+          setSelectedImage(null);
       }
-    });
   };
 
-  const handleMouseUp = (id, index) => {
-    if (dragState.current[id]) {
-      const element = panelsRef.current[index];
-      gsap.to(element, { 
-        scale: 1, 
-        boxShadow: '6px 6px 0px rgba(0,0,0,1)',
-        duration: 0.3, 
-        ease: "back.out(1.7)" 
-      });
-      dragState.current[id].element.style.cursor = 'grab';
-      dragState.current[id].element.style.zIndex = '';
-      dragState.current[id].isDragging = false;
-    }
-  };
-
-  useEffect(() => {
-    const handleGlobalMouseMove = (e) => handleMouseMove(e);
-    const handleGlobalMouseUp = () => {
-      Object.keys(dragState.current).forEach((id, index) => handleMouseUp(id, index));
-    };
-
-    window.addEventListener('mousemove', handleGlobalMouseMove);
-    window.addEventListener('mouseup', handleGlobalMouseUp);
-
-    return () => {
-      window.removeEventListener('mousemove', handleGlobalMouseMove);
-      window.removeEventListener('mouseup', handleGlobalMouseUp);
-    };
-  }, [draggedPositions]);
-
-  const openLightbox = (image) => {
-    setSelectedImage(image);
-    document.body.style.overflow = 'hidden';
-    document.body.classList.add('modal-open');
-  };
-
-  const closeLightbox = () => {
-    setSelectedImage(null);
-    document.body.style.overflow = 'auto';
-    document.body.classList.remove('modal-open');
-  };
-
-  // Cleanup on unmount
-  useEffect(() => {
-    return () => {
-      document.body.classList.remove('modal-open');
-      document.body.style.overflow = 'auto';
-    };
-  }, []);
-
-  const resetPositions = () => {
-    setDraggedPositions({});
-    panelsRef.current.forEach((el, index) => {
-      gsap.fromTo(el,
-        { scale: 0.5, rotation: 360 },
-        { 
-          scale: 1, 
-          rotation: getRandomRotation(index),
-          duration: 0.8, 
-          ease: "elastic.out(1, 0.5)",
-          delay: index * 0.05
+  // Dynamic Theme Colors
+  const themeStyles =
+    theme === "spiderman"
+      ? {
+          bg: "bg-[#e23636]",
+          bgImage: `url(${spideyComicBg})`,
+          bgSize: "cover",
+          bgRepeat: "no-repeat",
+          bgPosition: "center center",
+          text: "text-white",
+          accent: "bg-blue-600",
+          border: "border-black",
+          cardBg: "bg-white",
+          cardText: "text-black",
+          shadow: "shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]",
+          hoverShadow: "hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)]",
+          titleGradient: "from-red-600 to-blue-600",
+          button: "bg-blue-600 hover:bg-blue-700 text-white",
+          filterActive: "bg-red-600 text-white border-black",
+          filterInactive: "bg-white text-black border-black",
         }
-      );
-    });
-  };
+      : {
+          bg: "bg-[#1a1a1a]",
+          bgImage: "url('/assets/gallery/venom_bg.png')",
+          bgSize: "400px",
+          bgRepeat: "repeat",
+          bgPosition: "top left",
+          text: "text-gray-100",
+          accent: "bg-purple-700",
+          border: "border-gray-800",
+          cardBg: "bg-gray-900",
+          cardText: "text-white",
+          shadow: "shadow-[0px_0px_15px_rgba(168,85,247,0.5)]",
+          hoverShadow: "hover:shadow-[0px_0px_25px_rgba(168,85,247,0.8)]",
+          titleGradient: "from-black via-purple-900 to-black",
+          button: "bg-purple-800 hover:bg-purple-900 text-white",
+          filterActive: "bg-purple-700 text-white border-purple-500",
+          filterInactive: "bg-black text-gray-300 border-gray-700",
+        };
 
   return (
-    <>
+    <div
+      className={`min-h-screen transition-colors duration-700 ease-in-out relative overflow-x-hidden ${themeStyles.bg}`}
+      style={{
+        backgroundImage: themeStyles.bgImage,
+        backgroundSize: themeStyles.bgSize, // Adjust based on patterns
+        backgroundAttachment: "fixed",
+        backgroundRepeat: themeStyles.bgRepeat,
+        backgroundPosition: themeStyles.bgPosition,
+      }}
+    >
+      {/* Overlay for readability if needed */}
+      <div className={`absolute inset-0 ${theme === 'venom' ? 'bg-black/70' : 'bg-white/20'} pointer-events-none transition-all duration-700`} />
 
-
-      {/* Increased top margin/padding to prevent Navbar overlap: pt-40 sm:pt-48 */}
-      <div className="min-h-screen pt-40 sm:pt-48 pb-12 sm:pb-16 px-4 sm:px-6 relative z-10 overflow-hidden bg-white">
+      {/* Main Content */}
+      <div className="relative z-10 container mx-auto px-4 pt-36 pb-8">
         
-        {/* Enhanced Background - Graphic Novel Style */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div 
-             className="absolute inset-0 opacity-15 bg-cover bg-center" 
-             style={{ backgroundImage: `url(${spideyBg})` }}
-          />
-          
-          <div className="absolute top-0 right-0 w-full h-full opacity-25 pointer-events-none">
-            <div className="absolute top-10 right-[-200px] w-[800px] h-[60px] bg-linear-to-r from-[#E62429] to-[#FF6B6B] rotate-12 transform shadow-lg" />
-            <div className="absolute top-32 right-[-150px] w-[600px] h-[30px] bg-linear-to-r from-[#2563EB] to-[#60A5FA] rotate-12 transform shadow-lg" />
-            <div className="absolute top-56 right-[-250px] w-[700px] h-[20px] bg-black rotate-12 transform shadow-lg" />
-          </div>
-          
-           {/* Floating Comic Text (Background) */}
-           <div className="absolute inset-0 pointer-events-none opacity-8">
-             <div className="absolute top-20 left-20 text-6xl text-[#E62429] transform rotate-12 animate-pulse">🕷️</div>
-             <div className="absolute top-40 right-32 text-4xl text-[#2563EB] transform -rotate-12 animate-pulse delay-1000">🕸️</div>
-             
-             {/* Emblem */}
-             <div className="absolute bottom-10 right-10 opacity-20 transform -rotate-12">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/c/c4/Spider-Man_emblem.svg" className="w-64 h-64 invert" style={{ filter: 'drop-shadow(4px 4px 0px #E62429)' }} alt="" />
-             </div>
-           </div>
-        </div>
-        
-        <div className="container mx-auto relative z-10">
-            {/* Header Section */}
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 sm:mb-16 gap-6 sm:gap-8">
-            <div ref={titleRef} className="relative">
-              <div className="absolute -top-6 -left-4 sm:-top-8 sm:-left-8 bg-[#E62429] text-white px-3 py-1 sm:px-4 sm:py-2 font-bold transform -rotate-6 border-2 sm:border-4 border-black shadow-[4px_4px_0px_#000] sm:shadow-[6px_6px_0px_#000] z-20">
-                <div className="flex items-center gap-2">
-                <span className="text-xs sm:text-sm font-black uppercase tracking-wider">DAILY BUGLE EXCLUSIVE</span>
-                </div>
-              </div>
-              
-              <h1 className="text-5xl sm:text-7xl md:text-8xl font-display font-black italic relative z-10 tracking-tighter leading-none mt-4 sm:mt-0">
-                <span className="text-[#1e56cd] drop-shadow-[2px_2px_0px_rgba(37,99,235,0.5)] sm:drop-shadow-[4px_4px_0px_rgba(37,99,235,0.5)] stroke-white stroke-2">AMAZING</span>{' '}
-                <span className="text-[#E62429] drop-shadow-[2px_2px_0px_rgba(230,36,41,0.5)] sm:drop-shadow-[4px_4px_0px_rgba(230,36,41,0.5)] stroke-white stroke-2">GALLERY</span>
-              </h1>
-              
-              <div className="mt-4 bg- text-black bg-white border-2 border-black p-2 sm:p-3 inline-block shadow-[3px_3px_0px_#111] sm:shadow-[4px_4px_0px_#111] max-w-md transform rotate-1">
-                 <p className="font-bold uppercase tracking-widest text-xs sm:text-sm flex items-center gap-2">
-                   <Bug className="w-4 h-4 sm:w-5 sm:h-5 fill-black text-black" />
-                   {isMobile ? 'Touch panels to view' : 'Use your web shooters to drag panels'}
-                 </p>
-              </div>
-            </div>
-            
-            <div className="flex gap-4 z-50 self-end md:self-auto">
-              {!isMobile && (
-                <MagneticButton onClick={resetPositions} className="cursor-pointer px-4 sm:px-6 py-2 sm:py-3 bg-white text-black font-black border-2 sm:border-4 border-black shadow-[3px_3px_0px_#000] sm:shadow-[4px_4px_0px_#000] hover:translate-y-[-2px] hover:shadow-[5px_5px_0px_#E62429] transition-all text-sm sm:text-base">
-                    <span className="flex items-center gap-2">
-                      <RotateCcw className="w-4 h-4 sm:w-5 sm:h-5 font-bold" />
-                      RESET
-                    </span>
-                </MagneticButton>
-              )}
-              
-              <Link to="/">
-                <MagneticButton className="cursor-pointer px-4 sm:px-6 py-2 sm:py-3 bg-[#E62429] text-white font-black border-2 sm:border-4 border-black shadow-[3px_3px_0px_#000] sm:shadow-[4px_4px_0px_#000] hover:translate-y-[-2px] hover:shadow-[5px_5px_0px_#000] transition-all text-sm sm:text-base">
-                  <span className="flex items-center gap-2">
-                    <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5 font-bold" />
-                    BACK
-                  </span>
-                </MagneticButton>
-              </Link>
-            </div>
+        {/* Header Section */}
+        <header className="flex flex-col md:flex-row justify-between items-start mb-12 gap-6">
+          <div className="text-center md:text-left">
+            <h1
+              className={`text-6xl md:text-8xl font-black uppercase tracking-tighter italic transform -skew-x-12 pr-3.5 ${
+                theme === "spiderman"
+                  ? "text-marvel-red drop-shadow-[4px_4px_0px_#000]"
+                  : "text-transparent bg-clip-text bg-gradient-to-br from-gray-200 to-gray-600 drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]"
+              } transition-all duration-500`}
+            >
+              {theme === "spiderman" ? "Spider-Verse" : "Symbiote-City"}
+            </h1>
+            <p
+              className={`mt-2 text-xl font-bold bg-black inline-block px-4 py-1 transform -skew-x-12 ${
+                theme === "spiderman" ? "text-yellow-400" : "text-purple-400"
+              }`}
+            >
+              The Comic Gallery
+            </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 sm:gap-12 md:gap-16 max-w-7xl mx-auto py-8 px-2 sm:px-4">
-            {galleryImages.map((image, index) => {
-              const position = draggedPositions[image.id] || { x: 0, y: 0 };
-              
-              return (
-                <div
-                  key={image.id}
-                  ref={el => panelsRef.current[index] = el}
-                  className="panel-container relative"
-                  style={{
-                    transform: `rotate(${getRandomRotation(index)}deg) translate(${position.x}px, ${position.y}px)`,
-                    cursor: isMobile ? 'default' : 'grab',
-                    touchAction: isMobile ? 'auto' : 'none',
-                    zIndex: 1
-                  }}
-                  onMouseDown={(e) => !isMobile && handleMouseDown(e, image.id, index)}
-                >
-                  {/* Comic Panel - The Card Frame */}
-                  <div className="group relative bg-white border-2 sm:border-4 border-black p-2 sm:p-3 shadow-[6px_6px_0px_#000] sm:shadow-[8px_8px_0px_#000] transition-transform hover:scale-[1.02]">
-                    
-                    {/* Corner Decorations on Frame (NOT on photo) */}
-                    <div className="absolute -top-1.5 -left-1.5 sm:-top-2 sm:-left-2 w-4 h-4 sm:w-6 sm:h-6 border-t-2 sm:border-t-4 border-l-2 sm:border-l-4 border-[#E62429] z-20"></div>
-                    <div className="absolute -bottom-1.5 -right-1.5 sm:-bottom-2 sm:-right-2 w-4 h-4 sm:w-6 sm:h-6 border-b-2 sm:border-b-4 border-r-2 sm:border-r-4 border-[#2563EB] z-20"></div>
-
-                    {/* Spider Icon Stamp on Frame */}
-                    <div className={`absolute -top-3 -right-3 sm:-top-4 sm:-right-4 w-8 h-8 sm:w-10 sm:h-10 ${index % 2 === 0 ? 'bg-[#E62429]' : 'bg-[#2563EB]'} border-2 border-black z-30 flex items-center justify-center shadow-[2px_2px_0px_#000] rounded-full transform rotate-12 group-hover:rotate-45 transition-transform duration-300`}>
-                       <Bug className="w-5 h-5 sm:w-6 sm:h-6 text-white fill-current" />
-                    </div>
-
-                    {/* "Flash" Sticker on random cards */}
-                    {index % 3 === 0 && (
-                        <div className="absolute -bottom-3 -left-3 sm:-bottom-4 sm:-left-4 bg-iron-gold border-2 border-black px-1.5 py-0.5 sm:px-2 sm:py-1 transform -rotate-12 z-30 shadow-[2px_2px_0px_#000]">
-                            <span className="text-[10px] sm:text-xs font-black">POP!</span>
-                        </div>
-                    )}
-
-                    <div 
-                      className={`panel-image-wrapper border-2 border-black overflow-hidden relative aspect-4/5 bg-gray-100 ${!isMobile ? 'cursor-pointer' : ''}`}
-                      onClick={() => openLightbox(image)}
-                    >
-                      <img 
-                        src={image.url} 
-                        alt={image.caption}
-                        className="w-full h-full object-cover filter brightness-100 contrast-110 hover:brightness-110 transition-all duration-500"
-                        draggable="false"
-                      />
-                      {/* Removed overlay covering the image as per user request */}
-                    </div>
-                    
-                    {/* Caption Box - Part of the Card */}
-                    <div className="mt-2 sm:mt-3 relative">
-                      <div className={`absolute inset-0 ${image.color} opacity-10 -skew-x-6 transform`} />
-                      <div className="relative border-b-2 border-black pb-1 flex justify-between items-end">
-                        <div className="flex flex-col">
-                           <span className="text-[8px] sm:text-xxs font-black tracking-widest text-gray-500 uppercase">MARVEL COMICS GROUP</span>
-                           <p className="text-base sm:text-lg font-display font-black italic text-black uppercase leading-none mt-0.5 sm:mt-1">{image.caption}</p>
-                           <p className="text-[10px] sm:text-xs font-mono font-bold text-[#E62429] mt-0.5 sm:mt-1">{image.date} // $0.50</p>
-                        </div>
-                        <Binary className="w-3 h-3 sm:w-4 sm:h-4 text-gray-400" />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Comic Lightbox Modal */}
-        {selectedImage && (
-          <div 
-            className="fixed inset-0 z-100 flex items-center justify-center p-4 sm:p-8 animate-fadeIn"
-            onClick={closeLightbox}
+          {/* Theme Toggle */}
+          <button
+            onClick={toggleTheme}
+            className={`group relative overflow-hidden px-6 py-1 mt-3.5 rounded-full border-4 font-black text-xl uppercase tracking-widest transition-all duration-300 transform hover:scale-105 active:scale-95 ${
+              theme === "spiderman"
+                ? "bg-slate-900 border-white text-white hover:bg-purple-600"
+                : "bg-white border-black text-black hover:bg-red-600 hover:text-white"
+            }`}
           >
-            <div className="absolute inset-0 bg-black/90 backdrop-blur-md" >
-               {/* Background elements in lightbox */}
-            </div>
+            <span className="relative z-10 flex items-center gap-2">
+              {theme === "spiderman" ? (
+                <>
+                  <img src={venomCursor} alt="Venom" className="w-15 h-15 object-contain animate-pulse" /> Unleash Venom
+                </>
+              ) : (
+                <>
+                  <img src={spideyCursor} alt="Spidey" className="w-15 h-15 object-contain animate-pulse" /> Call Spidey
+                </>
+              )}
+            </span>
+          </button>
+        </header>
 
-            <div className="relative max-w-5xl w-full z-10" onClick={(e) => e.stopPropagation()}>
-              <div className="relative bg-white border-4 sm:border-[6px] border-black shadow-[10px_10px_0px_#E62429] sm:shadow-[16px_16px_0px_#E62429] p-2 sm:p-4 transform rotate-1">
+
+
+        {/* Gallery Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {GALLERY_ITEMS.map((item, index) => (
+            <div
+              key={item.id}
+              onClick={() => setSelectedImage(item)}
+              className={`group relative ${themeStyles.cardBg} border-4 ${themeStyles.border} p-2 transition-all duration-300 ${theme === 'spiderman' ? themeStyles.shadow : ''} hover:-translate-y-2 hover:rotate-2 cursor-pointer`}
+              style={{
+                boxShadow: theme === 'venom' ? '0 0 20px rgba(100,0,200, 0.2)' : undefined
+              }}
+            >
+              {/* Image Container */}
+              <div className="relative overflow-hidden aspect-[2/3] border-2 border-black">
+                <div className={`absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110`} style={{ backgroundImage: `url(${item.image})` }} />
                 
-                <button
-                  onClick={closeLightbox}
-                  className="cursor-pointer absolute -top-4 -right-4 sm:-top-8 sm:-right-8 z-50 w-10 h-10 sm:w-16 sm:h-16 flex items-center justify-center bg-[#E62429] hover:bg-white text-white hover:text-[#E62429] border-2 sm:border-4 border-black shadow-[2px_2px_0px_#000] sm:shadow-[4px_4px_0px_#000] hover:scale-110 hover:rotate-180 transition-all duration-300 group rounded-full"
-                >
-                  <X className="w-5 h-5 sm:w-8 sm:h-8 stroke-[3px]" />
-                </button>
+                {/* Halftone / Glitch Overlay */}
+                <div className={`absolute inset-0 opacity-20 pointer-events-none ${theme === 'spiderman' ? 'bg-[url("https://www.transparenttextures.com/patterns/black-dots.png")]' : 'bg-purple-900 mix-blend-overlay'}`} />
+                
 
-                <div className="relative border-2 sm:border-4 border-black overflow-hidden bg-black">
-                  <img 
-                    src={selectedImage.url} 
-                    alt={selectedImage.caption}
-                    className="w-full max-h-[70vh] sm:max-h-[80vh] object-contain"
-                  />
-                  <div className="absolute bottom-0 left-0 right-0 bg-[#E62429] border-t-2 sm:border-t-4 border-black p-4 sm:p-6 transform translate-y-full hover:translate-y-0 transition-transform duration-300 ease-out text-white">
-                     <h3 className="text-2xl sm:text-4xl font-display font-black italic uppercase text-shadow-black">{selectedImage.caption}</h3>
-                     <p className="font-mono font-bold mt-2 text-black bg-white inline-block px-2 text-xs sm:text-base">DAILY BUGLE // {selectedImage.date}</p>
-                  </div>
-                </div>
+              </div>
+
+              {/* Card Footer */}
+              <div className={`mt-3 flex justify-between items-center ${themeStyles.cardText} font-bold uppercase`}>
+                <span className="bg-black text-white px-2 py-1 text-xs">{item.category}</span>
+                <span className="flex items-center gap-1 text-sm">
+                   <Heart className={`w-4 h-4 ${theme === 'spiderman' ? 'text-red-500 fill-red-500' : 'text-purple-500 fill-purple-500'}`} /> {item.likes}
+                </span>
+              </div>
+              
+              {/* Decorative Corner / Comic Element */}
+              <div className={`absolute -top-3 -right-3 w-8 h-8 ${theme === 'spiderman' ? 'bg-red-600 text-white border-2 border-black' : 'bg-purple-600 border-2 border-white'} rounded-full z-20 flex items-center justify-center font-black text-xs transform rotate-12`}>
+                #{item.id}
               </div>
             </div>
-          </div>
-        )}
+          ))}
+        </div>
       </div>
-    </>
+
+      {/* Image Overlay Modal */}
+      {selectedImage && (
+        <div 
+          ref={overlayRef}
+          className="fixed inset-0 z-[200] flex items-center justify-center bg-black/90 p-4"
+          onClick={closeOverlay}
+        >
+          <div 
+            ref={modalRef}
+            className={`relative max-w-4xl max-h-[80vh] w-full p-2 border-4 ${themeStyles.border} ${themeStyles.cardBg} transform rotate-1`}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Close Button */}
+            <button 
+              onClick={closeOverlay}
+              className={`absolute -top-6 -right-6 z-10 w-12 h-12 flex items-center justify-center rounded-full border-4 border-black text-white font-black text-xl hover:scale-110 transition-transform ${theme === 'spiderman' ? 'bg-red-600' : 'bg-purple-700'}`}
+            >
+              X
+            </button>
+
+            {/* Image */}
+            <div className="relative border-2 border-black overflow-hidden">
+               <img 
+                 src={selectedImage.image} 
+                 alt={selectedImage.title} 
+                 className="w-full h-full object-contain max-h-[70vh]"
+               />
+               {/* Halftone Overlay */}
+               <div className={`absolute inset-0 opacity-10 pointer-events-none ${theme === 'spiderman' ? 'bg-[url("https://www.transparenttextures.com/patterns/black-dots.png")]' : 'bg-purple-900 mix-blend-overlay'}`} />
+            </div>
+
+            {/* Title Tag */}
+            <div className={`absolute bottom-4 left-4 right-4 text-center transform skew-x-[-10deg]`}>
+              <span className={`inline-block px-6 py-2 border-4 border-black font-black text-2xl uppercase ${theme === 'spiderman' ? 'bg-yellow-400 text-black' : 'bg-purple-900 text-white'}`}>
+                {selectedImage.title}
+              </span>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Spidey / Venom Custom Cursor could go here */}
+      <style>{`
+        .clip-path-notch {
+          clip-path: polygon(
+            0 0,
+            100% 0,
+            100% calc(100% - 10px),
+            calc(100% - 10px) 100%,
+            0 100%
+          );
+        }
+      `}</style>
+    </div>
   );
 };
 

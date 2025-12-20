@@ -12,10 +12,7 @@ const GlobalComicEffects = () => {
 
   useEffect(() => {
     const handleClick = (e) => {
-      // If on gallery page, ONLY trigger if clicking inside the navbar
-      if (location === '/gallery' || location === '/gallery/') {
-          if (!e.target.closest('nav')) return;
-      }
+
       
       const word = comicWords[Math.floor(Math.random() * comicWords.length)];
       
